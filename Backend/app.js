@@ -1,16 +1,22 @@
+require('dotenv').config();
+const connectDB = require('./config/db');
 var createError = require('http-errors');
 var express = require('express');
+const session = require('express-session');
 const passport = require("passport");
 var path = require('path');
 const user = require('./models/users');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 
+
+
 var indexRouter = require('./routes/index');
 var usersRouter = require('./routes/users');
 
 var app = express();
-
+//db connection
+connectDB();connectDB();
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));
 app.set('view engine', 'ejs');
@@ -20,6 +26,25 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+
+//Session Configuration
+app.use(session({
+  secret: 'your_secret_key', // This should be a random string from your .env
+  resave: false,
+  saveUninitialized: false,
+  cookie: { secure: false } // Set to true if using HTTPS
+}));
+
+// Initialize Passport
+app.use(passport.initialize());
+
+// Enable Passport Sessions
+app.use(passport.session()); 
+
+// Now your routes can follow
+app.use('/', indexRouter);
+
+
 
 app.use('/', indexRouter);
 app.use('/users', usersRouter);
