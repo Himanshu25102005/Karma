@@ -6,13 +6,10 @@ require("./auth");
 
 /* Middleware to check if the user is logged in */
 
-const isloggedIn = (req, res, next)=>{
-  if(req.isAuthenticated()) return next();
-  else res.redirect('/login');
-}
-
-
-
+const isloggedIn = (req, res, next) => {
+  if (req.isAuthenticated()) return next();
+  else res.redirect("/login");
+};
 
 /* GET home page. */
 router.get("/", function (req, res, next) {
@@ -43,9 +40,12 @@ router.post(
 );
 
 /* Oauth Login Route */
-router.get('/auth/google', passport.authenticate('google', { 
-    scope: ['profile', 'email'] 
-}));
+router.get(
+  "/auth/google",
+  passport.authenticate("google", {
+    scope: ["profile", "email"],
+  }),
+);
 
 /* Google Callback Route */
 router.get(
@@ -58,17 +58,16 @@ router.get(
 
 /* Log out route */
 
-router.get('/logout', (req, res, next) => {
+router.get("/logout", (req, res, next) => {
   req.logout((err) => {
     if (err) return next(err);
-    res.redirect('/');
+    res.redirect("/");
   });
 });
 
 /* Accessing User Data(using google route) */
-router.get('/getInfo', isloggedIn, (req, res, next)=>{
-  res.redirect('/dashboard', { user: req.user});
-})
-
+router.get("/getInfo", isloggedIn, (req, res, next) => {
+  res.redirect("/dashboard", { user: req.user });
+});
 
 module.exports = router;

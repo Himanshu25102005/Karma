@@ -14,18 +14,18 @@ const focSessionSchema = mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ["running", "completed", "paused", "cancelled"], // Youu can add new options here
+    enum: ["running", "completed", "paused", "cancelled"],
     default: "running",
   },
   tag: {
-    type: [String], 
+    type: [String],
     default: [],
   },
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: "user",
     required: true,
-    index: true
+    index: true,
   },
 });
 
