@@ -12,6 +12,8 @@ const isloggedIn = (req, res, next) => {
   });
 };
 
+/* GET /stats/overview endpoint */
+
 router.get("/stats/overview", isloggedIn, async (req, res) => {
   try {
     const summary = await Session.aggregate([
@@ -27,6 +29,10 @@ router.get("/stats/overview", isloggedIn, async (req, res) => {
         $group: {
           _id: null,
           totalSum: { $sum: "$duration" },
+          totalSessions: { $sum: 1 },
+          averageSessionDuration: { $avg: "$duration" },
+          longestSession: { $max: "$duration" },
+          shortestSession: { $min: "$duration" },
         },
       },
     ]);
@@ -44,6 +50,8 @@ router.get("/stats/overview", isloggedIn, async (req, res) => {
   }
 });
 
+/* GET /stats/by-project endpoint */
+
 router.get("/stats/by-project", isloggedIn, async (req, res) => {
   try {
     const project = await Session.aggregate([
@@ -58,6 +66,7 @@ router.get("/stats/by-project", isloggedIn, async (req, res) => {
           _id: "$projectName",
           totalTime: { $sum: "$duration" },
           totalSessions: { $sum: 1 },
+          averageSessionDuration: { $avg: "$duration" },
         },
       },
       {
@@ -69,12 +78,40 @@ router.get("/stats/by-project", isloggedIn, async (req, res) => {
           projectName: "$_id",
           totalTime: 1,
           totalSessions: 1,
+          averageSessionDuration: 1,
         },
       },
     ]);
 
-    res.json(project);
+    res.status(200).json(project);
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
 });
+
+/* GET /stats/daily */
+
+router.get("/stats/daily", isloggedIn, (req, res) => {
+  try {
+    const daily = Session.aggregate([
+      {
+        $match: {
+          userId: req.user._id,
+          status: "completed",
+        },
+      },
+      {
+        $match: {
+          _id: { $dateToString: { format: "%Y-%m-%d", date: "$startTime" } },
+          totalTime: { $sum: "$duration" },
+          totalSessions: { $sum: 1 },
+        },
+      },
+    ]);
+    
+    res.status(200).json(daily);
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
