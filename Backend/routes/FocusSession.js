@@ -18,12 +18,12 @@ router.post("/session/start", isloggedIn, async (req, res) => {
   try {
     const { projectName, tag } = req.body;
 
-    if (!projectName || projectName.trim().length === 0) {
+    /* if (!projectName || projectName.trim().length === 0) {
       return res.status(400).json({
         error: "Project name is required",
       });
-    }
-    
+    } */
+
     const existingSession = await Session.findOne({
       userId: req.user._id,
       status: "running",
@@ -36,7 +36,7 @@ router.post("/session/start", isloggedIn, async (req, res) => {
     }
 
     const newSession = await Session.create({
-      projectName: req.body.projectName,
+      projectId: req.body.projectId,
       tag: req.body.tag,
       userId: req.user._id,
     });
@@ -118,7 +118,7 @@ router.get("/session/history", isloggedIn, async (req, res) => {
     const page = Math.max(1, Number(req.query.page) || 1);
     const limit = Math.min(50, Number(req.query.limit) || 10);
     const skip = (page - 1) * limit;
-    
+
     const filter = {
       userId: req.user._id,
       status: "completed",
@@ -129,7 +129,8 @@ router.get("/session/history", isloggedIn, async (req, res) => {
         .sort({ startTime: -1 })
         .skip(skip)
         .limit(limit)
-        .select("projectName duration startTime endTime tag"),
+        .populate("projectId", "name description")
+        .select("duration startTime endTime tag projectId"),
 
       Session.countDocuments(filter),
     ]);
