@@ -70,12 +70,11 @@ router.patch("/project/complete/:id", isloggedIn, async (req, res) => {
   }
 });
 
-
 /* Update Project Details */
 
 router.patch("/project/update/:id", isloggedIn, async (req, res) => {
   try {
-    const { name, description, color } = req.body; // Get fields to update
+    const { name, description } = req.body; // Get fields to update
 
     const updateProject = await Project.findOne({
       userId: req.user._id,
@@ -90,7 +89,6 @@ router.patch("/project/update/:id", isloggedIn, async (req, res) => {
     // Update fields if provided
     if (name) updateProject.name = name.trim().toLowerCase();
     if (description !== undefined) updateProject.description = description;
-    if (color) updateProject.color = color;
 
     await updateProject.save();
 
