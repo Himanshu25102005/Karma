@@ -52,16 +52,16 @@ router.post("/project/create", isloggedIn, async (req, res) => {
 router.patch("/project/update/:id", isloggedIn, async (req, res) => {
   try {
     const updateProject = await Project.findOne({
-        userId: req.user._id,
-        isActive: true,
-        _id: req.params.id
-    })
+      userId: req.user._id,
+      isActive: true,
+      _id: req.params.id,
+    });
 
-    if(!updateProject){
-        return res.status(404).json({error: "Project not found"});
-    };
+    if (!updateProject) {
+      return res.status(404).json({ error: "Project not found" });
+    }
 
-    updateProject.updatedAt =  Date.now();
+    updateProject.updatedAt = Date.now();
     updateProject.isActive = false;
 
     await updateProject.save();
@@ -72,7 +72,7 @@ router.patch("/project/update/:id", isloggedIn, async (req, res) => {
 
 /* View all Projects */
 
-router.get("/projects", isloggedIn, async (req, res) => {
+router.get("/project", isloggedIn, async (req, res) => {
   try {
     const page = Math.max(1, Number(req.query.page) || 1);
     const limit = Math.min(50, Number(req.query.limit) || 10);
@@ -109,7 +109,7 @@ router.get("/projects", isloggedIn, async (req, res) => {
 
 /* Get single project details */
 
-router.get("/projects/:id", isloggedIn, async (req, res) => {
+router.get("/project/:id", isloggedIn, async (req, res) => {
   try {
     if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
       return res.status(400).json({ error: "Invalid project ID" });
@@ -128,6 +128,102 @@ router.get("/projects/:id", isloggedIn, async (req, res) => {
     res.status(200).json({
       success: true,
       data: project,
+    });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+/* Get Total Sessions and Total Minutes */
+router.get("/project/totalSession", isloggedIn, async (req, res) => {
+  try {
+    const stats = await Project.aggregate([
+      {
+        $match: {
+          userId: req.user._id,
+          isActive: true,
+        },
+      },
+      {
+        $lookup: {
+          from: "sessions",
+          let: { projectId: "$_id" },
+          pipeline: [
+            {
+              $match: {
+                $expr: {
+                  $and: [
+                    { $eq: ["$projectId", "$$projectId"] },
+                    { $eq: ["$status", "completed"] },
+                  ],
+                },
+              },
+            },
+            {
+              $group: {
+                _id: null,
+                totalSessions: { $sum: 1 },
+                totalMinutes: { $sum: "$duration" },
+              },
+            },
+          ],
+          as: "stats",
+        },
+      },
+      {
+        $project: {
+          name: 1,
+          totalSessions: {
+            $ifNull: [{ $arrayElemAt: ["$stats.totalSessions", 0] }, 0],
+          },
+          totalMinutes: {
+            $ifNull: [{ $arrayElemAt: ["$stats.totalMinutes", 0] }, 0],
+          },
+        },
+      },
+    ]);
+
+    res.status(200).json({
+      success: true,
+      data: stats,
+    });
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+/* Delete Project */
+router.delete("/project/:id/delete", isloggedIn, async (req, res) => {
+  try {
+    if (!mongoose.Types.ObjectId.isValid(req.params.id)) {
+      return res.status(400).json({ error: "Invalid project ID" });
+    }
+
+    const session = Session.findOne({
+      projectId: req.params.id,
+      status: "running",
+    });
+
+    if (session) {
+      res
+        .status(400)
+        .json({ error: "Cannot delete a project having an active session" });
+    }
+
+    const project = await Project.findOneAndUpdate({
+      userId: req.user._id,
+      _id: req.params.id,
+    });
+
+    if (!project) {
+      return res.status(404).json({ error: "Project not found" });
+    }
+
+    project.isActive = false;
+
+    res.status(200).json({
+      success: true,
+      message: "Project deleted successfully",
     });
   } catch (e) {
     res.status(500).json({ error: e.message });
