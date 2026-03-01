@@ -14,7 +14,7 @@ const isloggedIn = (req, res, next) => {
   });
 };
 
-/* Creat Project */
+/* Create Project */
 
 router.post("/project/create", isloggedIn, async (req, res) => {
   try {
@@ -49,7 +49,7 @@ router.post("/project/create", isloggedIn, async (req, res) => {
 
 /* Complete a Project */
 
-router.patch("/project/update/:id", isloggedIn, async (req, res) => {
+router.patch("/project/complete/:id", isloggedIn, async (req, res) => {
   try {
     const updateProject = await Project.findOne({
       userId: req.user._id,
@@ -65,6 +65,39 @@ router.patch("/project/update/:id", isloggedIn, async (req, res) => {
     updateProject.isActive = false;
 
     await updateProject.save();
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
+
+
+/* Update Project Details */
+
+router.patch("/project/update/:id", isloggedIn, async (req, res) => {
+  try {
+    const { name, description, color } = req.body; // Get fields to update
+
+    const updateProject = await Project.findOne({
+      userId: req.user._id,
+      isActive: true,
+      _id: req.params.id,
+    });
+
+    if (!updateProject) {
+      return res.status(404).json({ error: "Project not found" });
+    }
+
+    // Update fields if provided
+    if (name) updateProject.name = name.trim().toLowerCase();
+    if (description !== undefined) updateProject.description = description;
+    if (color) updateProject.color = color;
+
+    await updateProject.save();
+
+    res.status(200).json({ 
+      success: true, 
+      data: updateProject 
+    });
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
@@ -199,7 +232,7 @@ router.delete("/project/:id/delete", isloggedIn, async (req, res) => {
       return res.status(400).json({ error: "Invalid project ID" });
     }
 
-    const session = Session.findOne({
+    const session = await Session.findOne({
       projectId: req.params.id,
       status: "running",
     });
