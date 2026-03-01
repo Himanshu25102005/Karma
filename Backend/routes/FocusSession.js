@@ -13,6 +13,7 @@ const isloggedIn = (req, res, next) => {
 };
 
 /* start session API */
+
 router.post("/session/start", isloggedIn, async (req, res) => {
   try {
     const { projectName, tag } = req.body;
@@ -74,6 +75,7 @@ router.patch("/session/stop/:id", isloggedIn, async (req, res) => {
 });
 
 /* Get info about user's current active session */
+
 router.get("/session/active", isloggedIn, async (req, res) => {
   try {
     const currSesh = await Session.findOne({
@@ -91,6 +93,7 @@ router.get("/session/active", isloggedIn, async (req, res) => {
 });
 
 /* Delete a session */
+
 router.delete("/session/delete/:id", isloggedIn, async (req, res) => {
   try {
     const delSession = await Session.findOneAndDelete({
@@ -115,7 +118,7 @@ router.get("/session/history", isloggedIn, async (req, res) => {
     const page = Math.max(1, Number(req.query.page) || 1);
     const limit = Math.min(50, Number(req.query.limit) || 10);
     const skip = (page - 1) * limit;
-
+    
     const filter = {
       userId: req.user._id,
       status: "completed",

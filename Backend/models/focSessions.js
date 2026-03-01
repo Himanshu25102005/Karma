@@ -7,10 +7,10 @@ const focSessionSchema = mongoose.Schema({
   },
   endTime: Date,
   duration: Number,
-  projectName: {
-    type: String,
+  projectId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "project",
     required: true,
-    trim: true,
   },
   status: {
     type: String,
