@@ -6,6 +6,13 @@ const projectSchema = mongoose.Schema({
     required: true,
     trim: true
   },
+  createdAt:{
+    type: Date,
+    default: Date.now
+  },
+  updatedAt:{
+    type: Date
+  },
   description: String,
   userId: {
     type: mongoose.Schema.Types.ObjectId,
