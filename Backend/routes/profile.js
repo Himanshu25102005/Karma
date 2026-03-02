@@ -36,7 +36,14 @@ router.get("/profile/me", isloggedIn, async (req, res) => {
 
 router.patch("/profile/me/update", isloggedIn, async (req, res) => {
   try {
-    const allowedFields = ["username", "email", "github", "bio", "website", "isPublic"];
+    const allowedFields = [
+      "username",
+      "email",
+      "github",
+      "bio",
+      "website",
+      "isPublic",
+    ];
     const updates = {};
 
     for (let key of allowedFields) {
@@ -45,7 +52,7 @@ router.patch("/profile/me/update", isloggedIn, async (req, res) => {
       }
     }
 
-    if(isPublic==true || isPublic==false) profile.isPublic = isPublic;
+    if (isPublic == true || isPublic == false) profile.isPublic = isPublic;
 
     if (updates.username) {
       updates.username = updates.username.toLowerCase();
@@ -56,7 +63,7 @@ router.patch("/profile/me/update", isloggedIn, async (req, res) => {
 
       const existingEmail = await User.findOne({
         email: updates.email,
-        _id: { $ne: req.user._id }
+        _id: { $ne: req.user._id },
       });
 
       if (existingEmail) {
@@ -67,7 +74,7 @@ router.patch("/profile/me/update", isloggedIn, async (req, res) => {
     if (updates.username) {
       const existingUsername = await User.findOne({
         username: updates.username,
-        _id: { $ne: req.user._id }
+        _id: { $ne: req.user._id },
       });
 
       if (existingUsername) {
@@ -75,18 +82,16 @@ router.patch("/profile/me/update", isloggedIn, async (req, res) => {
       }
     }
 
-    const updatedUser = await User.findByIdAndUpdate(
-      req.user._id,
-      updates,
-      { new: true, runValidators: true }
-    ).select("username email github bio website createdAt");
+    const updatedUser = await User.findByIdAndUpdate(req.user._id, updates, {
+      new: true,
+      runValidators: true,
+    }).select("username email github bio website createdAt");
 
     res.status(200).json({
       success: true,
       profile: updatedUser,
-      message: "Profile updated successfully"
+      message: "Profile updated successfully",
     });
-
   } catch (e) {
     res.status(500).json({ error: e.message });
   }
@@ -94,28 +99,59 @@ router.patch("/profile/me/update", isloggedIn, async (req, res) => {
 
 /* View Public Profile */
 
-router.get('/profile/:username', isloggedIn, async (req, res)=>{
-    try{
-        
-        const profile = await userSchema.aggregate([
-            {
-                $match:
-                {
-                    userId: req.user._id,
-                    isPublic: true,
-                }
-            },
-            {
-                $lookup:
-                {
-                    from: "Session"
-                }
-            }
-        ])
+router.get("/profile/:username", isloggedIn, async (req, res) => {
+  try {
+    // 1. Fetch the User first to get their ID and Profile details
+    const user = await userSchema.findOne({ 
+      username: req.params.username,
+      isPublic: true 
+    }).select("username bio github website");
 
-
-
-    }catch(e){
-        res.status(500).json({error: e.message});
+    if (!user) {
+      return res.status(404).json({ error: "Profile not found or is private" });
     }
-})
+
+    // 2. Setup Pagination
+    const page = Math.max(1, Number(req.query.page) || 1);
+    const limit = Math.min(50, Number(req.query.limit) || 10);
+    const skip = (page - 1) * limit;
+
+    // 3. Use Promise.all to fetch Session History and Total Count simultaneously
+    const [sessions, totalSessionsCount] = await Promise.all([
+      Session.find({ userId: user._id })
+        .sort({ startTime: -1 })
+        .skip(skip)
+        .limit(limit)
+        .populate("projectId", "name description")
+        .select("duration startTime endTime tag"),
+
+      Session.countDocuments({ userId: user._id, status: "completed" }),
+    ]);
+
+    const totalPages = Math.ceil(totalSessionsCount / limit);
+
+    // 4. Return everything in one response
+    res.status(200).json({
+      success: true,
+      data: {
+        // User Profile Info
+        username: user.username,
+        bio: user.bio,
+        github: user.github,
+        website: user.website,
+        // Stats
+        totalSessions: totalSessionsCount, 
+        // Pagination & History
+        pagination: {
+          currentPage: page,
+          totalPages,
+          limit
+        },
+        history: sessions
+      }
+    });
+
+  } catch (e) {
+    res.status(500).json({ error: e.message });
+  }
+});
