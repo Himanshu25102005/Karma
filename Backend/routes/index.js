@@ -11,6 +11,28 @@ const isloggedIn = (req, res, next) => {
   else res.redirect("/login");
 };
 
+/* Funtion to check username is already in use or not */
+const checkUser = async (user) => {
+
+  const baseSlug = user.username.replace(/\s+/g, '_').toLowerCase();
+
+  let slug = baseSlug;
+
+  const existingUser = await User.findOne({ username: slug });
+
+  if (existingUser) {
+    const randomNumber = Math.floor(100 + Math.random() * 900);
+    slug = `${baseSlug}${randomNumber}`;
+  }
+
+  user.username = slug;
+
+  await user.save();
+
+  return slug;
+};
+
+
 /* GET home page. */
 router.get("/", function (req, res, next) {
   res.render("index", { title: "Express" });
@@ -51,11 +73,12 @@ router.get(
 router.get(
   "/auth/google/callback",
   passport.authenticate("google", { failureRedirect: "/login" }),
-  (req, res) => {
+  async (req, res) => {
+    await checkUser(req.user);
+    console.log(req.user);
     res.render("profile");
-  },
+  }
 );
-
 /* Log out route */
 
 router.get("/logout", (req, res, next) => {
