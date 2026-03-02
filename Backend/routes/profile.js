@@ -1,5 +1,6 @@
 const userSchema = require("../models/users");
 const Session = require("../models/focSessions");
+const Streak = require("../models/streak");
 var router = express.Router();
 const Project = require("../models/projects");
 const passport = require("passport");
@@ -129,6 +130,7 @@ router.get("/profile/:username", isloggedIn, async (req, res) => {
     ]);
 
     const totalPages = Math.ceil(totalSessionsCount / limit);
+    const currStreak = await Streak(req.user._id)
 
     // 4. Return everything in one response
     res.status(200).json({
@@ -147,6 +149,7 @@ router.get("/profile/:username", isloggedIn, async (req, res) => {
           totalPages,
           limit
         },
+        streak : currStreak,
         history: sessions
       }
     });
