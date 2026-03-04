@@ -1,6 +1,7 @@
 const userSchema = require("../models/users");
 const Session = require("../models/focSessions");
 var router = express.Router();
+const Project = require("../models/projects");
 const passport = require("passport");
 
 /* Middleware to check if the user is logged in  */
@@ -66,6 +67,11 @@ router.patch("/session/stop/:id", isloggedIn, async (req, res) => {
       (updateSesh.endTime - updateSesh.startTime) / (1000 * 60),
     );
 
+    await userSchema.findByIdAndUpdate(userId,  {
+      $inc: {
+        totalSessions: 1,
+      },
+    });
     await updateSesh.save();
 
     res.status(200).json(updateSesh);

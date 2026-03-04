@@ -12,6 +12,7 @@ const focSessionSchema = mongoose.Schema({
     ref: "project",
     required: true,
   },
+  
   status: {
     type: String,
     enum: ["running", "completed", "paused", "cancelled"],

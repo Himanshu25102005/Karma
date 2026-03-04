@@ -19,8 +19,8 @@ const userSchema = mongoose.Schema({
   createdAt: { type: Date, default: Date.now },
   totalFocusTime: Number,
   profilePicture: String,
-  badges: [],
   github: String,
+  totalSessions: Number,
   bio: String,
   website: {
     type: String,
