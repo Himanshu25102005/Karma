@@ -1,90 +1,92 @@
 const mongoose = require('mongoose');
-const Badge = require('../models/badge');
+const Badge = require('../models/badges');
 
-// Your database connection string
+const MONGO_URI = process.env.MONGO_URI || 'mongodb://localhost:27017/StravaDB';
 
 const badges = [
   {
     name: "First Step",
     description: "Complete your first focus session",
     icon: "🎯",
-    category: "sessions",
-    criteria: { type: "sessions", count: 1 },
+    criteria: { criteriaType: "sessions", count: 1 },
     rarity: "common"
   },
   {
     name: "Week Warrior",
     description: "Maintain a 7-day coding streak",
     icon: "🔥",
-    category: "streak",
-    criteria: { type: "streak", count: 7 },
+    criteria: { criteriaType: "streak", count: 7 },
     rarity: "rare"
   },
   {
     name: "Century Club",
     description: "Complete 100 focus sessions",
     icon: "💯",
-    category: "sessions",
-    criteria: { type: "sessions", count: 100 },
+    criteria: { criteriaType: "sessions", count: 100 },
     rarity: "epic"
   },
   {
     name: "Marathon Runner",
-    description: "Complete a 5-hour focus session",
+    description: "Complete 300 total minutes of focus time",
     icon: "🏃",
-    category: "time",
-    criteria: { type: "sessionDuration", minutes: 300 },
+    criteria: { criteriaType: "minutes", count: 300 },
     rarity: "rare"
-  },
-  {
-    name: "Night Owl",
-    description: "Complete a session after midnight",
-    icon: "🦉",
-    category: "time",
-    criteria: { type: "timeOfDay", after: "00:00", before: "05:00" },
-    rarity: "common"
-  },
-  {
-    name: "Early Bird",
-    description: "Complete a session before 6 AM",
-    icon: "🌅",
-    category: "time",
-    criteria: { type: "timeOfDay", after: "05:00", before: "06:00" },
-    rarity: "common"
   },
   {
     name: "Polyglot",
     description: "Work on 5 different projects",
     icon: "🌐",
-    category: "projects",
-    criteria: { type: "projects", count: 5 },
+    criteria: { criteriaType: "projects", count: 5 },
     rarity: "rare"
   },
   {
-    name: "Speed Demon",
-    description: "Complete 10 sessions in one day",
-    icon: "⚡",
-    category: "sessions",
-    criteria: { type: "sessionsPerDay", count: 10 },
+    name: "Dedication",
+    description: "Achieve a 30-day coding streak",
+    icon: "🔥",
+    criteria: { criteriaType: "streak", count: 30 },
     rarity: "epic"
+  },
+  {
+    name: "Hustler",
+    description: "Complete 50 focus sessions",
+    icon: "💪",
+    criteria: { criteriaType: "sessions", count: 50 },
+    rarity: "rare"
+  },
+  {
+    name: "Time Master",
+    description: "Accumulate 1000 minutes of focus time",
+    icon: "⏰",
+    criteria: { criteriaType: "minutes", count: 1000 },
+    rarity: "epic"
+  },
+  {
+    name: "Project Juggler",
+    description: "Work on 10 different projects",
+    icon: "🎪",
+    criteria: { criteriaType: "projects", count: 10 },
+    rarity: "epic"
+  },
+  {
+    name: "Legendary Focus",
+    description: "Complete 500 focus sessions",
+    icon: "👑",
+    criteria: { criteriaType: "sessions", count: 500 },
+    rarity: "legendary"
   }
 ];
 
 async function seedBadges() {
   try {
-   /*  // Connect to database
     await mongoose.connect(MONGO_URI);
-    console.log('Connected to database'); */
+    console.log('Connected to database');
 
-    /* // Clear existing badges (optional - remove if you want to keep existing)
     await Badge.deleteMany({});
-    console.log('Cleared existing badges'); */
+    console.log('Cleared existing badges');
 
-    // Insert all badges
     const createdBadges = await Badge.insertMany(badges);
     console.log(`✅ Successfully seeded ${createdBadges.length} badges`);
 
-    // Close connection
     await mongoose.connection.close();
     console.log('Database connection closed');
     
@@ -95,5 +97,4 @@ async function seedBadges() {
   }
 }
 
-// Run the seed function
 seedBadges();
