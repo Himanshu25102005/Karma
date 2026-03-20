@@ -1,7 +1,10 @@
 const userSchema = require("../models/users");
 const Session = require("../models/focSessions");
 var router = express.Router();
+const UserBadge = require("../models/userbadge");
+const Badge = require("../models/Badge");
 const passport = require("passport");
+const checkAndAwardBadges = ("../utils/checkAndAwardBadges");
 
 /* Middleware to check if the user is logged in  */
 const isloggedIn = (req, res, next) => {
@@ -202,10 +205,13 @@ router.get("/stats/streak", isloggedIn, async (req, res) => {
       }
     }
 
+    const newAwards = checkAndAwardBadges(req.user._id, currentStreak);
+
     res.status(200).json({
       currentStreak,
       longestStreak,
       lastActiveDate: dates[0],
+      newAwards: newAwards
     });
   } catch (e) {
     res.status(500).json({ error: e.message });

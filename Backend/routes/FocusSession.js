@@ -3,6 +3,9 @@ const Session = require("../models/focSessions");
 var router = express.Router();
 const Project = require("../models/projects");
 const passport = require("passport");
+const UserBadge = require("../models/userbadge");
+const Badge = require("../models/Badge");
+const checkAndAwardBadges = ("../utils/checkAndAwardBadges");
 
 /* Middleware to check if the user is logged in  */
 const isloggedIn = (req, res, next) => {
@@ -67,14 +70,21 @@ router.patch("/session/stop/:id", isloggedIn, async (req, res) => {
       (updateSesh.endTime - updateSesh.startTime) / (1000 * 60),
     );
 
-    await userSchema.findByIdAndUpdate(userId,  {
+    await userSchema.findByIdAndUpdate(userId, {
       $inc: {
         totalSessions: 1,
       },
     });
     await updateSesh.save();
 
-    res.status(200).json(updateSesh);
+    const newAwards = checkAndAwardBadges(req.user._id, totalSessions);
+    res.status(200).json({
+      success: true,
+      data: {
+        updatedSession: updateSesh,
+        newRewards: newAwards,
+      },
+    });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
