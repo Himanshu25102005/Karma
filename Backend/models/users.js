@@ -9,11 +9,20 @@ const userSchema = mongoose.Schema({
     trim: true,
     unique: true
   },
+  avatar: String, 
   isPublic:{
     type: Boolean,
     default: true,
   },
   googleId: String,
+  followerCount: {
+    type: Number, 
+    default: 0
+  },
+  followingCount: {
+    type: Number,
+    default: 0
+  },
   password: String,
   email: String,
   createdAt: { type: Date, default: Date.now },
