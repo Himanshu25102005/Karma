@@ -9,7 +9,7 @@ const userBadgeSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId, 
     ref: 'Badge', 
     required: true 
-  },
+  }, 
   earnedAt: { 
     type: Date, 
     default: Date.now 

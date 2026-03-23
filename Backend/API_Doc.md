@@ -1,174 +1,362 @@
-# Backend API and Architecture Documentation
+# Strava Clone Backend API & Architecture Documentation
 
-This documentation provides a comprehensive overview of the Strava Clone Backend, including APIs, Routes, Database Models, Utility functions, and their interconnected relationships.
+## 1. Overall System Overview
 
----
+The Strava Clone Backend is a robust REST API designed to support a productivity and focus-tracking application. It handles user authentication, session timing, project organization, social features (following), and a gamified badge system. 
 
-## 1. API Endpoints
+### Main Modules:
+* **Auth**: Handles user registration, local login, and Google OAuth via Passport.js, managing sessions using cookies.
+* **Profile**: Allows users to manage their personal information and view public profiles of other users, including their focus history.
+* **Projects**: Enables categorization of focus sessions. Users can create, update, fetch, and soft-delete projects.
+* **Sessions**: The core tracking engine. Users can start, stop, and review focus sessions linked to specific projects.
+* **Stats**: An aggregation layer that runs complex MongoDB pipelines to summarize focus time, daily trends, project-wise stats, and streaks.
+* **Social**: A follow system that allows users to follow each other and view a list of followers/following.
+* **Badges**: A gamification engine that awards badges based on milestones (sessions count, total focus minutes, streaks).
 
-### Authentication & User (Index Routes)
-| Endpoint | Method | Description | Request Parameters | Expected Response | Related Route & Models |
-|----------|--------|-------------|--------------------|-------------------|------------------------|
-| `/signup` | POST | Register a new user with a local account. | **Body:** `username`, `email`, `profilePicture`, `password` | Success message / Error message | `routes/index.js` -> `User` model |
-| `/login` | POST | Log in a user locally. | **Body:** `username`, `password` | Redirects to `/` or `/login` | `routes/index.js` -> `User` model |
-| `/auth/google` | GET | Initiates Google OAuth Login. | None | Redirects to Google consent screen | `routes/index.js` -> `User` model |
-| `/auth/google/callback` | GET | Callback for Google OAuth. | None | Redirects to dashboard/profile or `/login` | `routes/index.js`, `routes/auth.js` -> `User` model |
-| `/logout` | GET | Logs out the currently authenticated user. | None | Redirects to `/` | `routes/index.js` -> None |
-| `/getInfo` | GET | Redirect to user dashboard with basic info. | None | Redirects to `/dashboard` | `routes/index.js` -> None |
-
-### User Profile (`routes/profile.js`)
-| Endpoint | Method | Description | Request Parameters | Expected Response | Related Route & Models |
-|----------|--------|-------------|--------------------|-------------------|------------------------|
-| `/profile/me` | GET | Get the logged-in user's profile. | None | JSON containing user profile data | `routes/profile.js` -> `User` model |
-| `/profile/me/update` | PATCH | Update the user's profile fields. | **Body:** `username`, `email`, `github`, `bio`, `website`, `isPublic` | JSON with updated profile & success status | `routes/profile.js` -> `User` model |
-| `/profile/:username` | GET | View a public user's profile along with their history and streak. | **Path:** `username`<br>**Query:** `page`, `limit` | JSON with public profile, total sessions, streak, and paginated history | `routes/profile.js` -> `User`, `Session`, `Streak` util |
-
-### Projects (`routes/projects.js`)
-| Endpoint | Method | Description | Request Parameters | Expected Response | Related Route & Models |
-|----------|--------|-------------|--------------------|-------------------|------------------------|
-| `/project/create` | POST | Create a new project. | **Body:** `name`, `description` | JSON of newly created project | `routes/projects.js` -> `Project`, `User` models |
-| `/project/complete/:id` | PATCH | Mark a specific project as complete. | **Path:** `id` | Success 200 (Empty) | `routes/projects.js` -> `Project` model |
-| `/project/update/:id` | PATCH | Update project name or description. | **Path:** `id`<br>**Body:** `name`, `description` | JSON of updated project | `routes/projects.js` -> `Project` model |
-| `/project` | GET | Retrieve a paginated list of the user's active projects. | **Query:** `page`, `limit` | JSON with pagination details and projects array | `routes/projects.js` -> `Project` model |
-| `/project/:id` | GET | Fetch details of a single active project. | **Path:** `id` | JSON of the project data | `routes/projects.js` -> `Project` model |
-| `/project/totalSession` | GET | Get aggregates of total sessions and minutes for all active projects. | None | JSON with aggregated stats array | `routes/projects.js` -> `Project`, `Session` models |
-| `/project/:id/delete` | DELETE | Soft delete a project (sets `isActive` to false). | **Path:** `id` | JSON success message | `routes/projects.js` -> `Project`, `Session` models |
-
-### Focus Sessions (`routes/FocusSession.js`)
-| Endpoint | Method | Description | Request Parameters | Expected Response | Related Route & Models |
-|----------|--------|-------------|--------------------|-------------------|------------------------|
-| `/session/start` | POST | Start a new focus session for a project. | **Body:** `projectId`, `tag` | JSON containing new session info | `routes/FocusSession.js` -> `Session`, `Project` models |
-| `/session/stop/:id` | PATCH | Stop an active focus session & calculate duration. | **Path:** `id` | JSON of completed session | `routes/FocusSession.js` -> `Session`, `User` models |
-| `/session/active` | GET | Fetch the user's current running session. | None | JSON of the active session | `routes/FocusSession.js` -> `Session` model |
-| `/session/delete/:id` | DELETE | Delete a specific focus session. | **Path:** `id` | 204 No Content | `routes/FocusSession.js` -> `Session` model |
-| `/session/history` | GET | Retrieve paginated history of completed sessions. | **Query:** `page`, `limit` | JSON with pagination and completed sessions array | `routes/FocusSession.js` -> `Session`, `Project` models |
-
-### Statistics (`routes/stats.js`)
-| Endpoint | Method | Description | Request Parameters | Expected Response | Related Route & Models |
-|----------|--------|-------------|--------------------|-------------------|------------------------|
-| `/stats/overview` | GET | Get overview of user's focus stats (total time, averages). | None | JSON with aggregated summary | `routes/stats.js` -> `Session` model |
-| `/stats/by-project` | GET | Get statistics grouped per project. | None | JSON array containing stats by project | `routes/stats.js` -> `Session` model |
-| `/stats/daily` | GET | Get a breakdown of total time and sessions by date. | None | JSON array grouping sessions by day | `routes/stats.js` -> `Session` model |
-| `/stats/streak` | GET | Get the user's current streak, longest streak, and last active date. | None | JSON of streaks and last date | `routes/stats.js` -> `Session`, `User` models |
+### Data Flow (Frontend → Backend → Database)
+1. **Frontend Request**: The React/Next.js client sends an HTTP REST request with JSON payloads (and session cookies).
+2. **Express & Middleware**: The Node.js/Express server receives the request. The `isLoggedIn` middleware checks the session cookie against Passport.js.
+3. **Route Controller**: Valid requests reach route controllers, which extract parameters and body data, enforcing edge-case validation.
+4. **Mongoose Models**: Controllers execute CRUD operations or Aggregation pipelines using Mongoose schemas.
+5. **Database**: MongoDB processes the queries and returns the results.
+6. **Response**: The backend formats the data and returns a standard JSON response to the client.
 
 ---
 
-## 2. Routes
+## 2. Architecture Diagram
 
-*   **`routes/index.js`**
-    *   **Path:** `/`, `/login`, `/signup`, `/logout`, `/auth/google...`, `getInfo`
-    *   **Handler:** Inline Express Route Handlers & Passport Callbacks.
-    *   **API Exposed:** Core Registration and Authentication flow. Uses Google Strategy configuration from `auth.js`.
-    *   **Related Models:** `User`
+### System Architecture Breakdown
 
-*   **`routes/profile.js`**
-    *   **Path:** `/profile/*`
-    *   **Handler:** Inline Express Handlers acting as Controllers.
-    *   **API Exposed:** User profile updating and viewing details of public profiles.
-    *   **Related Models:** `User`, `Session`
-
-*   **`routes/projects.js`**
-    *   **Path:** `/project/*`
-    *   **Handler:** Inline Express Handlers / Controllers.
-    *   **API Exposed:** CRUD operations on Projects.
-    *   **Related Models:** `Project`, `Session`
-
-*   **`routes/FocusSession.js`**
-    *   **Path:** `/session/*`
-    *   **Handler:** Inline Express Handlers / Controllers.
-    *   **API Exposed:** Managing Focus Sessions (Start, Stop, History).
-    *   **Related Models:** `Session`, `User`
-
-*   **`routes/stats.js`**
-    *   **Path:** `/stats/*`
-    *   **Handler:** Inline Aggregation Route Handlers.
-    *   **API Exposed:** Generates aggregated session statistics and streak data.
-    *   **Related Models:** `Session`
-
----
-
-## 3. Database Models
-
-### Model: `User` (`models/users.js`)
-*   **Fields & Data Types:** `name` (String), `username` (String, unique), `isPublic` (Boolean), `googleId` (String), `password` (String), `email` (String), `createdAt` (Date), `totalFocusTime` (Number), `profilePicture` (String), `github` (String), `totalSessions` (Number), `bio` (String), `website` (String).
-*   **Relationships:** Core entity. Has many Projects, Sessions, and UserBadges.
-*   **Routes Interacting:** Index (Auth), Profile, FocusSession (when updating totals).
-
-### Model: `Project` (`models/projects.js`)
-*   **Fields & Data Types:** `name` (String), `createdAt` (Date), `updatedAt` (Date), `description` (String), `isActive` (Boolean), `totalSessions` (Number), `totalMinutes` (Number).
-*   **Relationships:**
-    *   `userId`: `ObjectId` referencing the `User` model.
-    *   One project has many `Sessions`.
-*   **Routes Interacting:** Projects, FocusSession.
-
-### Model: `Session` (`models/focSessions.js`)
-*   **Fields & Data Types:** `startTime` (Date), `endTime` (Date), `duration` (Number), `status` (String: running, completed, paused), `tag` (Array of Strings).
-*   **Relationships:**
-    *   `projectId`: `ObjectId` referencing the `Project` model.
-    *   `userId`: `ObjectId` referencing the `User` model.
-*   **Routes Interacting:** FocusSession, Projects (Aggregation), Stats, Profile.
-
-### Model: `Badge` (`models/badges.js`)
-*   **Fields & Data Types:** `name` (String), `icon` (String), `description` (String), `criteria` (Object: {`criteriaType`: String, `count`: Number}), `rarity` (String).
-*   **Relationships:** Shared globally across the app. Associated with users via the `UserBadge` model.
-*   **Routes Interacting:** None directly via routes, modified securely backend-side or via utilities.
-
-### Model: `UserBadge` (`models/userbadge.js`)
-*   **Fields & Data Types:** `earnedAt` (Date).
-*   **Relationships:**
-    *   `userId`: `ObjectId` referencing the `User` model.
-    *   `badgeId`: `ObjectId` referencing the `Badge` model.
-*   **Routes Interacting:** Evaluated & used in Utility checks.
-
----
-
-## 4. Utilities
-
-### Utilities Overview
-
-*   **Utility Name:** `calculateStreak` (`utils/streak.js`)
-    *   **Purpose:** Takes a `userId` and calculates the user's current login/focus streak, their longest streak, and last active date by scanning all past completed sessions.
-    *   **Where it is used:** Imported and used primarily inside `routes/profile.js` to compute a user's streak when viewing public profiles.
-
-*   **Utility Name:** `checkAndAwardBadges` (`utils/checkAndAwardBadges.js`)
-    *   **Purpose:** Checks a user's progress (e.g., total sessions, total minutes, streak) against the Badge requirements and automatically awards new/eligible Badges to the `UserBadge` model.
-    *   **Where it is used:** Meant to be triggered independently whenever user statistics change (e.g., post session stopping). *Note: Currently acts as an available modular service, but requires explicit hooks in the FocusSession stops.*
-
----
-
-## 5. Relationships and Flow
-
-### Flow Between Components
-The backend follows a standard Express pattern where defining routes also serves effectively as writing controllers (inline functional handling).
-
-#### Routes → Controllers → Models
-```mermaid
-graph LR
-    A[Express Routes] --> B[Inline Controllers in routes/]
-    B --> C[Mongoose DB Models]
-    C --> D[(MongoDB Data)]
-```
-*   **Implementation Example:** The `/project/create` route handles the incoming Request, maps the validation and logic (the inherent Controller role), and directly queries the `Project` Model to save the row to the database.
-
-#### APIs → Routes → Models
-```mermaid
-graph LR
-    A[Client API Calls] --> B(Express App 'app.use')
-    B --> C(Specific Route Router)
-    C --> D(Model Operations)
-```
-*   **Implementation Example:**
-    1. A frontend makes a `GET` call to `/stats/overview`.
-    2. The root `app.js` delegates the request to the `routes/stats.js` modular router.
-    3. The `stats.js` router invokes the inline controller function.
-    4. The controller runs complex aggregation queries (`$group`, `$match`) on the `Session` DB Model.
-    5. Formatted JSON is returned down the chain to the client.
-
-#### Utilities → Routes/Services
 ```mermaid
 graph TD
-    A[Route Handlers] --> B[Modular Utilities]
-    B --> C[Aggregations & Calculations]
-    C --> A
+    Client[Frontend Client / Web App]
+    Express[Backend: Node.js + Express Server]
+    DB[(MongoDB Database)]
+    Passport[Passport.js Auth Strategy]
+    Google[Google OAuth Provider]
+    
+    Client -- "REST API (JSON over HTTP/HTTPS)" --> Express
+    Express -- "Credentials & Cookies" --> Passport
+    Passport -- "OAuth Flow" --> Google
+    Passport -- "Session Serialization" --> Express
+    Express -- "Mongoose Operations (CRUD/Aggregate)" --> DB
 ```
-*   **Implementation Example:** When the `routes/profile.js` is fetching a public user's feed, it calls the exported `calculateStreak` function from `utils/streak.js`. The utility performs the isolated heavy computation interacting directly with the `Session` Model, avoiding code bloat in the route, and passing the structured result back down to the caller sequence. 
+
+### Request/Response Data Flow
+
+```mermaid
+sequenceDiagram
+    participant Frontend
+    participant ExpressRoutes as Express Route / Middleware
+    participant Controller as Business Logic
+    participant DB as MongoDB
+
+    Frontend->>ExpressRoutes: HTTP Request (e.g., POST /session/start)
+    ExpressRoutes->>ExpressRoutes: check isLoggedIn (Session Validation)
+    ExpressRoutes->>Controller: Route to Handler 
+    Controller->>DB: Query/Mutation via Mongoose
+    DB-->>Controller: Return Data / Confirm Write
+    Controller-->>Frontend: Success Response (JSON, HTTP 20* Status)
+```
+
+---
+
+## 3. Database Schema Documentation
+
+### ER Diagram
+
+```mermaid
+erDiagram
+    USER ||--o{ PROJECT : "creates"
+    USER ||--o{ SESSION : "logs"
+    PROJECT ||--o{ SESSION : "contains"
+    USER ||--o{ FOLLOW : "follows (followerId)"
+    USER ||--o{ FOLLOW : "is followed by (followingId)"
+    USER ||--o{ USERBADGE : "earns"
+    BADGE ||--o{ USERBADGE : "is awarded to"
+```
+
+### Models Detailed
+
+#### 1. User (`user`)
+* **Fields:**
+  * `name` (String): Display name.
+  * `username` (String, Required, Unique, Trimmed): User identifier.
+  * `email` (String): Email address.
+  * `password` (String): Hashed password (managed by passport-local-mongoose).
+  * `avatar` / `profilePicture` (String): Image URL.
+  * `isPublic` (Boolean, Default: `true`): Visibility status.
+  * `googleId` (String): OAuth reference.
+  * `followerCount`, `followingCount` (Number, Default: `0`): Denormalized counters.
+  * `totalFocusTime`, `totalSessions` (Number): Denormalized stats for fast access.
+  * `bio`, `github` (String): Social links.
+  * `website` (String): Validated URL format.
+  * `createdAt` (Date, Default: `Date.now`).
+* **Relationships:** Core entity. Has many Projects, Sessions, Follows, UserBadges.
+
+#### 2. Project (`project`)
+* **Fields:**
+  * `name` (String, Required): Project name.
+  * `description` (String): Notes.
+  * `userId` (ObjectId, Ref: `user`, Required, Indexed): Owner of the project.
+  * `isActive` (Boolean, Default: `true`): For soft-deletes.
+  * `totalSessions`, `totalMinutes` (Number, Default: `0`): Aggregated metrics.
+  * `createdAt`, `updatedAt` (Date).
+* **Relationships:** Belongs to 1 User; Has many Sessions.
+
+#### 3. Session (`session`)
+* **Fields:**
+  * `startTime` (Date, Default: `Date.now`).
+  * `endTime` (Date).
+  * `duration` (Number): Recorded duration in minutes.
+  * `projectId` (ObjectId, Ref: `project`, Required): Tagged project.
+  * `userId` (ObjectId, Ref: `user`, Required, Indexed): Session owner.
+  * `status` (String, Enum: `running|completed|paused|cancelled`, Default: `running`).
+  * `tag` (Array of Strings, Default: `[]`).
+* **Relationships:** Connects User and Project.
+
+#### 4. Follow (`follow`)
+* **Fields:**
+  * `followerId` (ObjectId, Ref: `user`).
+  * `followingId` (ObjectId, Ref: `user`).
+* **Indexes:** Compound unique index on `{ followerId: 1, followingId: 1 }`.
+* **Relationships:** Many-to-Many join table for Users.
+
+#### 5. Badge (`Badge`)
+* **Fields:**
+  * `name` (String, Required).
+  * `icon`, `description` (String).
+  * `criteria` (Object, Required): Contains `criteriaType` (Enum: `sessions|minutes|projects|streak`) and `count` (Number).
+  * `rarity` (String, Enum: `common|rare|epic|legendary`, Default: `common`).
+
+#### 6. UserBadge (`UserBadge`)
+* **Fields:**
+  * `userId` (ObjectId, Ref: `user`, Required, Indexed).
+  * `badgeId` (ObjectId, Ref: `Badge`, Required).
+  * `earnedAt` (Date, Default: `Date.now`).
+
+---
+
+## 4. API Endpoints
+
+### 🔐 Auth Module 
+
+#### `POST /signup`
+* **Purpose**: Register a new local user.
+* **Auth Required**: No
+* **Params / Body**: `{ username, email, password, profilePicture }`
+* **Side Effects**: Creates new `User` document. Note: Mongoose-local-passport automatically handles hashing.
+* **Response `200`**: "User registered successfully!"
+
+#### `POST /login`
+* **Purpose**: Local authentication.
+* **Auth Required**: No
+* **Params / Body**: `{ username, password }`
+* **Response `302/Redirect`**: Redirects to `/` on success, `/login` on failure.
+
+#### `GET /auth/google` & `/auth/google/callback`
+* **Purpose**: Triggers Google OAuth authentication.
+* **Response `302/Redirect`**: Modifies session cookie and serializes new user. Redirects to `/profile` on success.
+
+#### `GET /logout`
+* **Purpose**: Clears Passport session cookie and logs out.
+
+### 👤 Profile Module
+
+#### `GET /profile/me`
+* **Purpose**: Get current user data.
+* **Auth Required**: Yes (`isLoggedIn` Middleware)
+* **Response `200`**:
+  ```json
+  {
+    "success": true,
+    "data": { "_id": "...", "username": "...", "email": "..." }
+  }
+  ```
+
+#### `PATCH /profile/me/update`
+* **Purpose**: Update user settings.
+* **Auth Required**: Yes
+* **Body**: `username`, `email`, `github`, `bio`, `website`, `isPublic` (all body fields optional).
+* **Validations**: Checks if `email` or `username` is already taken by another user.
+* **DB Operations**: Validates and uses `findByIdAndUpdate` on the `User` document.
+* **Response `200`**: `{ "success": true, "profile": { ... }, "message": "Profile updated successfully" }`
+
+#### `GET /profile/:username`
+* **Purpose**: View public profiles. Includes historical sessions (paginated) and dynamic streak logic.
+* **Auth Required**: Yes
+* **Path Params**: `:username`
+* **Query Params**: `?page=1&limit=10`
+* **Response `200`**:
+  ```json
+  {
+    "success": true,
+    "data": {
+      "username": "...", "bio": "...",
+      "totalSessions": 45,
+      "pagination": { "currentPage": 1, "totalPages": 5, "limit": 10 },
+      "streak": { "currentStreak": 2, "longestStreak": 5, "lastActiveDate": "2024-03-23" },
+      "history": [ { "duration": 45, "projectId": { "name": "Work" }, "tag": [] } ]
+    }
+  }
+  ```
+
+### 📁 Projects Module
+
+#### `POST /project/create`
+* **Purpose**: Initialize a project.
+* **Auth Required**: Yes
+* **Body**: `{ "name": "Study", "description": "CS prep" }`
+* **Edge Cases**: Prevents duplicate names (checks existing exact name for the same user).
+* **Response `201`**: `{ "newProject": { "_id": "...", "name": "study", "isActive": true } }`
+
+#### `GET /project`
+* **Purpose**: Fetch user's active projects (paginated).
+* **Auth Required**: Yes
+* **Query Params**: `?page=1&limit=10`
+* **Response `200`**:
+  ```json
+  {
+    "success": true, "currentPage": 1, "totalPages": 2, "totalProjects": 12,
+    "projects": [ { "name": "study", "description": "...", "totalSessions": 5, "totalMinutes": 300 } ]
+  }
+  ```
+
+#### `GET /project/totalSession`
+* **Purpose**: Aggregate overall counts of all active projects + their total completed sessions and summed duration.
+* **Auth Required**: Yes
+* **DB Operations**: Uses Mongoose Pipeline `$lookup` on `sessions` checking `status == "completed"`.
+
+#### `DELETE /project/:id/delete`
+* **Purpose**: Soft delete a project.
+* **Auth Required**: Yes
+* **Validator**: Rejects if any session currently running under the project.
+* **Side Effects**: Sets `isActive: false` on project.
+* **Response `200`**: `{ "success": true, "message": "Project deleted successfully" }`
+
+### ⏱ Sessions Module
+
+#### `POST /session/start`
+* **Purpose**: Begin a focus timer session.
+* **Auth Required**: Yes
+* **Body**: `{ "projectId": "...", "tag": ["Focus"] }`
+* **Edge Cases**: Fails `400` if the user already has a session with `status: "running"`.
+* **Response `201`**: `{ "_id": "...", "status": "running", "projectId": "..." }`
+
+#### `PATCH /session/stop/:id`
+* **Purpose**: End timer. Calculates absolute duration efficiently.
+* **Auth Required**: Yes
+* **Side Effects**: 
+  1. Sets `endTime` and exact `duration`.
+  2. Updates `status="completed"`.
+  3. Increments `totalSessions` count on the User profile globally.
+  4. Triggers `checkAndAwardBadges()` utility comparing new baseline over session constraints.
+* **Response `200`**:
+  ```json
+  {
+    "success": true,
+    "data": {
+      "updatedSession": { "duration": 25, "status": "completed" },
+      "newRewards": ["Early Bird Focus"]
+    }
+  }
+  ```
+
+#### `GET /session/active`
+* **Purpose**: Retrieves the currently active user session instance, if present.
+
+#### `GET /session/history`
+* **Purpose**: Lists all `completed` focus sessions.
+* **Query Params**: `?page=1&limit=10`
+
+### 📊 Stats Module
+
+#### `GET /stats/overview`
+* **Purpose**: Absolute statistical totals (Time, counts, max/min session lengths).
+* **DB Operations**: Uses the `$group` aggregation pipeline across the user's completed sessions array.
+
+#### `GET /stats/by-project`
+* **Purpose**: Distribution graph endpoint. Time spent grouped implicitly by `projectName`.
+
+#### `GET /stats/daily`
+* **Purpose**: Time series trend map grouped uniformly by ISO date format using `$dateToString: "%Y-%m-%d"`. 
+
+#### `GET /stats/streak`
+* **Purpose**: Calculates consecutive days active across all history safely.
+* **Side Effects**: Hooks passively into `checkAndAwardBadges(user, streak)`.
+* **Response `200`**: 
+  ```json
+  { "currentStreak": 3, "longestStreak": 10, "lastActiveDate": "2024-03-24", "newAwards": [] }
+  ```
+
+### 🤝 Social Module
+
+#### `POST /social/follow/:userId`
+* **Purpose**: Follow a target user based on ObjectId.
+* **Edge Cases**: Prevents literal self-follow requests `400`. Verifies active following relation logic defensively to avoid duplicated edges.
+* **Side Effects**: `$inc` `followingCount` for current user. `$inc` `followerCount` for target user.
+
+#### `DELETE /social/unfollow/:userId`
+* **Purpose**: Removes following connection mappings securely and decrements denormalized user stat counts.
+
+#### `GET /social/followers/:userId`
+* **Purpose**: Lookup followers mapping to specific username with injected inner avatar & generic name populations.
+
+### 🏅 Badges Module
+
+#### `GET /badges`
+* **Purpose**: List global catalog specifications for all badges logic.
+
+#### `GET /badges/my`
+* **Purpose**: List owned badges by pulling `UserBadge` joins attached to active passport ID.
+
+---
+
+## 5. Module-wise Breakdown & Data Flow
+
+### 1. The Focus Run Lifecycle (Start → Stop → Game)
+* **Start:** Client calls `POST /session/start`. Backend ensures no active session bounds clash. Logs state `running`.
+* **Frontend Lifecycle:** Frontend timer acts purely cosmetic or functional-UI driven.
+* **Stop:** Client calls `PATCH /session/stop/:id`. 
+  * Backend calculates concrete time delta via `endTime - startTime`. Blocks manual payload spoofing cleanly.
+  * Adjusts state variable to `.status="completed"`.
+  * The stop function calls out sequentially to `checkAndAwardBadges()`. Assuming the user crosses milestone conditions randomly (i.e. first 100 sessions) the Badge objects get persisted mapped to UserBadge schemas.
+
+### 2. Social Counting Synchronization
+* Utilizing `followSchema`, MongoDB writes edges between accounts representing follower/following lines.
+* Querying millions of junctions isn't ideal. The Controller intercepts `follow` routes and concurrently executes Mongoose numeric increments `{$inc}`. Native User models retain real-time counts universally queried.
+
+### 3. Analytics Pipeline Logic
+* `routes/stats.js` behaves entirely isolated pulling strictly populated analytical views utilizing MongoDB aggregate match layers. Passing data filters prior to node loops mitigates latency issues exponentially on dense accounts recording thousands of runs.
+
+---
+
+## 6. Edge Cases & Validations Detailed
+
+* **Duplicate Prevention Mechanism:** 
+  * Hard blockers on Email + Username duplicates through `PATCH /update` operations.
+  * Scoped validation against duplicating project namespaces locally by ID contexts.
+* **OAuth Safety Overlap:** Colliding OAuth standard identifiers route internally through an override checking strategy. It safely scopes out domain collisions via digit appending routines.
+* **Entity Deletion Policy:** Database collections remain practically immutable except generic `Sessions`. Removing `Project` directories shifts an `isActive: false` marker avoiding breaking structural relations historically tracking logged durations.
+
+---
+
+## 7. State Management Guidelines for Frontend
+
+* **Authentication Base:** 
+  * Managed passively across HTTP-only web cookies holding serialized passport.js IDs.
+  * **Frontend action:** React loaders invoke `/profile/me`. Receiving strict `401` codes enforces automated App boundary navigation pushing to `/login`.
+* **Resource Syncing Protocols:**
+  * **Memoized Global Contexts:** Use to park `userProfile` identity attributes & static `"/badges"`.
+  * **Fresh Stales Context:** Queries spanning `"/session/active"`. Hard fetches avoid states where mobile vs web boundaries desync concurrently open applications. 
+* **Trust Validities:**
+  * Absolute clock mechanisms are enforced purely by MongoDB generated date differentials. A locally desynced OS-clock on user side will not corrupt genuine record logs tracked internally.
+
+---
+
+## 8. Best Practices for Frontend Integration
+
+1. **Optimistic UI Implementations:** Construct visual toggles against routes like Follow/Unfollow. Fire `isFollowing` state boolean inversions concurrently with silent backend `POST` calls, reversing UI blocks implicitly whenever `catch()` interceptors trigger `500`.
+2. **Global Payload Observers:** Multiple user mutation hits (like ending a session or requesting basic stat summaries) conditionally attach `newRewards: ["Badge"]` arrays inside standard `200` blocks. Listen actively against data wraps to deploy asynchronous gamification layers (Confetti Modals) uniformly without repetitive network pings on separate threads.
+3. **Structured Pagination Engines:** Large array endpoints output bounded blocks `currentPage, totalPages, limit` standardizing lazy evaluation hook injections ensuring frontend bandwidth doesn't lock rendering loops.
+4. **Predictable Code Handles:** Intercept global `.catch` chains wrapping REST objects. Express responds natively tracking `message: "reason"` properties making global Toast modules trivially straightforward to write.
