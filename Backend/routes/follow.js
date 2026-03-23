@@ -104,23 +104,23 @@ router.delete("/social/unfollow/:userId", isloggedIn, async (req, res) => {
 
 /* Get current user's followers list */
 
-router.get('/social/followers/:userId', isloggedIn, async (req, res) => {
-    try {
-        const targetUser = req.params.userId;
+router.get("/social/followers/:userId", isloggedIn, async (req, res) => {
+  try {
+    const targetUser = req.params.userId;
 
-        const followers = await followSchema.find({
-            followingId: targetUser 
-        })
-        .populate("followerId", "username avatar"); 
+    const followers = await followSchema
+      .find({
+        followingId: targetUser,
+      })
+      .populate("followerId", "username avatar");
 
-        res.status(200).json({
-            success: true, 
-            data: followers
-        });
-
-    } catch (e) {
-        res.status(500).json({
-            error: e.message
-        });
-    }
+    res.status(200).json({
+      success: true,
+      data: followers,
+    });
+  } catch (e) {
+    res.status(500).json({
+      error: e.message,
+    });
+  }
 });
