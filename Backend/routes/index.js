@@ -13,8 +13,7 @@ const isloggedIn = (req, res, next) => {
 
 /* Funtion to check username is already in use or not */
 const checkUser = async (user) => {
-
-  const baseSlug = user.username.replace(/\s+/g, '_').toLowerCase();
+  const baseSlug = user.username.replace(/\s+/g, "_").toLowerCase();
 
   let slug = baseSlug;
 
@@ -32,7 +31,6 @@ const checkUser = async (user) => {
   return slug;
 };
 
-
 /* GET home page. */
 router.get("/", function (req, res, next) {
   res.render("index", { title: "Express" });
@@ -47,7 +45,10 @@ router.post("/signup", async (req, res) => {
 
     const registeredUser = await User.register(newUser, password);
 
-    res.send("User registered successfully!");
+    res.send({
+      message: "User registered successfully!",
+      user: registeredUser,
+    });
   } catch (e) {
     res.send(e.message);
   }
@@ -77,7 +78,7 @@ router.get(
     await checkUser(req.user);
     console.log(req.user);
     res.render("profile");
-  }
+  },
 );
 /* Log out route */
 
@@ -90,7 +91,9 @@ router.get("/logout", (req, res, next) => {
 
 /* Accessing User Data(using google route) */
 router.get("/getInfo", isloggedIn, (req, res, next) => {
-  res.redirect("/dashboard", { user: req.user });
+  res.json({
+    user: req.user,
+  });
 });
 
 module.exports = router;

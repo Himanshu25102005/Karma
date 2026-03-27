@@ -20,29 +20,28 @@ const isloggedIn = (req, res, next) => {
 
 router.post("/session/start", isloggedIn, async (req, res) => {
   try {
-    const { projectName, tag } = req.body;
+    // 1. Consistently use projectId
+    const { projectId, tag } = req.body;
 
-    /* if (!projectName || projectName.trim().length === 0) {
-      return res.status(400).json({
-        error: "Project name is required",
-      });
-    } */
-
-    const existingSession = await Session.findOne({
+    // 2. The "Safety Guard": Prevent multiple active sessions
+    const activeSession = await Session.findOne({
       userId: req.user._id,
-      status: "running",
+      status: "running", // This relies on your schema having a status field
     });
 
-    if (existingSession) {
+    if (activeSession) {
       return res.status(400).json({
-        error: "You already have an active session",
+        error: "You already have an active session. Stop it before starting a new one.",
       });
     }
 
+    // 3. Create the session
     const newSession = await Session.create({
-      projectId: req.body.projectId,
-      tag: req.body.tag,
+      projectId, // Links to the Project model
+      tag,
       userId: req.user._id,
+      status: "running", // Explicitly set if not in schema default
+      startTime: new Date(), // Good practice to set this on start
     });
 
     res.status(201).json(newSession);
@@ -57,8 +56,10 @@ router.patch("/session/stop/:id", isloggedIn, async (req, res) => {
   try {
     const updateSesh = await Session.findOne({
       status: "running",
-      userId: req.user._id,
+      userId: req.params.id,
     });
+
+    const userId = req.params.id;
 
     if (!updateSesh) {
       return res.status(404).json({ error: "Focus Session not found" });

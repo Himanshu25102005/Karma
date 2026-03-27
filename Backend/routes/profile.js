@@ -53,7 +53,7 @@ router.patch("/profile/me/update", isloggedIn, async (req, res) => {
       }
     }
 
-    if (isPublic == true || isPublic == false) profile.isPublic = isPublic;
+    if (req.user.isPublic == true || req.user.isPublic == false) profile.isPublic = isPublic;
 
     if (updates.username) {
       updates.username = updates.username.toLowerCase();
@@ -86,7 +86,7 @@ router.patch("/profile/me/update", isloggedIn, async (req, res) => {
     const updatedUser = await User.findByIdAndUpdate(req.user._id, updates, {
       new: true,
       runValidators: true,
-    }).select("username email github bio website createdAt");
+    }).select("username email github bio website createdAt isPublic");
 
     res.status(200).json({
       success: true,
