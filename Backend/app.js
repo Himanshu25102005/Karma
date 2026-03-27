@@ -1,5 +1,6 @@
 require("dotenv").config();
 const connectDB = require("./config/db");
+const cors = require("cors");
 var createError = require("http-errors");
 var express = require("express");
 const session = require("express-session");
@@ -16,6 +17,13 @@ var app = express();
 //db connection
 connectDB();
 connectDB();
+
+app.use(cors({
+  origin: "http://localhost:3000", // The URL of your Next.js frontend
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  credentials: true // MANDATORY for cookies/Passport sessions
+}));
+
 // view engine setup
 app.set("views", path.join(__dirname, "views"));
 app.set("view engine", "ejs");
