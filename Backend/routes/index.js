@@ -50,7 +50,7 @@ router.post("/signup", async (req, res) => {
       user: registeredUser,
     });
   } catch (e) {
-    res.send(e.message);
+    res.status(400).json({ error: e.message });
   }
 });
 

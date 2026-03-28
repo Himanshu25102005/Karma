@@ -1,7 +1,7 @@
 import axios from "axios";
 
 const apiClient = axios.create({
-  baseURL: "http://localhost:5000/api",
+  baseURL: "http://localhost:5000/",
   withCredentials: true,
 });
 
@@ -28,14 +28,7 @@ apiClient.interceptors.response.use(
 
 const api = {
   // Auth
-  signup: (username, email, profilePicture, password) => {
-    const data = {
-      username,
-      email,
-      profilePicture,
-      password,
-    };
-
+  signup: (data) => {
     return apiClient.post("/signup", data);
   },
 
