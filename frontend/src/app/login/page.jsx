@@ -221,32 +221,34 @@ const page = () => {
 
                         {/* Input Form */}
 
-                        <div className=" px-10  text-white w-full">
+                        <div className="   text-white w-full">
                             <form action="" onSubmit={handleSubmit}>
-                                <div className="flex flex-wrap justify-center gap-4 py-5 ">
+                                <div className="flex flex-wrap justify-center gap-2 p-5  ">
                                     <div className=" flex flex-col">
-                                        <label className="text-[#DFDFDF] font-bold mb-2">
+                                        <label className="text-[#DFDFDF] font-bold mb-4">
                                             Name
                                         </label>
-                                        <input className="bg-[#313131] p-3 rounded-xl " placeholder="eg. Ram"
+                                        <div className="pr-2">
+                                        <input className="bg-[#313131] p-3  rounded-xl " placeholder="eg. Ram"
                                             type="text"
                                             name="name"
                                             value={form.name}
-                                            onChange={handleChange} />
+                                            onChange={handleChange} /></div>
                                     </div>
                                     <div className=" flex flex-col">
-                                        <label className="text-[#DFDFDF] font-bold mb-2">
+                                        <label className="text-[#DFDFDF] pl-2 font-bold mb-4">
                                             Username
                                         </label>
+                                        <div className="pl-2">
                                         <input className="bg-[#313131] p-3 rounded-xl " placeholder="eg. Ram_512GB"
                                             type="text"
                                             name="name"
                                             value={form.username}
-                                            onChange={handleChange} />
+                                            onChange={handleChange} /></div>
                                     </div>
                                 </div>
 
-                                <div className=" flex w-full px-28 py-5">
+                                <div className=" flex w-full px-35 py-5">
                                     <div className="flex flex-col flex-1 px-8">
                                         <label className="text-[#DFDFDF] font-bold mb-4">Email</label>
                                         <input
@@ -255,12 +257,12 @@ const page = () => {
                                             name="email"
                                             value={form.email}
                                             onChange={handleChange}
-                                            placeholder="ram@gmail.com"
+                                            placeholder="eg. ram@gmail.com"
                                         />
                                     </div>
                                 </div>
 
-                                <div className=" flex w-full px-28 py-5">
+                                <div className=" flex w-full px-35 py-5">
                                     <div className="flex flex-col flex-1 px-8">
                                         <label className="text-[#DFDFDF] font-bold mb-2">Password</label>
                                         <input
@@ -274,13 +276,13 @@ const page = () => {
                                     </div>
                                 </div>
 
-                                <div className="text-[#DFDFDF] px-36 pt-2">
+                                <div className="text-[#DFDFDF] px-43 pt-2">
                                     <div>Must be at least 8 characters long</div>
                                 </div>
                             </form>
                         </div>
 
-                        <div className="w-full mt-2 px-46 py-5 ">
+                        <div className="w-full mt-2 px-42 py-5 ">
                             <motion.button
                                 whileHover={{ scale: 1.01 }}
                                 transition={{
