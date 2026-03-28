@@ -67,7 +67,7 @@ const page = () => {
                                 <div className="flex justify-center items-center gap-3 mb-5 p-4 pr-12">
 
                                     <svg
-                                        className="h-10 w-10" // Removed mt-2
+                                        className="h-10 w-10" 
                                         viewBox="0 0 100 100"
                                         fill="none"
                                         xmlns="http://www.w3.org/2000/svg"
@@ -97,11 +97,11 @@ const page = () => {
                                             ease: "easeInOut",
                                         }}
                                         whileTap={{ scale: 1 }}
-                                        className="bg-[#3F3F3F] cursor-pointer group h-15 w-full rounded-lg mt-2 flex px-5 items-center gap-3 ">
-                                        <div className="bg-[#767676] h-6  w-6 rounded-full group-hover:bg-[#0B0B0B] text-center">
+                                        className="bg-[#ffffff] cursor-not-allowed group h-15 w-full rounded-lg mt-2 flex px-5 items-center gap-3 ">
+                                        <div className="bg-[#0B0B0B] h-6  w-6 rounded-full group-hover:bg-[#0B0B0B] text-center">
                                             <p className="text-[#DBDADA]  group-hover:text-[#E1E1E1]">1</p>
                                         </div>
-                                        <div className="text-[#DBDADA]  group-hover:text-[#000000] group-hover:font-semibold">
+                                        <div className="text-[#000000] font-semibold group-hover:text-[#000000] group-hover:font-semibold">
                                             Sign up your account
                                         </div>
                                     </motion.button>
