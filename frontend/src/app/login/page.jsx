@@ -63,24 +63,28 @@ const page = () => {
                                 }}
                                 className=" w-100 ">
 
-                                <div className="flex">
-                                    <div >
-                                        <svg width="100" height="100" viewBox="0 0 1 00 100" fill="none" xmlns="http://www.w3.or g/2000/svg">
-                                            <path d="M20 80 L45 55 H55 L80 30" stroke="#3882F6" stroke-width="12" stroke-linecap="butt" stroke-linejoin="miter" />
-                                            <path d="M20 60 L45 35 H55 L80 10" stroke="#3882F6" stroke-width="12" stroke-opacity="0.3" stroke-linecap="butt" stroke-linejoin="miter" />
-                                            <rect x="42" y="52" width="6" height="6" f ill="#3882F6" />
-                                            <rect x="52" y="32" width="6" height="6" f il1="#3882F6" />
-                                        </svg>
-                                    </div>
-                                    <div className="text-center font-semibold text-3xl text-[#DEDDDF] m-2 mb-4"> Strava
-                                    </div>
+                                <div className="flex justify-center items-center gap-3 mb-5 p-4 pr-12">
+
+                                    <svg
+                                        className="h-10 w-10" // Removed mt-2
+                                        viewBox="0 0 100 100"
+                                        fill="none"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path d="M20 80 L45 55 H55 L80 30" stroke="#3882F6" strokeWidth="12" />
+                                        <path d="M20 60 L45 35 H55 L80 10" stroke="#3882F6" strokeOpacity="0.3" strokeWidth="12" />
+                                    </svg>
+
+                                    <span className="font-semibold text-3xl bg-gradient-to-br from-slate-200 to-slate-500 bg-clip-text text-transparent">
+                                        Strava
+                                    </span>
                                 </div>
 
                                 <motion.div
 
                                     className="px-2">
                                     <p className="text-center  text-4xl text-[#FFFFFF] mb-4">Get Started with Us</p>
-                                    <p className="text-center text-2xl text-[#AFAFAF]">Complete these easy steps to register your account</p>
+                                    <p className="text-center text-xl text-[#AFAFAF]">Complete these easy steps to register your account</p>
                                 </motion.div>
 
                                 <div className="px-6 mt-2 flex flex-wrap gap-2 ">
@@ -94,7 +98,7 @@ const page = () => {
                                         whileTap={{ scale: 1 }}
                                         className="bg-[#3F3F3F] cursor-pointer group h-15 w-full rounded-lg mt-2 flex px-5 items-center gap-3 ">
                                         <div className="bg-[#767676] h-6  w-6 rounded-full group-hover:bg-[#0B0B0B] text-center">
-                                            <p className="text-[#DBDADA] group-hover:text-[#E1E1E1]">1</p>
+                                            <p className="text-[#DBDADA]  group-hover:text-[#E1E1E1]">1</p>
                                         </div>
                                         <div className="text-[#DBDADA]  group-hover:text-[#000000] group-hover:font-semibold">
                                             Sign up your account
@@ -140,7 +144,141 @@ const page = () => {
                         </LampContainer>
                     </div>
                 </div>
-                <div className="border-2 border-dashed border-white h-full w-1/2"></div>
+                <div className="border-2 border-dashed border-white h-full w-1/2 flex justify-center items-center">
+                    <div className="border-2 border-dashed border-gray-400 h-200 w-200 ">
+                        {/* Sign Up Account Div */}
+                        <div className=" text-center flex flex-wrap gap-2">
+                            <div className="text-[#FAFAFA] w-full text-3xl">Sign Up Account</div>
+                            <div className="text-[#BCBCBC] text-md w-full ">Enter your personal data to create your account</div>
+                        </div>
+
+                        {/* OAuth Buttons */}
+                        <div className="w-full  justify-center items-center py-2 px-4 flex gap-4 pt-8">
+                            <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                transition={{
+                                    delay: 0.1,
+                                    duration: 0.2,
+                                    ease: "easeInOut",
+                                }}
+                                whileTap={{ scale: 1 }}
+                                className="w-1/4 h-15 text-[#FDFDFD] rounded-xl border-2 border-[#1E1F1F] flex gap-2 justify-center items-center cursor-pointer  transition-colors">
+                                {/* Add dimensions to this div or the SVG directly */}
+                                <div className="flex items-center justify-center">
+                                    <svg
+                                        className="h-6 w-6" // This makes it visible!
+                                        viewBox="0 0 24 24"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z" fill="#4285F4" />
+                                        <path d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z" fill="#34A853" />
+                                        <path d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l3.66-2.84z" fill="#FBBC05" />
+                                        <path d="M12 5.38c1.62 0 3.06.56 4.21 1.66l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z" fill="#EA4335" />
+                                    </svg>
+                                </div>
+                                <div className="font-medium">Google</div>
+                            </motion.button>
+                            <motion.button
+                                whileHover={{ scale: 1.05 }}
+                                transition={{
+                                    delay: 0.1,
+                                    duration: 0.2,
+                                    ease: "easeInOut",
+                                }}
+                                whileTap={{ scale: 1 }}
+                                className="w-1/4 h-15 text-[#FDFDFD] rounded-xl border-2 border-[#1E1F1F] flex gap-2 justify-center items-center cursor-pointer transition-colors">
+                                <div className="flex items-center justify-center">
+                                    <svg
+                                        className="h-6 w-6" // This handles the scaling perfectly
+                                        viewBox="0 0 16 16"
+                                        xmlns="http://www.w3.org/2000/svg"
+                                    >
+                                        <path
+                                            d="M8 0C3.58 0 0 3.58 0 8c0 3.54 2.29 6.53 5.47 7.59.4.07.55-.17.55-.38 0-.19-.01-.82-.01-1.49-2.01.37-2.53-.49-2.69-.94-.09-.23-.48-.94-.82-1.13-.28-.15-.68-.52-.01-.53.63-.01 1.08.58 1.23.82.72 1.21 1.87.87 2.33.66.07-.52.28-.87.51-1.07-1.78-.2-3.64-.89-3.64-3.95 0-.87.31-1.59.82-2.15-.08-.2-.36-1.02.08-2.12 0 0 .67-.21 2.2.82.64-.18 1.32-.27 2-.27.68 0 1.36.09 2 .27 1.53-1.04 2.2-.82 2.2-.82.44 1.1.16 1.92.08 2.12.51.56.82 1.27.82 2.15 0 3.07-1.87 3.75-3.65 3.95.29.25.54.73.54 1.48 0 1.07-.01 1.93-.01 2.2 0 .21.15.46.55.38A8.013 8.013 0 0 0 16 8c0-4.42-3.58-8-8-8z"
+                                            fill="currentColor" // This makes it match your text color!
+                                        />
+                                    </svg>
+                                </div>
+                                <div className="font-medium">GitHub</div>
+                            </motion.button>
+                        </div>
+
+                        {/* Or Line */}
+                        <div className="flex items-center justify-center gap-4 w-full h-10">
+                            <div className="h-[1px] w-1/4 bg-[#313131]"></div>
+                            <span className="text-[#888888] text-sm">or</span>
+                            <div className="h-[1px] w-1/4 bg-[#313131]"></div>
+                        </div>
+
+                        {/* Input Form */}
+
+                        <div className="border-2 border-dashed border-white px-10  text-white w-full">
+                            <form action="" onSubmit={handleSubmit}>
+                                <div className="flex flex-wrap justify-center gap-2 border-2 border-white">
+                                    <div className="border-2 border-dashed border-green-900 flex flex-col">
+                                        <label className="text-[#DFDFDF] font-bold mb-2">
+                                            Name
+                                        </label>
+                                        <input className="border-white border-2 p-3 rounded-xl " placeholder="eg. Ram"
+                                            type="text"
+                                            name="name"
+                                            value={form.name}
+                                            onChange={handleChange} />
+                                    </div>
+                                    <div className="border-2 border-dashed border-green-900 flex flex-col">
+                                        <label className="text-[#DFDFDF] font-bold mb-2">
+                                            Userame
+                                        </label>
+                                        <input className="border-white border-2 p-3 rounded-xl " placeholder="eg. Ram_512GB"
+                                            type="text"
+                                            name="name"
+                                            value={form.name}
+                                            onChange={handleChange} />
+                                    </div>
+                                </div>
+
+                                <div className="border-2 border-white flex w-full px-26">
+                                    <div className="flex flex-col flex-1 px-8">
+                                        <label className="text-[#DFDFDF] font-bold mb-2">Email</label>
+                                        <input
+                                            className="border-2 p-3 w-full rounded-xl bg-transparent text-white"
+                                            type="email"
+                                            name="email"
+                                            value={form.email}
+                                            onChange={handleChange}
+                                            placeholder="ram@gmail.com"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="border-2 border-white flex w-full px-26">
+                                    <div className="flex flex-col flex-1 px-8">
+                                        <label className="text-[#DFDFDF] font-bold mb-2">Password</label>
+                                        <input
+                                            className="border-2 p-3 w-full rounded-xl bg-transparent text-white"
+                                            type="password"
+                                            name="password"
+                                            value={form.password}
+                                            onChange={handleChange}
+                                            placeholder="Enter your password"
+                                        />
+                                    </div>
+                                </div>
+
+                                <div className="text-[#DFDFDF] px-36 pt-2">
+                                    <div>Must be at least 8 characters long</div>
+                                </div>
+                            </form>
+                        </div>
+
+                        <div>
+                            <button className="border-2 border-white">Sign Up</button>
+                        </div>
+                    </div>
+                </div>
+
+
+
 
             </div>
             {/* <form action="" onSubmit={handleSubmit}>
