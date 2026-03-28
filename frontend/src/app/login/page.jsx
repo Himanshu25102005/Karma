@@ -8,7 +8,8 @@ const page = () => {
     const [form, setform] = useState({
         email: "",
         username: "",
-        password: ""
+        password: "",
+        name: "",
     });
 
     const handleChange = (e) => {
@@ -37,7 +38,7 @@ const page = () => {
 
 
             <div className="flex h-screen bg-[#000306]">
-                <div className="border-2 border-dashed border-white h-full w-1/2">
+                <div className=" h-full hidden lg:flex w-1/2">
                     <div className="h-full w-full bg-colour">
 
                         <LampContainer>
@@ -75,7 +76,7 @@ const page = () => {
                                         <path d="M20 60 L45 35 H55 L80 10" stroke="#3882F6" strokeOpacity="0.3" strokeWidth="12" />
                                     </svg>
 
-                                    <span className="font-semibold text-3xl bg-gradient-to-br from-slate-200 to-slate-500 bg-clip-text text-transparent">
+                                    <span className="font-semibold text-4xl bg-gradient-to-br from-slate-200 to-slate-500 bg-clip-text text-transparent">
                                         Strava
                                     </span>
                                 </div>
@@ -144,16 +145,24 @@ const page = () => {
                         </LampContainer>
                     </div>
                 </div>
-                <div className="border-2 border-dashed border-white h-full w-1/2 flex justify-center items-center">
-                    <div className="border-2 border-dashed border-gray-400 h-200 w-200 ">
+                <motion.div
+                    initial={{ opacity: 0.5, y: 100 }}
+                    whileInView={{ opacity: 1, y: 0 }}
+                    transition={{
+                        delay: 0.3,
+                        duration: 0.8,
+                        ease: "easeInOut",
+                    }}
+                    className="border-nonemotion. border-dashed border-white h-full w-1/2 flex justify-center items-center">
+                    <div className=" h-200 w-200 ">
                         {/* Sign Up Account Div */}
                         <div className=" text-center flex flex-wrap gap-2">
-                            <div className="text-[#FAFAFA] w-full text-3xl">Sign Up Account</div>
+                            <div className="text-[#FAFAFA] w-full font-bold text-3xl">Sign Up Account</div>
                             <div className="text-[#BCBCBC] text-md w-full ">Enter your personal data to create your account</div>
                         </div>
 
                         {/* OAuth Buttons */}
-                        <div className="w-full  justify-center items-center py-2 px-4 flex gap-4 pt-8">
+                        <div className="w-full  justify-center items-center py-2 px-4 flex gap-14 pt-8">
                             <motion.button
                                 whileHover={{ scale: 1.05 }}
                                 transition={{
@@ -212,36 +221,36 @@ const page = () => {
 
                         {/* Input Form */}
 
-                        <div className="border-2 border-dashed border-white px-10  text-white w-full">
+                        <div className=" px-10  text-white w-full">
                             <form action="" onSubmit={handleSubmit}>
-                                <div className="flex flex-wrap justify-center gap-2 border-2 border-white">
-                                    <div className="border-2 border-dashed border-green-900 flex flex-col">
+                                <div className="flex flex-wrap justify-center gap-4 py-5 ">
+                                    <div className=" flex flex-col">
                                         <label className="text-[#DFDFDF] font-bold mb-2">
                                             Name
                                         </label>
-                                        <input className="border-white border-2 p-3 rounded-xl " placeholder="eg. Ram"
+                                        <input className="bg-[#313131] p-3 rounded-xl " placeholder="eg. Ram"
                                             type="text"
                                             name="name"
                                             value={form.name}
                                             onChange={handleChange} />
                                     </div>
-                                    <div className="border-2 border-dashed border-green-900 flex flex-col">
+                                    <div className=" flex flex-col">
                                         <label className="text-[#DFDFDF] font-bold mb-2">
-                                            Userame
+                                            Username
                                         </label>
-                                        <input className="border-white border-2 p-3 rounded-xl " placeholder="eg. Ram_512GB"
+                                        <input className="bg-[#313131] p-3 rounded-xl " placeholder="eg. Ram_512GB"
                                             type="text"
                                             name="name"
-                                            value={form.name}
+                                            value={form.username}
                                             onChange={handleChange} />
                                     </div>
                                 </div>
 
-                                <div className="border-2 border-white flex w-full px-26">
+                                <div className=" flex w-full px-28 py-5">
                                     <div className="flex flex-col flex-1 px-8">
-                                        <label className="text-[#DFDFDF] font-bold mb-2">Email</label>
+                                        <label className="text-[#DFDFDF] font-bold mb-4">Email</label>
                                         <input
-                                            className="border-2 p-3 w-full rounded-xl bg-transparent text-white"
+                                            className="bg-[#313131] p-3 w-full rounded-xl text-white"
                                             type="email"
                                             name="email"
                                             value={form.email}
@@ -251,11 +260,11 @@ const page = () => {
                                     </div>
                                 </div>
 
-                                <div className="border-2 border-white flex w-full px-26">
+                                <div className=" flex w-full px-28 py-5">
                                     <div className="flex flex-col flex-1 px-8">
                                         <label className="text-[#DFDFDF] font-bold mb-2">Password</label>
                                         <input
-                                            className="border-2 p-3 w-full rounded-xl bg-transparent text-white"
+                                            className="bg-[#313131] p-3 w-full rounded-xl text-white"
                                             type="password"
                                             name="password"
                                             value={form.password}
@@ -271,26 +280,48 @@ const page = () => {
                             </form>
                         </div>
 
-                        <div>
-                            <button className="border-2 border-white">Sign Up</button>
+                        <div className="w-full mt-2 px-46 py-5 ">
+                            <motion.button
+                                whileHover={{ scale: 1.01 }}
+                                transition={{
+                                    delay: 0.1,
+                                    duration: 0.2,
+                                    ease: "easeInOut"
+                                }}
+                                whileTap={{ scale: 1 }}
+                                className="border-2 rounded-xl font-bold  text-[#565656] bg-[#FFFFFF] p-3 w-full border-white hover:text-[#000000] cursor-pointer">
+                                Sign Up
+                            </motion.button>
+                        </div>
+
+                        <div className="text-center p-3">
+                            <div className="text-center p-3">
+                                <div className="text-[#6E6E70]">
+                                    Already have an account? {" "}
+                                    <motion.span
+                                        className="relative text-[#E4E4E4] cursor-pointer inline-block"
+                                        whileHover="hover"
+                                    >
+                                        Log in
+                                        <motion.div
+                                            className="absolute bottom-0 left-0 h-[1px] bg-[#E4E4E4]"
+                                            initial={{ width: 0 }}
+                                            variants={{
+                                                hover: { width: "100%" }
+                                            }}
+                                            transition={{ duration: 0.5, ease: "easeInOut" }}
+                                        />
+                                    </motion.span>
+                                </div>
+                            </div>
                         </div>
                     </div>
-                </div>
+                </motion.div>
 
 
 
 
             </div>
-            {/* <form action="" onSubmit={handleSubmit}>
-                            <input type="email" name="email" placeholder='Email' value={form.email} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black mt-2 " />
-                            <input type="text" name="username" placeholder='Username' value={form.username} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black mt-2" />
-                            <input type="password" name="password" placeholder='Password' value={form.password} onChange={handleChange} className="w-full px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-black mt-2" />
-                            <div className="flex justify-center">
-                                <button className="mt-2 px-4 py-2 border-2 rounded-md">
-                                    Submit
-                                </button>
-                            </div>
-                        </form> */}
         </>
     )
 }
