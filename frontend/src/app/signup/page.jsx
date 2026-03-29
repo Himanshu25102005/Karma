@@ -5,11 +5,14 @@ import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 import { motion } from "motion/react";
 import { LampContainer } from "../../components/ui/Lamp";
+import axios from "axios";
 
-const Page = () => {
+const page = () => {
     const [form, setform] = useState({
+        email: "",
         username: "",
         password: "",
+        name: "",
     });
 
     const router = useRouter();
@@ -29,7 +32,7 @@ const Page = () => {
         e.preventDefault();
 
         try {
-            const res = await api.login(form)
+            const res = await api.signup(form)
             console.log(res);/* 
             setform(initialState); */
 
@@ -44,20 +47,17 @@ const Page = () => {
             }
             else {
                 // ERROR: Show a toast or error message
-                console.error("Login failed");
+                console.error("Signup failed");
             }
 
         } catch (e) {
             console.log(e.message);
         }
     };
+
     return (
         <>
-
-
             <div className="flex h-screen bg-[#000306]">
-
-                {/* Left Half */}
                 <div className=" h-full hidden lg:flex w-1/2">
                     <div className="h-full w-full bg-colour">
 
@@ -104,8 +104,8 @@ const Page = () => {
                                 <motion.div
 
                                     className="px-2">
-                                    <p className="text-center  text-4xl text-[#FFFFFF] mb-4">Welcome Back</p>
-                                    <p className="text-center text-xl text-[#AFAFAF]">Sign in to continue your journey</p>
+                                    <p className="text-center  text-4xl text-[#FFFFFF] mb-4">Get Started with Us</p>
+                                    <p className="text-center text-xl text-[#AFAFAF]">Complete these easy steps to register your account</p>
                                 </motion.div>
 
                                 <div className="px-6 mt-2 flex flex-wrap gap-2 ">
@@ -122,7 +122,7 @@ const Page = () => {
                                             <p className="text-[#DBDADA]  group-hover:text-[#E1E1E1]">1</p>
                                         </div>
                                         <div className="text-[#000000] font-semibold group-hover:text-[#000000] group-hover:font-semibold">
-                                            Verify your credentials
+                                            Sign up your account
                                         </div>
                                     </motion.button>
                                     <motion.button
@@ -138,7 +138,7 @@ const Page = () => {
                                             <p className="text-[#DBDADA] group-hover:text-[#E1E1E1]">2</p>
                                         </div>
                                         <div className="text-[#DBDADA]  group-hover:text-[#000000] group-hover:font-semibold">
-                                            Sync your latest activity
+                                            Answer some easy questions
                                         </div>
                                     </motion.button>
                                     <motion.button
@@ -154,7 +154,7 @@ const Page = () => {
                                             <p className="text-[#DBDADA] group-hover:text-[#E1E1E1]">3</p>
                                         </div>
                                         <div className="text-[#DBDADA]  group-hover:text-[#000000] group-hover:font-semibold">
-                                            Resume your progress
+                                            Set up you profile
                                         </div>
                                     </motion.button>
 
@@ -165,8 +165,6 @@ const Page = () => {
                         </LampContainer>
                     </div>
                 </div>
-
-                {/* Right Half */}
                 <motion.div
                     initial={{ opacity: 0.5, y: 100 }}
                     whileInView={{ opacity: 1, y: 0 }}
@@ -175,18 +173,19 @@ const Page = () => {
                         duration: 0.8,
                         ease: "easeInOut",
                     }}
-                    className="border-none border-dashed border-white h-full w-1/2 flex justify-center items-center">
+                    className="border-nonemotion. border-dashed border-white h-full w-1/2 flex justify-center items-center">
                     <div className=" h-200 w-200 ">
                         {/* Sign Up Account Div */}
                         <div className=" text-center flex flex-wrap gap-2">
-                            <div className="text-[#FAFAFA] w-full font-bold text-3xl">Log in to your Account</div>
-                            <div className="text-[#BCBCBC] text-md w-full ">Enter valid credentials to log in</div>
+                            <div className="text-[#FAFAFA] w-full font-bold text-3xl">Sign Up Account</div>
+                            <div className="text-[#BCBCBC] text-md w-full ">Enter your personal data to create your account</div>
                         </div>
 
                         {/* OAuth Buttons */}
                         <div className="w-full  justify-center items-center py-2 px-4 flex gap-14 pt-8">
+
                             <motion.a
-                                href="http://localhost:5000/auth/google"
+                            href="http://localhost:5000/auth/google"
                                 whileHover={{ scale: 1.05 }}
                                 transition={{
                                     delay: 0.1,
@@ -210,6 +209,7 @@ const Page = () => {
                                 </div>
                                 <div className="font-medium">Google</div>
                             </motion.a>
+
                             <motion.button
                                 whileHover={{ scale: 1.05 }}
                                 transition={{
@@ -246,17 +246,41 @@ const Page = () => {
 
                             <motion.div animate={controls} className="text-white w-full">
 
+                                <div className="flex flex-wrap justify-center gap-2 p-5  ">
+                                    <div className=" flex flex-col">
+                                        <label className="text-[#DFDFDF] font-bold mb-4">
+                                            Name
+                                        </label>
+                                        <div className="pr-2">
+                                            <input className="bg-[#313131] p-3  rounded-xl " placeholder="eg. Ram"
+                                                type="text"
+                                                name="name"
+                                                value={form.name}
+                                                onChange={handleChange} /></div>
+                                    </div>
+                                    <div className=" flex flex-col">
+                                        <label className="text-[#DFDFDF] pl-2 font-bold mb-4">
+                                            Username
+                                        </label>
+                                        <div className="pl-2">
+                                            <input className="bg-[#313131] p-3 rounded-xl " placeholder="eg. Ram_512GB"
+                                                type="text"
+                                                name="username"
+                                                value={form.username}
+                                                onChange={handleChange} /></div>
+                                    </div>
+                                </div>
 
                                 <div className=" flex w-full px-35 py-5">
                                     <div className="flex flex-col flex-1 px-8">
-                                        <label className="text-[#DFDFDF] font-bold mb-4">Username</label>
+                                        <label className="text-[#DFDFDF] font-bold mb-4">Email</label>
                                         <input
                                             className="bg-[#313131] p-3 w-full rounded-xl text-white"
-                                            type="text"
-                                            name="username"
-                                            value={form.username}
+                                            type="email"
+                                            name="email"
+                                            value={form.email}
                                             onChange={handleChange}
-                                            placeholder="eg. ram_512GB"
+                                            placeholder="eg. ram@gmail.com"
                                         />
                                     </div>
                                 </div>
@@ -275,9 +299,9 @@ const Page = () => {
                                     </div>
                                 </div>
 
-                                {/* <div className="text-[#DFDFDF] px-43 pt-2">
+                                <div className="text-[#DFDFDF] px-43 pt-2">
                                     <div>Must be at least 8 characters long</div>
-                                </div> */}
+                                </div>
                             </motion.div>
 
                             <div className="w-full mt-2 px-42 py-5 ">
@@ -300,9 +324,9 @@ const Page = () => {
                         <div className="text-center p-3">
                             <div className="text-center p-3">
                                 <div className="text-[#6E6E70]">
-                                    Don't have an account yet? {" "}
+                                    Already have an account? {" "}
                                     <motion.a
-                                        href="http://localhost:3000/"
+                                    href="http://localhost:3000/login"
                                         className="relative text-[#E4E4E4] cursor-pointer inline-block"
                                         whileHover="hover"
                                     >
@@ -324,6 +348,7 @@ const Page = () => {
             </div >
         </>
     )
+
 }
 
-export default Page
+export default page

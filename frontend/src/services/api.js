@@ -32,13 +32,12 @@ const api = {
     return apiClient.post("/signup", data);
   },
 
-  login: (username, password) => {
-    data = {
-      username,
-      password,
-    };
+  login: (data) => {
+    return apiClient.post("/login", data);
+  },
 
-    return apiClient("/login", data);
+  oauth:()=>{
+    return apiClient.get('/auth/google')
   },
 
   getCurrentUser: () => {
