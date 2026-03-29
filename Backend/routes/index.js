@@ -39,9 +39,9 @@ router.get("/", function (req, res, next) {
 /* Normal Login and Signup Routes */
 router.post("/signup", async (req, res) => {
   try {
-    const { username, email, profilePicture, password } = req.body;
+    const { name, username, email, profilePicture, password } = req.body;
 
-    const newUser = new User({ username, email, profilePicture });
+    const newUser = new User({ name, username, email, profilePicture });
 
     const registeredUser = await User.register(newUser, password);
 

@@ -67,7 +67,7 @@ const page = () => {
                                 <div className="flex justify-center items-center gap-3 mb-5 p-4 pr-12">
 
                                     <svg
-                                        className="h-10 w-10" 
+                                        className="h-10 w-10"
                                         viewBox="0 0 100 100"
                                         fill="none"
                                         xmlns="http://www.w3.org/2000/svg"
@@ -218,33 +218,33 @@ const page = () => {
                             <span className="text-[#888888] text-sm">or</span>
                             <div className="h-[1px] w-1/4 bg-[#313131]"></div>
                         </div>
+                        <form action="" onSubmit={handleSubmit}>
+                            {/* Input Form */}
 
-                        {/* Input Form */}
+                            <div className="   text-white w-full">
 
-                        <div className="   text-white w-full">
-                            <form action="" onSubmit={handleSubmit}>
                                 <div className="flex flex-wrap justify-center gap-2 p-5  ">
                                     <div className=" flex flex-col">
                                         <label className="text-[#DFDFDF] font-bold mb-4">
                                             Name
                                         </label>
                                         <div className="pr-2">
-                                        <input className="bg-[#313131] p-3  rounded-xl " placeholder="eg. Ram"
-                                            type="text"
-                                            name="name"
-                                            value={form.name}
-                                            onChange={handleChange} /></div>
+                                            <input className="bg-[#313131] p-3  rounded-xl " placeholder="eg. Ram"
+                                                type="text"
+                                                name="name"
+                                                value={form.name}
+                                                onChange={handleChange} /></div>
                                     </div>
                                     <div className=" flex flex-col">
                                         <label className="text-[#DFDFDF] pl-2 font-bold mb-4">
                                             Username
                                         </label>
                                         <div className="pl-2">
-                                        <input className="bg-[#313131] p-3 rounded-xl " placeholder="eg. Ram_512GB"
-                                            type="text"
-                                            name="name"
-                                            value={form.username}
-                                            onChange={handleChange} /></div>
+                                            <input className="bg-[#313131] p-3 rounded-xl " placeholder="eg. Ram_512GB"
+                                                type="text"
+                                                name="username"
+                                                value={form.username}
+                                                onChange={handleChange} /></div>
                                     </div>
                                 </div>
 
@@ -279,22 +279,23 @@ const page = () => {
                                 <div className="text-[#DFDFDF] px-43 pt-2">
                                     <div>Must be at least 8 characters long</div>
                                 </div>
-                            </form>
-                        </div>
+                            </div>
 
-                        <div className="w-full mt-2 px-42 py-5 ">
-                            <motion.button
-                                whileHover={{ scale: 1.01 }}
-                                transition={{
-                                    delay: 0.1,
-                                    duration: 0.2,
-                                    ease: "easeInOut"
-                                }}
-                                whileTap={{ scale: 1 }}
-                                className="border-2 rounded-xl font-bold  text-[#565656] bg-[#FFFFFF] p-3 w-full border-white hover:text-[#000000] cursor-pointer">
-                                Sign Up
-                            </motion.button>
-                        </div>
+                            <div className="w-full mt-2 px-42 py-5 ">
+                                <motion.button
+                                    whileHover={{ scale: 1.01 }}
+                                    transition={{
+                                        delay: 0.1,
+                                        duration: 0.2,
+                                        ease: "easeInOut"
+                                    }}
+                                    type="submit"
+                                    whileTap={{ scale: 1 }}
+                                    className="border-2 rounded-xl font-bold  text-[#565656] bg-[#FFFFFF] p-3 w-full border-white hover:text-[#000000] cursor-pointer">
+                                    Sign Up
+                                </motion.button>
+                            </div>
+                        </form>
 
                         <div className="text-center p-3">
                             <div className="text-center p-3">
@@ -318,12 +319,8 @@ const page = () => {
                             </div>
                         </div>
                     </div>
-                </motion.div>
-
-
-
-
-            </div>
+                </motion.div >
+            </div >
         </>
     )
 }
