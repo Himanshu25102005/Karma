@@ -20,6 +20,10 @@ const projectSchema = mongoose.Schema({
     required: true,
     index: true
   },
+  tasks: [{
+  type: mongoose.Schema.Types.ObjectId,
+  ref: "project_task"
+}],
   isActive: {
     type: Boolean,
     default: true

@@ -3,7 +3,7 @@ import {IconBell} from "@tabler/icons-react";
 
 const Navbar = () => {
     return (
-        <div className='border-1 border-solid border-b-white p-1 flex justify-between items-center'>
+        <div className='border-1 border-solid border-b-white rounded-xl fixed top-0 left-0 w-full h-16 z-50 flex items-center justify-between px-6'>
 
             <div className=' px-10 py-2'>
                 <svg
@@ -15,6 +15,7 @@ const Navbar = () => {
                     <path d="M20 80 L45 55 H55 L80 30" stroke="#3882F6" strokeWidth="12" />
                     <path d="M20 60 L45 35 H55 L80 10" stroke="#3882F6" strokeOpacity="0.3" strokeWidth="12" />
                 </svg>
+
             </div>
             <div className='px-14 flex gap-10'>
                 <div>

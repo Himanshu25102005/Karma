@@ -2,6 +2,9 @@ import React from 'react'
 import { SmoothCursor } from "../../components/ui/Smooth-cursor"
 import { FloatingDock } from "../../components/ui/Floating-dock";
 import Navbar from "../../components/functional/Navbar";
+import Activity from "../../components/functional/Activity";
+import Sprint from "../../components/functional/Sprint";
+import Timer from "../../components/functional/Timer";
 import {
   IconBrandGithub,
   IconBrandX,
@@ -73,11 +76,28 @@ const page = () => {
   return (
     <>
       <SmoothCursor />
+      <Navbar />
+      <div className='bg-black min-h-screen pt-16'>
 
-      <div className='bg-[#000000] h-screen'>
+         {/* Main Outer Div */}
 
-        <Navbar />
+        <div className='border-2 border-dashed h-200 mt-2 border-white flex flex-wrap p-3 gap-5'>
 
+            {/* Sprint's Div */}
+            <div className='text-white border-2 border-solid rounded-xl p-2 border-gray-500 h-full w-1/4'>
+              <Sprint/>
+            </div>
+            
+            {/* Timer's Div */}
+            <div className='text-white h-full w-1/2'>
+              <Timer/>
+            </div>
+            
+            {/* Activity's Div */}
+            <div className='text-white h-full w-1/5'>
+              <Activity/>
+            </div>
+        </div>
 
         {/* Floating Dock */}
         <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50">

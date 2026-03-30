@@ -4,6 +4,7 @@ var router = express.Router();
 const Project = require("../models/projects");
 const passport = require("passport");
 const projects = require("../models/projects");
+const projTask = require("../models/projectTasks");
 
 /* Middleware to check if the user is logged in  */
 const isloggedIn = (req, res, next) => {
@@ -92,9 +93,9 @@ router.patch("/project/update/:id", isloggedIn, async (req, res) => {
 
     await updateProject.save();
 
-    res.status(200).json({ 
-      success: true, 
-      data: updateProject 
+    res.status(200).json({
+      success: true,
+      data: updateProject,
     });
   } catch (e) {
     res.status(500).json({ error: e.message });
@@ -258,5 +259,156 @@ router.delete("/project/:id/delete", isloggedIn, async (req, res) => {
     });
   } catch (e) {
     res.status(500).json({ error: e.message });
+  }
+});
+
+/* Add a Task to a Project */
+router.post("/project/AddTask/:projectId", isloggedIn, async (req, res) => {
+  try {
+    const projectId = req.params.projectId;
+    const description = req.body.description;
+
+    const task = await projTask.create({
+      description: description,
+    });
+
+    await Project.findByIdAndUpdate(projectId, {
+      $push: { tasks: task._id },
+    });
+
+    res.status(200).json({
+      success: true,
+      task: task,
+    });
+  } catch (e) {
+    res.status(500).json({
+      error: e.message,
+    });
+  }
+});
+
+/* Delete a Task from a Project */
+router.delete(
+  "/project/DeleteTask/:taskId/:projectId",
+  isloggedIn,
+  async (req, res) => {
+    try {
+      const { taskId, projectId } = req.params;
+
+      const task = await projTask.findByIdAndDelete({
+        _id: taskId,
+      });
+
+      await Project.findByIdAndUpdate(
+        {
+          _id: projectId,
+        },
+        {
+          $pull: { tasks: taskId },
+        },
+      );
+
+      res.status(200).json({
+        success: true,
+      });
+    } catch (e) {
+      res.status(500).json({
+        error: e.message,
+      });
+    }
+  },
+);
+
+/* Complete a Task */
+router.patch("/project/checkTask/:taskId", isloggedIn, async (req, res) => {
+  try {
+    const { taskId } = req.params;
+
+    const task = await projTask.findOneAndUpdate(
+      {
+        _id: taskId,
+        isCompleted: false,
+      },
+      {
+        $set: { isCompleted: true },
+      },
+      {
+        new: true,
+      },
+    );
+
+    if (task) {
+      return res.status(200).json({
+        success: true,
+        task: task,
+      });
+    } else {
+      // If task is null, it means it was either already true or doesn't exist
+      return res.status(400).json({
+        error: "Task not found or already completed",
+      });
+    }
+  } catch (e) {
+    res.status(500).json({
+      error: e.message,
+    });
+  }
+});
+
+/* Mark a task as Incomplete */
+router.patch("/project/uncheckTask/:taskId", isloggedIn, async (req, res) => {
+  try {
+    const taskId = req.params.taskId;
+
+    const task = await projTask.findByIdAndUpdate(
+      {
+        _id: taskId,
+        isCompleted: true,
+      },
+      {
+        $set: { isCompleted: false },
+      },
+      {
+        new: true,
+      },
+    );
+
+    if (task) {
+      return res.status(200).json({
+        success: true,
+        task: task,
+      });
+    } else {
+      return res.status(400).json({
+        error: "Task not found or already incomplete",
+      });
+    }
+  } catch (e) {
+    res.status(500).json({
+      error: e.message,
+    });
+  }
+});
+
+/* Display all tasks of a project */
+router.get("/project/tasks/:projectId", isloggedIn, async (req, res) => {
+  try {
+    const { projectId } = req.params;
+
+    const allTasks = await Project.findOne({
+      _id: projectId,
+    }).populate({
+      path: "tasks",
+      options: { sort: { createdAt: 1 } }, // Sorts by oldest first
+    });
+
+    res.status(200).json({
+      success: true,
+      tasks: allTasks,
+    });
+  } catch (e) {
+    res.status(500).json({
+      error: e.message,
+    });
   }
 });
