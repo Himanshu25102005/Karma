@@ -373,6 +373,7 @@ router.patch("/project/uncheckTask/:taskId", isloggedIn, async (req, res) => {
       },
     );
 
+    
     if (task) {
       return res.status(200).json({
         success: true,
