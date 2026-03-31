@@ -1,4 +1,4 @@
-'use client'
+ 'use client'
 import api from "@/services/api";
 import { useAnimation } from "framer-motion";
 import { useRouter } from 'next/navigation';

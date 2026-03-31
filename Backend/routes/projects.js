@@ -2,8 +2,6 @@ const userSchema = require("../models/users");
 const Session = require("../models/focSessions");
 var router = express.Router();
 const Project = require("../models/projects");
-const passport = require("passport");
-const projects = require("../models/projects");
 const projTask = require("../models/projectTasks");
 
 /* Middleware to check if the user is logged in  */

@@ -84,7 +84,7 @@ const page = () => {
         <div className='border-2 border-dashed h-200 mt-2 border-white flex flex-wrap p-3 gap-5'>
 
             {/* Sprint's Div */}
-            <div className='text-white border-2 border-solid rounded-xl p-2 border-gray-500 h-full w-1/4'>
+            <div className='text-white border-2 border-solid rounded-xl px-8 py-2 border-gray-500 h-full w-1/4'>
               <Sprint/>
             </div>
             
