@@ -8,7 +8,7 @@ const Sprint = ({ }) => {
 
     const projectId = useProjectStore((state) => state.projectId);
     const [newTask, setNewTasks] = useState('');
-    const [tasks, setTask] = useState([]);
+    const [tasks, setTasks] = useState([]);
 
     const addNewTask = async (e) => {
         e.preventDefault();
@@ -21,7 +21,7 @@ const Sprint = ({ }) => {
                 console.log("Cannot Add Task")
             }
 
-            setTask((prevTasks) => [...prevTasks, res.data.task]);
+            setTasks((prevTasks) => [...prevTasks, res.data.task]);
 
             setNewTasks('');
 
@@ -37,9 +37,24 @@ const Sprint = ({ }) => {
     }
 
 
-    const completeTask = () => {
+    const completeTask = async (taskId) => {
+        try {
+            const res = await api.completeTask(taskId);
 
-    }
+            if (res.data.success) {
+                setTasks((prevTasks) =>
+                    prevTasks.map((task) => {
+                        if (task._id === taskId) {
+                            return { ...task, isCompleted: true }; // updated copy
+                        }
+                        return task; // unchanged
+                    })
+                );
+            }
+        } catch (err) {
+            console.log(err);
+        }
+    };
 
 
     useEffect(() => {
@@ -48,7 +63,7 @@ const Sprint = ({ }) => {
 
         const getAllTasks = async () => {
             const res = await api.getAllTask(projectId);
-            setTask(res.data.tasks);
+            setTasks(res.data.tasks);
         }
 
         getAllTasks();
@@ -74,11 +89,10 @@ const Sprint = ({ }) => {
 
                     {tasks?.map((task) => (
                         <>
-                            <div key={task.id} className="h-5 w-5 bg-white rounded-full"></div>
-                            <div className="w-1 h-10 bg-white"></div>
+                            <div key={task.id} className={`h-5 w-5 ${task.isCompleted ? 'bg-green-500' : 'bg-white'} bg-white rounded-full`}></div>
+                            <div className={`w-1 ${task.isCompleted ? 'bg-yellow-500' : 'bg-white'} h-10 bg-white`}></div>
                         </>
                     ))}
-                    {/* item 1 */}
 
 
                 </div>
@@ -87,9 +101,9 @@ const Sprint = ({ }) => {
                 <div className="flex flex-col gap-5 w-full ">
 
                     {tasks?.map((task, index) => (
-                        <div className="border-2 border-white rounded-2xl p-2 flex gap-5 items-center">
-                            <button onClick={completeTask} className="h-10 w-10 border-2 border-white rounded-xl"></button>
-                            <p className="text-2xl">{task.description}</p>
+                        <div className={`border-2 border-white rounded-2xl p-2  flex gap-5 items-center`}>
+                            <button onClick={completeTask(task._id)} className={`${task.isCompleted ? 'bg-gray-900' : 'border-transparent'}h-10 w-10 border-2 border-white rounded-xl`}></button>
+                            <p className={`text-2xl ${task.isCompleted ? 'line-through opacity-50' : ''}`}>{task.description}</p>
                         </div>
                     ))}
 
