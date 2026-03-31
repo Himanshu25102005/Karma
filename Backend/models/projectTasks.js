@@ -1,6 +1,10 @@
 import mongoose from "mongoose";
 
 const project_task_schema = mongoose.createConnection({
+projectId:{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "projects"
+},
   description: {
     type: String,
     required: true,

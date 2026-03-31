@@ -36,8 +36,8 @@ const api = {
     return apiClient.post("/login", data);
   },
 
-  oauth:()=>{
-    return apiClient.get('/auth/google')
+  oauth: () => {
+    return apiClient.get("/auth/google");
   },
 
   getCurrentUser: () => {
@@ -60,28 +60,33 @@ const api = {
       isPublic,
     };
 
-    return apiClient.patch('/profile/me/update', data)
+    return apiClient.patch("/profile/me/update", data);
   },
 
   /* Session Routes */
 
   startSession: (projectId, tag) => {
     const data = {
-        projectId, 
-        tag
-    }
+      projectId,
+      tag,
+    };
 
-    return apiClient.post('/session/start', data);
+    return apiClient.post("/session/start", data);
   },
 
-  currentSessionInfo:()=>{
-    return apiClient.get('/session/active');
+  currentSessionInfo: () => {
+    return apiClient.get("/session/active");
   },
 
-  sessionHistory: ()=>{
-    return apiClient.get('/session/history');
+  sessionHistory: () => {
+    return apiClient.get("/session/history");
   },
 
+  /* Project Routes */
+
+  getAllTask: (projectId) => {
+    return apiClient.get(`/project/tasks/${projectId}`);
+  },
 };
 
 export default api;

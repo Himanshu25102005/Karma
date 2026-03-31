@@ -319,7 +319,7 @@ router.delete(
   },
 );
 
-/* Complete a Task */
+/* Mark a task as Complete*/
 router.patch("/project/checkTask/:taskId", isloggedIn, async (req, res) => {
   try {
     const { taskId } = req.params;
@@ -373,7 +373,6 @@ router.patch("/project/uncheckTask/:taskId", isloggedIn, async (req, res) => {
       },
     );
 
-    
     if (task) {
       return res.status(200).json({
         success: true,

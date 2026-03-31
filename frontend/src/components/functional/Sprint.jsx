@@ -1,6 +1,11 @@
+'use client'
+import api from "@/services/api";
 import React from 'react'
+import axios from 'axios'
+const Sprint = ({tasks}) => {
 
-const Sprint = () => {
+ const tasks = api.getAllTask(projectId);
+
     return (
         <div className='border-b-1 h-1/2 '>
 
