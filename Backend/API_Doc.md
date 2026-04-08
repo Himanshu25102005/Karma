@@ -14,7 +14,7 @@ The Strava Clone Backend is a robust REST API designed to support a productivity
 * **Badges**: A gamification engine that awards badges based on milestones (sessions count, total focus minutes, streaks).
 
 ### Data Flow (Frontend → Backend → Database)
-1. **Frontend Request**: The React/Next.js client sends an HTTP REST request with JSON payloads (and session cookies).
+1. **Frontend Request**: The React/Next.js client sends an HTTP REST request with JSON payloads (and session cookies.
 2. **Express & Middleware**: The Node.js/Express server receives the request. The `isLoggedIn` middleware checks the session cookie against Passport.js.
 3. **Route Controller**: Valid requests reach route controllers, which extract parameters and body data, enforcing edge-case validation.
 4. **Mongoose Models**: Controllers execute CRUD operations or Aggregation pipelines using Mongoose schemas.
