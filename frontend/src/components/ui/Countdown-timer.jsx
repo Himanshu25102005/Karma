@@ -1,6 +1,17 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
+import Dropdown from "@/components/ui/Dropdown";
+import {
+  Select,
+  SelectContent,
+  SelectGroup,
+  SelectItem,
+  SelectLabel,
+  SelectSeparator,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/Dropdown";
 import { useAnimate } from "framer-motion";
 import { IconBell } from "@tabler/icons-react";
 import { Preahvihear } from "next/font/google";
@@ -14,10 +25,25 @@ const HOUR = MINUTE * 60;
 const DAY = HOUR * 24;
 
 
+
+
 export default function ShiftingCountdown() {
-  const [isStart, setIsStart] = useState(false);
   return (
     <section className="bg-white text-black dark:bg-black dark:text-white transition-colors duration-500 p-4  border-2 border-dashed">
+      <div className=" p-4 w-full max-w-5xl items-center  mx-auto flex justify-start items-center gap-4">
+        <Select>
+          <SelectTrigger className="w-[200px]">
+            <SelectValue placeholder="Choose a Clock Mode" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectGroup>
+              <SelectItem value="timer" className={`text-white`}>Timer</SelectItem>
+              <SelectItem value="stopwatch">Stopwatch</SelectItem>
+            </SelectGroup>
+          </SelectContent>
+        </Select>
+      </div>
+
       <div className="flex w-full max-w-5xl items-center mx-auto">
         <CountdownItem unit="Day" label="Days" />
         <CountdownItem unit="Hour" label="Hours" />
@@ -25,12 +51,11 @@ export default function ShiftingCountdown() {
         <CountdownItem unit="Second" label="Seconds" />
       </div>
 
-      <div className="border-2 border-dashed border-white p-4 w-full max-w-5xl items-center mx-auto flex justify-center items-center gap-4">
-        <button className={`border-2 border-solid border-gray-400 text-4xl p-2 rounded-xl ${isStart ? 'cursor-pointer' : 'cursor-not-allowed'
-          }`} onClick={setIsStart(prev => !prev)}  >
+      <div className=" p-3 w-full max-w-5xl items-center mx-auto flex justify-center items-center gap-4">
+        <button className="border-2 border-solid borde-white text-4xl p-2 rounded-xl">
           Start Session
         </button>
-        <button className="cursor-pointer border-2 border-solid border-gray-400 text-4xl p-2 rounded-xl  ">
+        <button className="border-2 border-solid borde-white text-4xl p-2 rounded-xl">
           End Session
         </button>
       </div>
@@ -48,7 +73,7 @@ const CountdownItem = ({ unit, label }) => {
 
   return (
     <>
-      <div className="flex flex-1 flex-col items-center justify-center gap-1 px-4 py-6 md:gap-2 border-2 border-solid border-white">
+      <div className="flex flex-1 flex-col items-center justify-center gap-1 px-4 py-6 md:gap-2 ">
         <div className="relative w-full overflow-hidden text-center">
           <span
             ref={ref}
