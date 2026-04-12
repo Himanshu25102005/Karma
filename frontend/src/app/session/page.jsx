@@ -1,7 +1,7 @@
 'use client'
 
 import React, { useState } from 'react';
-import { SmoothCursor } from "../../components/ui/Smooth-cursor"
+import SmoothCursor from "../../components/ui/Smooth-cursor"
 import { FloatingDock } from "../../components/ui/Floating-dock";
 import Navbar from "../../components/functional/Navbar";
 import Activity from "../../components/functional/Activity";
@@ -81,7 +81,11 @@ const page = () => {
   const [isDark, setIsDark] = useState(true);
   return (
     <>
-      <SmoothCursor />
+      <SmoothCursor
+        spinDuration={2}
+        hideDefaultCursor
+        parallaxOn
+        hoverDuration={0.2} />
       <Navbar />
       <div className="absolute inset-0 opacity-20 pointer-events-none">
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
@@ -102,28 +106,25 @@ const page = () => {
 
         {/* Main Outer Div */}
 
-        <div className='border-2 border-dashed h-200 mt-2 border-white flex flex-wrap p-3 gap-5'>
+        <div className='border-2 border-dashed h-[94vh] overflow-hidden mt-2 border-white flex items-center p-3 gap-5'>
 
-          {/* Sprint's Div */}
           <div className='text-white border-2 border-solid rounded-xl px-8 py-2 border-gray-500 h-full w-1/4'>
             <Sprint />
           </div>
 
-          {/* Timer's Div */}
-          <div className='text-white h-full w-1/2'>
+          <div className='text-white w-1/2'>
             <Timer />
           </div>
 
-          {/* Activity's Div */}
-          <div className='text-white h-full w-1/5'>
+          <div className='text-white h-full w-1/5 border-2 border-solid rounded-xl border-gray-500  h-full'>
             <Activity />
           </div>
         </div>
 
         {/* Floating Dock */}
-        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50">
+        <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 ">
           <FloatingDock
-            mobileClassName="translate-y-20" // only for demo, remove for production
+            mobileClassName="translate-y-20 " // only for demo, remove for production
             items={links}
           />
         </div>
