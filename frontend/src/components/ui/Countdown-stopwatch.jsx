@@ -18,8 +18,10 @@ const DAY = HOUR * 24;
 export default function ShiftingCountdown() {
 
   const [isStart, setIsStart] = useState(false);
+  const [startTime, setStartTime] = useState(null);
 
   const timerStart = () => {
+    setStartTime(Date.now());
     setIsStart(true);
   }
   return (
@@ -27,14 +29,14 @@ export default function ShiftingCountdown() {
 
 
       <div className="flex w-full max-w-5xl items-center mx-auto">
-        <CountdownItem unit="Day" label="Days" />
-        <CountdownItem unit="Hour" label="Hours" />
-        <CountdownItem unit="Minute" label="Minutes" />
-        <CountdownItem unit="Second" label="Seconds" />
+        <CountdownItem unit="Day" label="Days" isStart={isStart} startTime={startTime} />
+        <CountdownItem unit="Hour" label="Hours" isStart={isStart} startTime={startTime} />
+        <CountdownItem unit="Minute" label="Minutes" isStart={isStart} startTime={startTime} />
+        <CountdownItem unit="Second" label="Seconds" isStart={isStart} startTime={startTime} />
       </div>
 
       <div className=" p-3 w-full max-w-5xl items-center mx-auto flex justify-center items-center gap-10">
-        <button className="border-3 border-solid font-semibold cursor-target borde-white text-4xl p-2 rounded-2xl">
+        <button className="border-3 border-solid font-semibold cursor-target borde-white text-4xl p-2 rounded-2xl" onClick={timerStart}>
           Start Session
         </button>
         <button className="border-3 border-solid cursor-target font-semibold borde-white text-4xl p-2 rounded-2xl">
@@ -45,8 +47,8 @@ export default function ShiftingCountdown() {
   );
 }
 
-const CountdownItem = ({ unit, label }) => {
-  const { ref, time } = useTimer(unit);
+const CountdownItem = ({ unit, label, isStart, startTime }) => {
+  const { ref, time } = useTimer(unit, isStart, startTime); // 3. Pass to useTime
 
   // Pad seconds/minutes with a leading zero if they are single digits
   const display = (unit === "Second" || unit === "Minute" || unit === "Hour")
@@ -73,28 +75,23 @@ const CountdownItem = ({ unit, label }) => {
   );
 };
 
-const useTimer = (unit) => {
+const useTimer = (unit, isStart, startTime) => {
   const [scope, animate] = useAnimate();
   const intervalRef = useRef(null);
   const timeRef = useRef(0);
   const [time, setTime] = useState(0);
 
   useEffect(() => {
-    // Initial check
     handleCountdown();
-
-    // Set up the interval to update every second
     intervalRef.current = setInterval(handleCountdown, 1000);
-
-    // Clean up when the component unmounts
     return () => clearInterval(intervalRef.current);
-  }, [unit]);
+  }, [unit, isStart, startTime]); // ✅ always 3 deps, null on first render is fine
 
   const handleCountdown = async () => {
-    const end = new Date(COUNTDOWN_FROM);
-    const now = new Date();
+    const now = Date.now();
     /* const distance = now - end; */
-    const distance = 0;
+    let distance = (isStart && startTime) ? (now - startTime) : 0;
+
 
     let newTime = 0;
     // Calculate the time based on the unit type
