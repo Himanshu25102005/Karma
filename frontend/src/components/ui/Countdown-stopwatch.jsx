@@ -17,6 +17,7 @@ const DAY = HOUR * 24;
 
 export default function ShiftingCountdown() {
 
+  const [isPause, setIsPause] = useState(false);
   const [isStart, setIsStart] = useState(false);
   const [startTime, setStartTime] = useState(null);
 
