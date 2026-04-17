@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-
+import { IconRestore } from "@tabler/icons-react";
 import { useAnimate } from "framer-motion";
 
 // Configuration constants
@@ -27,6 +27,12 @@ export default function ShiftingCountdown() {
     setIsPause(false);
   };
 
+  const setReset = () => {
+    setElapsedTime(0);
+    setIsPause(false);
+    setIsStart(false);
+  };
+
   const timerPause = () => {
     let currTime = Date.now() - startTime;
     setIsPause(true);
@@ -36,14 +42,13 @@ export default function ShiftingCountdown() {
   };
 
   const handleClck = () => {
-    if(isPause==true) 
-    {
+    if (isPause == true) {
       timerStart()
     }
-    else{
+    else {
       timerPause();
     }
-  }
+  };
 
   return (
     <section className="bg-white text-black dark:bg-black dark:text-white transition-colors duration-500 p-4  ">
@@ -77,6 +82,9 @@ export default function ShiftingCountdown() {
         {/* <button className="border-3 border-solid font-semibold cursor-target borde-white text-4xl p-2 rounded-2xl" onClick={timerStart}>
           Start Session
         </button> */}
+        <button className="border-2 border-solid cursor-target borde-white text-4xl p-2 rounded-2xl" onClick={setReset}>
+          <IconRestore color="#DFDFDF" size={32} />
+        </button>
         <button className="border-3 border-solid cursor-target font-semibold borde-white text-4xl p-2 rounded-2xl">
           End Session
         </button>
