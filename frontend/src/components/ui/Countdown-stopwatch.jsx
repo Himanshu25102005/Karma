@@ -25,30 +25,43 @@ export default function ShiftingCountdown() {
   const timerStart = () => {
     setStartTime(Date.now());
     setIsStart(true);
+    setIsPause(false);
   };
- 
+
   const timerPause = () => {
     let currTime = Date.now() - startTime;
+    setIsPause(true);
+    setIsStart(false);
     setElapsedTime((prev) => prev + currTime);
     console.log(currTime);
   };
+
+  const handleClck = () => {
+    if(isPause==true) 
+    {
+      timerStart()
+    }
+    else{
+      timerPause();
+    }
+  }
 
   return (
     <section className="bg-white text-black dark:bg-black dark:text-white transition-colors duration-500 p-4  ">
 
 
       <div className="flex w-full max-w-5xl items-center mx-auto">
-        <CountdownItem unit="Day" label="Days" isStart={isStart} startTime={startTime} />
-        <CountdownItem unit="Hour" label="Hours" isStart={isStart} startTime={startTime} />
-        <CountdownItem unit="Minute" label="Minutes" isStart={isStart} startTime={startTime} />
-        <CountdownItem unit="Second" label="Seconds" isStart={isStart} startTime={startTime} />
+        <CountdownItem unit="Day" label="Days" isStart={isStart} startTime={startTime} elapsedTime={elapsedTime} />
+        <CountdownItem unit="Hour" label="Hours" isStart={isStart} startTime={startTime} elapsedTime={elapsedTime} />
+        <CountdownItem unit="Minute" label="Minutes" isStart={isStart} startTime={startTime} elapsedTime={elapsedTime} />
+        <CountdownItem unit="Second" label="Seconds" isStart={isStart} startTime={startTime} elapsedTime={elapsedTime} />
       </div>
 
       <div className=" p-3 w-full max-w-5xl items-center mx-auto flex justify-center items-center gap-10">
         {isStart ? (
           <button
             className="border-2 border-solid cursor-target font-semibold border-white text-4xl p-2 px-6 rounded-2xl"
-            onClick={timerPause}
+            onClick={handleClck}
           >
             {isPause ? "Resume Session" : "Pause Session"}
           </button>
@@ -71,8 +84,8 @@ export default function ShiftingCountdown() {
   );
 }
 
-const CountdownItem = ({ unit, label, isStart, startTime }) => {
-  const { ref, time } = useTimer(unit, isStart, startTime); // 3. Pass to useTime
+const CountdownItem = ({ unit, label, isStart, startTime, elapsedTime }) => {
+  const { ref, time } = useTimer(unit, isStart, startTime, elapsedTime); // 3. Pass to useTime
 
   // Pad seconds/minutes with a leading zero if they are single digits
   const display = (unit === "Second" || unit === "Minute" || unit === "Hour")
@@ -99,7 +112,7 @@ const CountdownItem = ({ unit, label, isStart, startTime }) => {
   );
 };
 
-const useTimer = (unit, isStart, startTime) => {
+const useTimer = (unit, isStart, startTime, elapsedTime) => {
   const [scope, animate] = useAnimate();
   const intervalRef = useRef(null);
   const timeRef = useRef(0);
@@ -109,12 +122,14 @@ const useTimer = (unit, isStart, startTime) => {
     handleCountdown();
     intervalRef.current = setInterval(handleCountdown, 1000);
     return () => clearInterval(intervalRef.current);
-  }, [unit, isStart, startTime]); // ✅ always 3 deps, null on first render is fine
+  }, [unit, isStart, startTime, elapsedTime]); // ✅ always 3 deps, null on first render is fine
 
   const handleCountdown = async () => {
     const now = Date.now();
     /* const distance = now - end; */
-    let distance = (isStart && startTime) ? (now - startTime) : 0;
+    const distance = (isStart && startTime)
+      ? (Date.now() - startTime + elapsedTime)
+      : elapsedTime;
 
 
     let newTime = 0;
