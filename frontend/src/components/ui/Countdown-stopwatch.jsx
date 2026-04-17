@@ -20,11 +20,19 @@ export default function ShiftingCountdown() {
   const [isPause, setIsPause] = useState(false);
   const [isStart, setIsStart] = useState(false);
   const [startTime, setStartTime] = useState(null);
+  const [elapsedTime, setElapsedTime] = useState(0);
 
   const timerStart = () => {
     setStartTime(Date.now());
     setIsStart(true);
-  }
+  };
+ 
+  const timerPause = () => {
+    let currTime = Date.now() - startTime;
+    setElapsedTime((prev) => prev + currTime);
+    console.log(currTime);
+  };
+
   return (
     <section className="bg-white text-black dark:bg-black dark:text-white transition-colors duration-500 p-4  ">
 
@@ -37,9 +45,24 @@ export default function ShiftingCountdown() {
       </div>
 
       <div className=" p-3 w-full max-w-5xl items-center mx-auto flex justify-center items-center gap-10">
-        <button className="border-3 border-solid font-semibold cursor-target borde-white text-4xl p-2 rounded-2xl" onClick={timerStart}>
+        {isStart ? (
+          <button
+            className="border-2 border-solid cursor-target font-semibold border-white text-4xl p-2 px-6 rounded-2xl"
+            onClick={timerPause}
+          >
+            {isPause ? "Resume Session" : "Pause Session"}
+          </button>
+        ) : (
+          <button
+            className="border-2 border-solid cursor-target font-semibold border-white text-4xl p-2 px-6 rounded-2xl"
+            onClick={timerStart}
+          >
+            Start Session
+          </button>
+        )}
+        {/* <button className="border-3 border-solid font-semibold cursor-target borde-white text-4xl p-2 rounded-2xl" onClick={timerStart}>
           Start Session
-        </button>
+        </button> */}
         <button className="border-3 border-solid cursor-target font-semibold borde-white text-4xl p-2 rounded-2xl">
           End Session
         </button>
