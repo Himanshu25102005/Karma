@@ -2,28 +2,75 @@
 
 import React, { useEffect, useRef, useState } from "react";
 import { useAnimate } from "framer-motion";
+import { IconBell } from "@tabler/icons-react";
 
 // Configuration constants
-const COUNTDOWN_FROM = "2026-10-01T00:00:00";
+
+// const COUNTDOWN_FROM = Date.now()+twentyFiveMinutes;
 const SECOND = 1000;
 const MINUTE = SECOND * 60;
 const HOUR = MINUTE * 60;
 const DAY = HOUR * 24;
 
+
+
 export default function ShiftingCountdown() {
+  const [savedDistance, setSavedDistance] = useState(null);
+  const [isStart, setIsStart] = useState(false)
+  const [isPause, setIsPause] = useState(false)
+  const [COUNTDOWN_FROM, setCOUNTDOWN_FROM] = useState(0);
+
+  const setCountdown = (val) => {
+    setSavedDistance(val);
+  }
+
+  const timerStart = () => {
+    setIsStart(true);
+    setIsPause(false);
+    setCOUNTDOWN_FROM(Date.now() + savedDistance * 60 * 1000);
+    console.log(isStart)
+  }
+
+  const timerPause = () => {
+    setSavedDistance( COUNTDOWN_FROM-Date.now())
+    setIsStart(false);
+    setIsPause(true);
+    console.log(isStart); 
+  }
   return (
     <section className="bg-white text-black dark:bg-black dark:text-white transition-colors duration-500 p-4">
       <div className="flex w-full max-w-5xl items-center mx-auto">
-        <CountdownItem unit="Day" label="Days" />
-        <CountdownItem unit="Hour" label="Hours" />
-        <CountdownItem unit="Minute" label="Minutes" />
-        <CountdownItem unit="Second" label="Seconds" />
+        <CountdownItem unit="Day" label="Days" COUNTDOWN_FROM={COUNTDOWN_FROM} isStart={isStart} savedDistance={savedDistance} isPause={isPause} />
+        <CountdownItem unit="Hour" label="Hours" COUNTDOWN_FROM={COUNTDOWN_FROM} isStart={isStart} savedDistance={savedDistance} isPause={isPause} />
+        <CountdownItem unit="Minute" label="Minutes" COUNTDOWN_FROM={COUNTDOWN_FROM} isStart={isStart} savedDistance={savedDistance} isPause={isPause} />
+        <CountdownItem unit="Second" label="Seconds" COUNTDOWN_FROM={COUNTDOWN_FROM} isStart={isStart} savedDistance={savedDistance} isPause={isPause} />
       </div>
 
-      <div className=" p-3 w-full max-w-5xl items-center mx-auto flex justify-center items-center gap-10">
-        <button className="border-2 border-solid cursor-target borde-white text-4xl p-2 rounded-xl">
-          Start Session
+      <div className=" p-3 w-full max-w-5xl items-center mx-auto flex justify-evenly items-center gap-10">
+        <button className="border-2 border-solid cursor-target borde-white text-2xl py-1 px-2 rounded-xl" onClick={() => setCountdown(25)}>
+          25 mins
         </button>
+        <button className="border-2 border-solid cursor-target borde-white text-2xl py-1 px-2 rounded-xl" onClick={() => setCountdown(45)}>
+          45 mins
+        </button>
+        <button className="border-2 border-solid cursor-target borde-white text-2xl py-1 px-2 rounded-xl" onClick={() => setCountdown(60)}>
+          60 mins
+        </button>
+        <button className="border-2 border-solid cursor-target borde-white text-2xl py-1 px-2 rounded-xl" onClick={() => setCountdown(90)}>
+          Custom
+        </button>
+      </div>
+      <div className=" p-3 w-full max-w-5xl items-center mx-auto flex justify-center items-center gap-10">
+        {
+          isStart ?
+            <button className="border-2 border-solid cursor-target borde-white text-4xl p-2 rounded-xl" onClick={timerPause}>
+              Pause Session
+            </button>
+            :
+            <button className="border-2 border-solid cursor-target borde-white text-4xl p-2 rounded-xl" onClick={timerStart}>
+              Start Session
+            </button>
+        }
         <button className="border-2 border-solid cursor-target borde-white text-4xl p-2 rounded-xl">
           End Session
         </button>
@@ -32,12 +79,12 @@ export default function ShiftingCountdown() {
   );
 }
 
-const CountdownItem = ({ unit, label }) => {
-  const { ref, time } = useTimer(unit);
+const CountdownItem = ({ unit, label, isStart, COUNTDOWN_FROM, savedDistance, isPause }) => {
+  const { ref, time } = useTimers(unit, COUNTDOWN_FROM, isStart, savedDistance, isPause);
 
   // Pad numbers with leading zeros for a cleaner look
-  const display = (unit === "Second" || unit === "Minute" || unit === "Hour") 
-    ? String(time).padStart(2, '0') 
+  const display = (unit === "Second" || unit === "Minute" || unit === "Hour")
+    ? String(time).padStart(2, '0')
     : time;
 
   return (
@@ -58,7 +105,7 @@ const CountdownItem = ({ unit, label }) => {
   );
 };
 
-const useTimer = (unit) => {
+const useTimers = (unit, COUNTDOWN_FROM, isStart, savedDistance, isPause) => {
   const [scope, animate] = useAnimate();
   const intervalRef = useRef(null);
   const timeRef = useRef(0);
@@ -67,15 +114,15 @@ const useTimer = (unit) => {
   useEffect(() => {
     handleCountdown();
     intervalRef.current = setInterval(handleCountdown, 1000);
-    
+
     return () => clearInterval(intervalRef.current);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [unit]);
+  }, [unit, COUNTDOWN_FROM, isStart, savedDistance, isPause]);
 
   const handleCountdown = async () => {
     const end = new Date(COUNTDOWN_FROM);
     const now = new Date();
-    const distance = end - now;
+    const distance = isStart ? (end - now) : savedDistance ;
 
     let newTime = 0;
     switch (unit) {

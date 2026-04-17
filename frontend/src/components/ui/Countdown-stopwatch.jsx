@@ -6,7 +6,6 @@ import { useAnimate } from "framer-motion";
 
 // Configuration constants
 // const COUNTDOWN_FROM = "2026-04-11T15:00:00";
-const COUNTDOWN_FROM = Date.now();
 const SECOND = 1000;
 const MINUTE = SECOND * 60;
 const HOUR = MINUTE * 60;
@@ -56,6 +55,8 @@ export default function ShiftingCountdown() {
         <CountdownItem unit="Minute" label="Minutes" isStart={isStart} startTime={startTime} elapsedTime={elapsedTime} />
         <CountdownItem unit="Second" label="Seconds" isStart={isStart} startTime={startTime} elapsedTime={elapsedTime} />
       </div>
+
+
 
       <div className=" p-3 w-full max-w-5xl items-center mx-auto flex justify-center items-center gap-10">
         {isStart ? (
@@ -125,7 +126,6 @@ const useTimer = (unit, isStart, startTime, elapsedTime) => {
   }, [unit, isStart, startTime, elapsedTime]); // ✅ always 3 deps, null on first render is fine
 
   const handleCountdown = async () => {
-    const now = Date.now();
     /* const distance = now - end; */
     const distance = (isStart && startTime)
       ? (Date.now() - startTime + elapsedTime)
