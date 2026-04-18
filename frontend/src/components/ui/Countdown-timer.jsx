@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useEffect, useRef, useState } from "react";
-import { IconRestore } from "@tabler/icons-react";
+import { IconRestore, IconPlus } from "@tabler/icons-react";
 import { useAnimate } from "framer-motion";
 
 // Configuration constants
@@ -17,12 +17,14 @@ export default function ShiftingCountdown() {
   const [isPause, setIsPause] = useState(false);
   const [savedTime, setSavedTime] = useState(0);
   const [COUNTDOWN_FROM, setCOUNTDOWN_FROM] = useState();
+  const [val, setVal] = useState(null)
 
   const setPause = () => {
     setIsPause(true);
     setSavedTime(COUNTDOWN_FROM - Date.now());
     setIsStart(false);
   }
+
   const setReset = () => {
     setSavedTime(0);
     setIsPause(false);
@@ -31,6 +33,26 @@ export default function ShiftingCountdown() {
   const setDuration = (val) => {
     setSavedTime(val * 60 * 1000)
   }
+
+  const [form, setForm] = useState({ minutes: "" });
+
+  const handleChange = (e) => {
+    const value = e.target.value;
+    setForm({ minutes: value });
+  };
+
+  // submit → APPLY the change
+  const handleSubmit = (e) => {
+    e.preventDefault();
+
+    const parsed = parseInt(form.minutes);
+
+    if (!isNaN(parsed) && parsed > 0) {
+      setSavedTime(parsed * MINUTE);   
+      setDuration(parsed);             
+      setForm({ minutes: "" });        
+    }
+  };
 
   const setStart = () => {
     setCOUNTDOWN_FROM(Date.now() + savedTime);
@@ -47,6 +69,7 @@ export default function ShiftingCountdown() {
       </div>
 
       <div className=" p-5 w-full max-w-5xl items-center mx-auto flex justify-evenly items-center gap-10">
+
         <button className="border-2 border-solid cursor-target borde-white text-3xl px-2 py-1 rounded-xl" onClick={() => setDuration(25)} >
           25 Mins
         </button>
@@ -56,9 +79,28 @@ export default function ShiftingCountdown() {
         <button className="border-2 border-solid cursor-target borde-white text-3xl px-2 py-1 rounded-xl" onClick={() => setDuration(60)}>
           60 Mins
         </button>
-        <button className="border-2 border-solid cursor-target borde-white text-3xl px-2 py-1 rounded-xl" onClick={() => setDuration(720)}>
-          Custom
-        </button>
+
+        <form
+          onSubmit={handleSubmit}
+          className="flex items-center gap-2 border border-white rounded-xl px-3 py-2 w-fit"
+        >
+          <input
+            type="number"
+            name="minutes"
+            value={form.minutes || ""}
+            onChange={handleChange}
+            placeholder="Custom (in minutes)"
+            className="bg-transparent outline-none text-white placeholder-gray-400 w-40"
+          />
+
+          <button
+            type="submit"
+            className="bg-white cursor-target text-black px-3 py-1 rounded-md hover:bg-gray-200 transition"
+          >
+            Set
+          </button>
+        </form>
+        
       </div>
 
       <div className=" p-3 w-full max-w-5xl items-center mx-auto flex justify-center items-center gap-10">
