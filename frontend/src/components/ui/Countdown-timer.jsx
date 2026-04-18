@@ -62,7 +62,7 @@ export default function ShiftingCountdown() {
   return (
     <section className="bg-white text-black dark:bg-black dark:text-white transition-colors duration-500 p-4">
       <div className="flex w-full max-w-5xl items-center mx-auto">
-        <CountdownItem unit="Day" label="Days" COUNTDOWN_FROM={COUNTDOWN_FROM} isStart={isStart} savedTime={savedTime} isPause={setPause} />
+        {/* <CountdownItem unit="Day" label="Days" COUNTDOWN_FROM={COUNTDOWN_FROM} isStart={isStart} savedTime={savedTime} isPause={setPause} /> */}
         <CountdownItem unit="Hour" label="Hours" COUNTDOWN_FROM={COUNTDOWN_FROM} isStart={isStart} savedTime={savedTime} isPause={setPause} />
         <CountdownItem unit="Minute" label="Minutes" COUNTDOWN_FROM={COUNTDOWN_FROM} isStart={isStart} savedTime={savedTime} isPause={setPause} />
         <CountdownItem unit="Second" label="Seconds" COUNTDOWN_FROM={COUNTDOWN_FROM} isStart={isStart} savedTime={savedTime} isPause={setPause} />
@@ -90,7 +90,7 @@ export default function ShiftingCountdown() {
             value={form.minutes || ""}
             onChange={handleChange}
             placeholder="Custom (in minutes)"
-            className="bg-transparent outline-none text-white placeholder-gray-400 w-40"
+            className="bg-transparent outline-none text-white placeholder-gray-400 w-44"
           />
 
           <button
@@ -100,7 +100,7 @@ export default function ShiftingCountdown() {
             Set
           </button>
         </form>
-        
+
       </div>
 
       <div className=" p-3 w-full max-w-5xl items-center mx-auto flex justify-center items-center gap-10">

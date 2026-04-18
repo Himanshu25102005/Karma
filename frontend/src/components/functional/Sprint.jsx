@@ -76,12 +76,12 @@ const Sprint = ({ }) => {
         <div className='h-1/2 '>
 
             {/* Heading */}
-            <div className='text-left p-1 mb-2 font-semibold text-4xl'>
+            <div className='text-left p-3 mb-2 font-semibold text-4xl'>
                 Today's Sprint
             </div>
 
             {/* Tasks Section */}
-            <div className="flex px-10 border-2 border-solid rounded-xl h-full p-2">
+            <div className="flex px-10 border-2 border-solid rounded-xl h-full px-2 py-13">
 
 
                 {/* LEFT SIDE (continuous line system) */}
@@ -102,14 +102,14 @@ const Sprint = ({ }) => {
 
                     {tasks?.map((task, index) => (
                         <div className={`border-2 border-white rounded-2xl p-2  flex gap-5 items-center`}>
-                            <button onClick={completeTask(task._id)} className={`${task.isCompleted ? 'bg-gray-900' : 'border-transparent'}h-10 w-10 border-2 border-white rounded-xl`}></button>
+                            <button onClick={completeTask(task._id)} className={`${task.isCompleted ? 'bg-gray-900' : 'border-transparent'}h-10 w-10 border-2 border-white rounded-xl `}></button>
                             <p className={`text-2xl ${task.isCompleted ? 'line-through opacity-50' : ''}`}>{task.description}</p>
                         </div>
                     ))}
 
                     {/* Add Task Div */}
                     <form action="" onSubmit={addNewTask} className="border-2 border-white rounded-2xl p-2 flex gap-5 items-center">
-                        <button type="submit" className="h-10 cursor-pointer w-10  flex justify-center items-center rounded-xl">
+                        <button type="submit" className="h-10 cursor-pointer w-10  flex justify-center items-center rounded-xl cursor-target">
                             <IconPlus color="#DFDFDF" size={32} /></button>
                         <input placeholder="Add Task" onChange={addTaskOnChange} name="description" value={newTask} className="text-2xl" />
                     </form>

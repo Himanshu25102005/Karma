@@ -55,7 +55,7 @@ export default function ShiftingCountdown() {
 
 
       <div className="flex w-full max-w-5xl items-center mx-auto">
-        <CountdownItem unit="Day" label="Days" isStart={isStart} startTime={startTime} elapsedTime={elapsedTime} />
+        {/* <CountdownItem unit="Day" label="Days" isStart={isStart} startTime={startTime} elapsedTime={elapsedTime} /> */}
         <CountdownItem unit="Hour" label="Hours" isStart={isStart} startTime={startTime} elapsedTime={elapsedTime} />
         <CountdownItem unit="Minute" label="Minutes" isStart={isStart} startTime={startTime} elapsedTime={elapsedTime} />
         <CountdownItem unit="Second" label="Seconds" isStart={isStart} startTime={startTime} elapsedTime={elapsedTime} />

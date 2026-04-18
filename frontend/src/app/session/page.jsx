@@ -106,9 +106,9 @@ const page = () => {
 
         {/* Main Outer Div */}
 
-        <div className='border-2 border-dashed h-[94vh] overflow-hidden mt-2 border-white flex items-center p-3 gap-5'>
+        <div className=' h-[94vh] overflow-hidden mt-2 border-white flex items-center p-3 gap-5'>
 
-          <div className='text-white border-2 border-solid rounded-xl px-8 py-2 border-gray-500 h-full w-1/4'>
+          <div className='text-white border-1 border-dashed rounded-xl px-8 py-2 border-gray-500 h-full w-1/4'>
             <Sprint />
           </div>
 
@@ -116,7 +116,7 @@ const page = () => {
             <Timer />
           </div>
 
-          <div className='text-white h-full w-1/5 border-2 border-solid rounded-xl border-gray-500  h-full'>
+          <div className='text-white h-full w-1/5 border-1 border-dashed rounded-xl border-gray-500  h-full'>
             <Activity />
           </div>
         </div>

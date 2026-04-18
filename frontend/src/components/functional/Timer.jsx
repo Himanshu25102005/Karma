@@ -1,33 +1,44 @@
-import React, { useState } from 'react'
+import React, { useState } from "react";
 import ShiftingStopwatch from "@/components/ui/Countdown-stopwatch";
 import ShiftingCountdown from "@/components/ui/Countdown-timer";
-import {
-  Select,
-  SelectContent,
-  SelectGroup,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from "@/components/ui/Dropdown";
 
 const Timer = () => {
-  const [mode, setMode] = useState("stopwatch");
+  const [mode, setMode] = useState("stopwatch"); // single source of truth
 
   return (
     <>
-      <div className=" p-4 w-full max-w-5xl items-center  mx-auto flex justify-start items-center gap-4">
-        <Select value={mode} onValueChange={(value) => setMode(value)}>
-          <SelectTrigger className="w-[200px] bg-black border-white text-white">
-            <SelectValue placeholder="Choose a Clock Mode" />
-          </SelectTrigger>
-          <SelectContent className="bg-black border-white">
-            <SelectGroup>
-              <SelectItem value="timer" className={`cursor-target`}>Timer</SelectItem>
-              <SelectItem value="stopwatch" className={`cursor-target`}>Stopwatch</SelectItem>
-            </SelectGroup>
-          </SelectContent>
-        </Select>
+      {/* Switch */}
+      <div className="w-full flex justify-center items-center py-4">
+        <div className="inline-flex items-center rounded-full bg-white/5 border border-white/10 p-1 backdrop-blur-sm">
+
+          {/* Timer */}
+          <button
+            onClick={() => setMode("timer")}
+            className={`px-4 py-3 text-xl cursor-target font-medium rounded-full transition-all
+              ${mode === "timer"
+                ? "bg-white text-black shadow-sm"
+                : "text-white/60 hover:text-white"
+              }`}
+          >
+            Timer
+          </button>
+
+          {/* Stopwatch */}
+          <button
+            onClick={() => setMode("stopwatch")}
+            className={`px-4 py-3 text-xl cursor-target font-medium rounded-full transition-all
+              ${mode === "stopwatch"
+                ? "bg-white text-black shadow-sm"
+                : "text-white/60 hover:text-white"
+              }`}
+          >
+            Stopwatch
+          </button>
+
+        </div>
       </div>
+
+      {/* Content */}
       <div>
         {mode === "stopwatch" ? (
           <ShiftingStopwatch />
@@ -36,7 +47,7 @@ const Timer = () => {
         )}
       </div>
     </>
-  )
-}
+  );
+};
 
-export default Timer
+export default Timer;
