@@ -161,3 +161,4 @@ router.get("/profile/:username", isloggedIn, async (req, res) => {
 
 
 
+module.exports = router;

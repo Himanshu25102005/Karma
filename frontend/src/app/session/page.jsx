@@ -1,10 +1,12 @@
 'use client'
 
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
+import api from "@/services/api";
 import SmoothCursor from "../../components/ui/Smooth-cursor"
 import { FloatingDock } from "../../components/ui/Floating-dock";
 import Navbar from "../../components/functional/Navbar";
 import Activity from "../../components/functional/Activity";
+import ProjectSelector from "../../components/functional/ProjectSelector";
 import Sprint from "../../components/functional/Sprint";
 import Timer from "../../components/functional/Timer";
 import {
@@ -15,8 +17,6 @@ import {
   IconNewSection,
   IconTerminal2,
 } from "@tabler/icons-react";
-import { motion, AnimatePresence } from 'framer-motion';
-import { ChevronDown, Moon, Sun, Check } from 'lucide-react';
 
 const page = () => {
   const links = [
@@ -78,6 +78,27 @@ const page = () => {
     },
   ];
 
+  const [projects, setProjects] = useState([]);
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        const userData = await api.getCurrentUser();
+        const userId = userData.user._id;
+
+        const res = await api.getAllProjects(userId);
+
+        setProjects(res.projects);
+      } catch (e) {
+        console.log(e.message);
+      }
+    }
+
+    fetchProjects();
+  }, [])
+
+
+
   const [isDark, setIsDark] = useState(true);
   return (
     <>
@@ -112,7 +133,8 @@ const page = () => {
             <Sprint />
           </div>
 
-          <div className='text-white w-1/2'>
+          <div className='text-white w-1/2 h-full '>
+          <ProjectSelector/>
             <Timer />
           </div>
 

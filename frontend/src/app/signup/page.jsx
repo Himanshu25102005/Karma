@@ -43,7 +43,7 @@ const page = () => {
                 });
 
                 // 2. Then redirect
-                router.push('/');
+                router.push('/session');
             }
             else {
                 // ERROR: Show a toast or error message

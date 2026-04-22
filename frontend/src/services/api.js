@@ -84,18 +84,21 @@ const api = {
 
   /* Project Routes */
 
+  getAllProjects: (userId) => {
+    return api.apiClient.get("/project", userId);
+  },
+
   getAllTask: (projectId) => {
     return apiClient.get(`/project/tasks/${projectId}`);
   },
 
   addNewTask: (projectId, description) => {
-    return apiClient.post(`/project/AddTask/${projectId}`, description)
+    return apiClient.post(`/project/AddTask/${projectId}`, description);
   },
 
   completeTask: (taskid) => {
-    return apiClient.patch(`/project/checkTask/${taskid}`)
-  }
-
+    return apiClient.patch(`/project/checkTask/${taskid}`);
+  },
 };
 
 export default api;

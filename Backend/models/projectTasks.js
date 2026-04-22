@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const project_task_schema = mongoose.createConnection({
+const project_task_schema = mongoose.Schema({
 projectId:{
     type: mongoose.Schema.Types.ObjectId,
     ref: "projects"
@@ -15,4 +15,4 @@ projectId:{
   },
 });
 
-module.exports = mongoose.model("project_task", project_task_schema);
+export default mongoose.model("project_task", project_task_schema);

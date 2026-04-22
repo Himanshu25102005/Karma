@@ -1,4 +1,5 @@
 const userSchema = require("../models/users");
+const express = require("express");
 const Session = require("../models/focSessions");
 var router = express.Router();
 const Project = require("../models/projects");
@@ -149,7 +150,7 @@ router.get("/project/:id", isloggedIn, async (req, res) => {
       _id: req.params.id,
       userId: req.user._id,
       isActive: true,
-    }).select("name description totalSessions totalMinutes createdAt");
+    }).select("name description type totalSessions totalMinutes createdAt");
 
     if (!project) {
       return res.status(404).json({ error: "Project not found" });
@@ -410,3 +411,6 @@ router.get("/project/tasks/:projectId", isloggedIn, async (req, res) => {
     });
   }
 });
+
+
+module.exports = router;

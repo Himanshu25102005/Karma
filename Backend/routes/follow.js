@@ -124,3 +124,5 @@ router.get("/social/followers/:userId", isloggedIn, async (req, res) => {
     });
   }
 });
+
+module.exports = router;

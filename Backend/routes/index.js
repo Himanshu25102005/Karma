@@ -58,7 +58,7 @@ router.post(
   "/login",
   passport.authenticate("local", {
     failureRedirect: "/login",
-    successRedirect: "/",
+    successRedirect: "/session",
   }),
 );
 
@@ -78,7 +78,8 @@ router.get(
     await checkUser(req.user);
     console.log(req.user);
     const user = req.user
-    res.redirect("http://localhost:3000/");
+    res.redirect("http://localhost:3000/session");
+    
   },
 );
 /* Log out route */

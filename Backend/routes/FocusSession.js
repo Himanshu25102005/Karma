@@ -20,13 +20,11 @@ const isloggedIn = (req, res, next) => {
 
 router.post("/session/start", isloggedIn, async (req, res) => {
   try {
-    // 1. Consistently use projectId
     const { projectId, tag } = req.body;
 
-    // 2. The "Safety Guard": Prevent multiple active sessions
     const activeSession = await Session.findOne({
       userId: req.user._id,
-      status: "running", // This relies on your schema having a status field
+      status: "running", 
     });
 
     if (activeSession) {
@@ -35,13 +33,12 @@ router.post("/session/start", isloggedIn, async (req, res) => {
       });
     }
 
-    // 3. Create the session
     const newSession = await Session.create({
-      projectId, // Links to the Project model
+      projectId, 
       tag,
       userId: req.user._id,
-      status: "running", // Explicitly set if not in schema default
-      startTime: new Date(), // Good practice to set this on start
+      status: "running", 
+      startTime: new Date(), 
     });
 
     res.status(201).json(newSession);
@@ -165,3 +162,6 @@ router.get("/session/history", isloggedIn, async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 });
+
+
+module.exports = router;
