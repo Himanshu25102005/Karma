@@ -18,7 +18,7 @@ import {
   IconTerminal2,
 } from "@tabler/icons-react";
 
-const page = () => {
+const SessionPage = () => {
   const links = [
     {
       title: "Home",
@@ -134,7 +134,7 @@ const page = () => {
           </div>
 
           <div className='text-white w-1/2 h-full '>
-          <ProjectSelector/>
+            <ProjectSelector projects={projects} />
             <Timer />
           </div>
 

@@ -14,6 +14,7 @@ const projectSchema = mongoose.Schema(
     updatedAt: {
       type: Date,
     },
+    color:String,
     type: String,
     description: String,
     userId: {
