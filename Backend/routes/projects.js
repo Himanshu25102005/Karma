@@ -114,6 +114,8 @@ router.get("/project", isloggedIn, async (req, res) => {
       isActive: true,
     };
 
+    console.log("What is Project?", Project);
+
     const [projects, totalProjects] = await Promise.all([
       Project.find(filter)
         .sort({ createdAt: -1 })
@@ -134,6 +136,7 @@ router.get("/project", isloggedIn, async (req, res) => {
       projects,
     });
   } catch (e) {
+    console.error("BACKEND CRASH:", e);
     res.status(500).json({ error: e.message });
   }
 });
@@ -411,6 +414,5 @@ router.get("/project/tasks/:projectId", isloggedIn, async (req, res) => {
     });
   }
 });
-
 
 module.exports = router;

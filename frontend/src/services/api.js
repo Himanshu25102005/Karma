@@ -84,8 +84,8 @@ const api = {
 
   /* Project Routes */
 
-  getAllProjects: (userId) => {
-    return api.apiClient.get("/project", userId);
+  getAllProjects: () => {
+    return apiClient.get("/project");
   },
 
   getAllTask: (projectId) => {

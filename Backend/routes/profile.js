@@ -1,7 +1,8 @@
+const express = require("express"); 
+var router = express.Router();
 const userSchema = require("../models/users");
 const Session = require("../models/focSessions");
-const Streak = require("../models/streak");
-var router = express.Router();
+const streak = require("../utils/streak");
 const Project = require("../models/projects");
 const passport = require("passport");
 const projects = require("../models/projects");
@@ -18,7 +19,7 @@ const isloggedIn = (req, res, next) => {
 /* Get own profile */
 router.get("/profile/me", isloggedIn, async (req, res) => {
   try {
-    const profile = await User.findById(req.user._id);
+    const profile = await userSchema.findById(req.user._id);
 
     if (!profile) {
       return res.status(404).json({ error: "profile doesn't exist" });
@@ -29,6 +30,7 @@ router.get("/profile/me", isloggedIn, async (req, res) => {
       data: profile,
     });
   } catch (e) {
+    console.error("FULL ERROR STACK:", e);
     res.status(500).json({ error: e.message });
   }
 });

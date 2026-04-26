@@ -13,6 +13,7 @@ var logger = require("morgan");
 var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var projectRouter = require("./routes/projects");
+var profileRouter = require("./routes/profile");
 
 var app = express();
 //db connection
@@ -20,21 +21,11 @@ connectDB();
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://hoppscotch.io"], // The URL of your Next.js frontend
+    origin: ["http://localhost:3000", "https://hoppscotch.io"],
     methods: ["GET", "POST", "PUT", "DELETE"],
-    credentials: true, // MANDATORY for cookies/Passport sessions
+    credentials: true,
   }),
 );
-
-// view engine setup
-app.set("views", path.join(__dirname, "views"));
-app.set("view engine", "ejs");
-passport.use(user.createStrategy());
-app.use(logger("dev"));
-app.use(express.json());
-app.use(express.urlencoded({ extended: false }));
-app.use(cookieParser());
-app.use(express.static(path.join(__dirname, "public")));
 
 //Session Configuration
 app.use(
@@ -50,6 +41,16 @@ app.use(
   }),
 );
 
+// view engine setup
+app.set("views", path.join(__dirname, "views"));
+app.set("view engine", "ejs");
+passport.use(user.createStrategy());
+app.use(logger("dev"));
+app.use(express.json());
+app.use(express.urlencoded({ extended: false }));
+app.use(cookieParser());
+app.use(express.static(path.join(__dirname, "public")));
+
 // Initialize Passport
 app.use(passport.initialize());
 
@@ -61,7 +62,8 @@ passport.deserializeUser(user.deserializeUser());
 // Now your routes can follow
 app.use("/", indexRouter);
 app.use("/users", usersRouter);
-app.use("/project", projectRouter);
+app.use("/", projectRouter);
+app.use("/", profileRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

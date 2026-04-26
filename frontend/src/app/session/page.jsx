@@ -83,13 +83,16 @@ const SessionPage = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const userData = await api.getCurrentUser();
-        const userId = userData.user._id;
+        const userData = await api.getProfile();
+        const userId = userData.data.data._id;
+        console.log(userId);
 
-        const res = await api.getAllProjects(userId);
-
+        const res = await api.getAllProjects();
+        console.log("Full response data:", res.data);
         setProjects(res.projects);
+        console.log(projects);
       } catch (e) {
+        console.log("error: ")
         console.log(e.message);
       }
     }
@@ -156,4 +159,4 @@ const SessionPage = () => {
   );
 }
 
-export default page
+export default SessionPage

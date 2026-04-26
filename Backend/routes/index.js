@@ -8,7 +8,7 @@ require("./auth");
 
 const isloggedIn = (req, res, next) => {
   if (req.isAuthenticated()) return next();
-  else res.redirect("/login");
+  else res.redirect("/signup");
 };
 
 /* Funtion to check username is already in use or not */
@@ -57,7 +57,7 @@ router.post("/signup", async (req, res) => {
 router.post(
   "/login",
   passport.authenticate("local", {
-    failureRedirect: "/login",
+    failureRedirect: "/signup",
     successRedirect: "/session",
   }),
 );
@@ -73,13 +73,11 @@ router.get(
 /* Google Callback Route */
 router.get(
   "/auth/google/callback",
-  passport.authenticate("google", { failureRedirect: "http://localhost:3000/login" }),
-  async (req, res) => {
-    await checkUser(req.user);
-    console.log(req.user);
-    const user = req.user
-    res.redirect("http://localhost:3000/session");
-    
+  passport.authenticate("google"),
+  (req, res) => {
+    req.session.save(() => {
+      res.redirect("http://localhost:3000/session");
+    });
   },
 );
 /* Log out route */

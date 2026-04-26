@@ -7,7 +7,7 @@ import { motion } from "motion/react";
 import { LampContainer } from "../../components/ui/Lamp";
 import axios from "axios";
 
-const page = () => {
+const Signuppage = () => {
     const [form, setform] = useState({
         email: "",
         username: "",
@@ -351,4 +351,4 @@ const page = () => {
 
 }
 
-export default page
+export default Signuppage

@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const projectSchema = mongoose.Schema(
   {
@@ -7,6 +7,10 @@ const projectSchema = mongoose.Schema(
       required: true,
       trim: true,
     },
+    isCurrent: {
+      type: Boolean,
+      default: false,
+    },
     createdAt: {
       type: Date,
       default: Date.now,
@@ -14,7 +18,7 @@ const projectSchema = mongoose.Schema(
     updatedAt: {
       type: Date,
     },
-    color:String,
+    color: String,
     type: String,
     description: String,
     userId: {
@@ -47,4 +51,4 @@ const projectSchema = mongoose.Schema(
   },
 );
 
-export default mongoose.model("project", projectSchema);
+module.exports = mongoose.model("Project", projectSchema);
