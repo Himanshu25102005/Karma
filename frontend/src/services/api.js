@@ -19,7 +19,7 @@ apiClient.interceptors.response.use(
     return response;
   },
   function onRejected(error) {
-    if (error.response.status == 401) {
+    if (error.response?.status === 401) {
       console.log("Session Expired");
     }
     return Promise.reject(error);
