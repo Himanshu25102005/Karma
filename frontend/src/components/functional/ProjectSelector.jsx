@@ -54,7 +54,7 @@ const ProjectSelector = ({ projects }) => {
                 </div>
                 {/* Mark as Selected */}
                 <div className='p-1 '>
-                  <IconCheck color="#DFDFDF" className='bg-white/5'  size={25} />
+                  <IconCheck color="#DFDFDF" className='bg-white/5' size={25} />
                 </div>
               </div>
             </div>
