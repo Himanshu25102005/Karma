@@ -146,7 +146,7 @@ const SessionPage = () => {
           </div>
 
           <div className='text-white w-1/2 h-full '>
-            <ProjectSelector projects={projects} setProjects={setProjects} />
+            <ProjectSelector projects={projects} setProjects={setProjects}  />
             <Timer />
           </div>
 
