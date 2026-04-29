@@ -300,13 +300,13 @@ const Page = () => {
                         <div className="text-center p-3">
                             <div className="text-center p-3">
                                 <div className="text-[#6E6E70]">
-                                    Don't have an account yet? {" "}
+                                    Dont have an account yet? {" "}
                                     <motion.a
-                                        href="http://localhost:3000/"
+                                        href="http://localhost:3000/signup"
                                         className="relative text-[#E4E4E4] cursor-pointer inline-block"
                                         whileHover="hover"
                                     >
-                                        Log in
+                                        Sign up
                                         <motion.div
                                             className="absolute bottom-0 left-0 h-[1px] bg-[#E4E4E4]"
                                             initial={{ width: 0 }}

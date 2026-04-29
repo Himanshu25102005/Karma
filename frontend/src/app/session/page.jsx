@@ -83,14 +83,21 @@ const SessionPage = () => {
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        const userData = await api.getProfile();
-        const userId = userData.data.data._id;
-        console.log(userId);
+        // const userData = await api.getProfile();
+        // const userId = userData.data.data._id;
+
+        // /* Print UserId */
+        // console.log(userId);
+
 
         const res = await api.getAllProjects();
+
+        /* Priont the full recieved Object */
         console.log("Full response data:", res.data);
-        setProjects(res.projects);
-        console.log(projects);
+        setProjects(res.data.projects);
+
+
+
       } catch (e) {
         console.log("error: ")
         console.log(e.message);
@@ -99,6 +106,8 @@ const SessionPage = () => {
 
     fetchProjects();
   }, [])
+
+  console.log("RENDER CHECK - Current Projects:", projects);
 
 
 
@@ -137,7 +146,7 @@ const SessionPage = () => {
           </div>
 
           <div className='text-white w-1/2 h-full '>
-            <ProjectSelector projects={projects} />
+            <ProjectSelector projects={projects} setProjects={setProjects} />
             <Timer />
           </div>
 

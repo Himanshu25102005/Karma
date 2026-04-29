@@ -88,6 +88,14 @@ const api = {
     return apiClient.get("/project");
   },
 
+  createProject: (data) => {
+    return apiClient.post('/project/create', data)
+  },
+
+  updateProject: (projectId, data) => {
+    return apiClient.patch(`/project/update/${projectId}`, data)
+  },
+
   getAllTask: (projectId) => {
     return apiClient.get(`/project/tasks/${projectId}`);
   },

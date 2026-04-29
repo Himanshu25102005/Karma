@@ -22,7 +22,7 @@ connectDB();
 app.use(
   cors({
     origin: ["http://localhost:3000", "https://hoppscotch.io"],
-    methods: ["GET", "POST", "PUT", "DELETE"],
+    methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
   }),
 );

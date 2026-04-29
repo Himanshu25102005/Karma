@@ -18,7 +18,7 @@ const isloggedIn = (req, res, next) => {
 
 router.post("/project/create", isloggedIn, async (req, res) => {
   try {
-    const { name, description } = req.body;
+    const { name, description, color, type } = req.body;
 
     if (!name || name.trim().length === 0) {
       return res.status(400).json({
@@ -36,7 +36,9 @@ router.post("/project/create", isloggedIn, async (req, res) => {
     }
 
     const newProject = await Project.create({
-      name: name.trim().toLowerCase(),
+      name: name,
+      color: color,
+      type: type,
       description: description,
       userId: req.user._id,
     });
@@ -74,7 +76,7 @@ router.patch("/project/complete/:id", isloggedIn, async (req, res) => {
 
 router.patch("/project/update/:id", isloggedIn, async (req, res) => {
   try {
-    const { name, description } = req.body; // Get fields to update
+    const { name, description, type, isCurrent, color } = req.body;
 
     const updateProject = await Project.findOne({
       userId: req.user._id,
@@ -87,8 +89,23 @@ router.patch("/project/update/:id", isloggedIn, async (req, res) => {
     }
 
     // Update fields if provided
-    if (name) updateProject.name = name.trim().toLowerCase();
+    if (name) updateProject.name = name;
     if (description !== undefined) updateProject.description = description;
+    if (color) updateProject.color = color;
+    if (type) updateProject.type = type;
+    if (isCurrent == true) {
+      updateProject.isCurrent = true;
+
+      await Project.updateMany(
+        {
+          _id: { $ne: req.params.id },
+          userId: req.user._id,
+        },
+        {
+          $set: { isCurrent: false },
+        },
+      );
+    }
 
     await updateProject.save();
 
@@ -121,7 +138,9 @@ router.get("/project", isloggedIn, async (req, res) => {
         .sort({ createdAt: -1 })
         .skip(skip)
         .limit(limit)
-        .select("name description totalSessions totalMinutes createdAt"),
+        .select(
+          "name description color type totalSessions isCurrent totalMinutes createdAt ",
+        ),
 
       Project.countDocuments(filter),
     ]);
