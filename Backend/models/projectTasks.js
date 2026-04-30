@@ -1,4 +1,4 @@
-import mongoose from "mongoose";
+const mongoose = require("mongoose");
 
 const project_task_schema = mongoose.Schema({
 projectId:{
@@ -15,4 +15,6 @@ projectId:{
   },
 });
 
-export default mongoose.model("project_task", project_task_schema);
+module.exports = mongoose.model("project_task", project_task_schema);
+
+

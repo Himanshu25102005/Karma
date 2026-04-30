@@ -96,8 +96,8 @@ const api = {
     return apiClient.patch(`/project/update/${projectId}`, data)
   },
 
-  getAllTask: (projectId) => {
-    return apiClient.get(`/project/tasks/${projectId}`);
+  getAllTask: (projectId, data) => {
+    return apiClient.get(`/project/tasks/${projectId}`, data);
   },
 
   addNewTask: (projectId, description) => {

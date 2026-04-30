@@ -2,11 +2,12 @@
 import api from "@/services/api";
 import { useProjectStore } from '../../store/useProjectStore'
 import { useParams } from 'next/navigation';
-import React, { useState, useEffect } from 'react'
+import React, { useState, useEffect, Fragment } from 'react'
 import { IconPlus } from "@tabler/icons-react";
+import { convertSegmentPathToStaticExportFilename } from "next/dist/shared/lib/segment-cache/segment-value-encoding";
 const Sprint = ({ }) => {
 
-    const projectId = useProjectStore((state) => state.projectId);
+    const currentProjectId = useProjectStore((state) => state.currentProjectId);
     const [newTask, setNewTasks] = useState('');
     const [tasks, setTasks] = useState([]);
 
@@ -15,13 +16,15 @@ const Sprint = ({ }) => {
         try {
             if (!newTask.trim()) return;
 
-            const res = await api.addNewTask(projectId, newTask);
+            const res = await api.addNewTask(currentProjectId, { description: newTask });
 
             if (!res.data.success) {
                 console.log("Cannot Add Task")
             }
 
-            setTasks((prevTasks) => [...prevTasks, res.data.task]);
+            if (res.data.success) {
+                setTasks((prev) => [...prev, res.data.task]);
+            }
 
             setNewTasks('');
 
@@ -45,9 +48,9 @@ const Sprint = ({ }) => {
                 setTasks((prevTasks) =>
                     prevTasks.map((task) => {
                         if (task._id === taskId) {
-                            return { ...task, isCompleted: true }; // updated copy
+                            return { ...task, isCompleted: true };
                         }
-                        return task; // unchanged
+                        return task;
                     })
                 );
             }
@@ -59,15 +62,15 @@ const Sprint = ({ }) => {
 
     useEffect(() => {
 
-        if (!projectId) return;
+        if (!currentProjectId) return;
 
         const getAllTasks = async () => {
-            const res = await api.getAllTask(projectId);
-            setTasks(res.data.tasks);
+            const res = await api.getAllTask(currentProjectId);
+            setTasks(res.data.tasks.tasks);
         }
 
         getAllTasks();
-    }, [projectId])
+    }, [currentProjectId])
 
 
 
@@ -77,7 +80,7 @@ const Sprint = ({ }) => {
 
             {/* Heading */}
             <div className='text-left p-3 mb-2 font-semibold text-4xl'>
-                Today's Sprint
+                Today&apos;s Sprint
             </div>
 
             {/* Tasks Section */}
@@ -88,10 +91,10 @@ const Sprint = ({ }) => {
                 <div className="flex flex-col items-center mr-4 ">
 
                     {tasks?.map((task) => (
-                        <>
-                            <div key={task.id} className={`h-5 w-5 ${task.isCompleted ? 'bg-green-500' : 'bg-white'} bg-white rounded-full`}></div>
-                            <div className={`w-1 ${task.isCompleted ? 'bg-yellow-500' : 'bg-white'} h-10 bg-white`}></div>
-                        </>
+                        <Fragment key={task._id}>
+                            <div className={`h-5 w-5 ${task.isCompleted ? 'bg-green-500' : 'bg-white'} rounded-full`}></div>
+                            <div className={`w-1 ${task.isCompleted ? 'bg-yellow-500' : 'bg-white'} h-10`}></div>
+                        </Fragment>
                     ))}
 
 
@@ -100,9 +103,9 @@ const Sprint = ({ }) => {
                 {/* RIGHT SIDE (tasks with gap) */}
                 <div className="flex flex-col gap-5 w-full ">
 
-                    {tasks?.map((task, index) => (
-                        <div className={`border-2 border-white rounded-2xl p-2  flex gap-5 items-center`}>
-                            <button onClick={completeTask(task._id)} className={`${task.isCompleted ? 'bg-gray-900' : 'border-transparent'}h-10 w-10 border-2 border-white rounded-xl `}></button>
+                    {tasks?.map((task) => (
+                        <div key={task._id} className={`border-2 border-white rounded-2xl p-2  flex gap-5 items-center`}>
+                            <button onClick={() => { completeTask(task._id) }} className={`${task.isCompleted ? 'bg-gray-900' : 'border-transparent'}h-10 w-10 border-2 border-white rounded-xl `}></button>
                             <p className={`text-2xl ${task.isCompleted ? 'line-through opacity-50' : ''}`}>{task.description}</p>
                         </div>
                     ))}

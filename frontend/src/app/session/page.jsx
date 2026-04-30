@@ -9,6 +9,7 @@ import Activity from "../../components/functional/Activity";
 import ProjectSelector from "../../components/functional/ProjectSelector";
 import Sprint from "../../components/functional/Sprint";
 import Timer from "../../components/functional/Timer";
+import useProjectStore from '@/store/useProjectStore';
 import {
   IconBrandGithub,
   IconBrandX,
@@ -78,24 +79,22 @@ const SessionPage = () => {
     },
   ];
 
+  const setCurrentProjectId = useProjectStore((state) => state.setCurrentProjectId);
+
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-        // const userData = await api.getProfile();
-        // const userId = userData.data.data._id;
-
-        // /* Print UserId */
-        // console.log(userId);
-
 
         const res = await api.getAllProjects();
 
         /* Priont the full recieved Object */
         console.log("Full response data:", res.data);
         setProjects(res.data.projects);
+        /* const currentProject = projects.find(p => p.isCurrent) || null;
 
+        setCurrentProjectId(currentProject?._id || null); */
 
 
       } catch (e) {
@@ -106,6 +105,20 @@ const SessionPage = () => {
 
     fetchProjects();
   }, [])
+
+  useEffect(() => {
+    if (!projects || projects.length === 0) return;
+
+    const currentProject = projects.find(p => p.isCurrent);
+
+    if (currentProject) {
+      console.log("SETTING ID:", currentProject._id);
+      setCurrentProjectId(currentProject._id);
+    } else {
+      console.log("NO CURRENT PROJECT FOUND");
+      setCurrentProjectId(null);
+    }
+  }, [projects]);  // 🔥 THIS IS THE KEY
 
   console.log("RENDER CHECK - Current Projects:", projects);
 
@@ -146,7 +159,7 @@ const SessionPage = () => {
           </div>
 
           <div className='text-white w-1/2 h-full '>
-            <ProjectSelector projects={projects} setProjects={setProjects}  />
+            <ProjectSelector projects={projects} setProjects={setProjects} />
             <Timer />
           </div>
 

@@ -7,7 +7,9 @@ import { useStateManager } from 'react-select';
 
 
 const ProjectSelector = ({ projects, setProjects }) => {
-  const setCurrentProjectId = useProjectStore((state) => state.setCurrentProjectId)
+  const setCurrentProjectId = useProjectStore((state) => state.setCurrentProjectId);
+  const print = useProjectStore((state) => state.print);
+
 
   const [form, setForm] = useState({
     name: "",
@@ -15,6 +17,7 @@ const ProjectSelector = ({ projects, setProjects }) => {
     description: "",
     type: "",
   });
+  print();
   const [dropdown, setDropdown] = useState(false);
   const [isSelected, setIsSelected] = useState(false);
   const [CreateForm, setCreateForm] = useState(false);
@@ -36,7 +39,10 @@ const ProjectSelector = ({ projects, setProjects }) => {
   };
 
   const showDropdown = () => {
-    if (dropdown == true) setDropdown(false);
+    if (dropdown == true) {
+      setDropdown(false);
+      setCreateForm(false);
+    }
     else setDropdown(true);
   }
 

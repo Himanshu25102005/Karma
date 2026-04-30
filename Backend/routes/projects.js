@@ -3,7 +3,7 @@ const express = require("express");
 const Session = require("../models/focSessions");
 var router = express.Router();
 const Project = require("../models/projects");
-const projTask = require("../models/projectTasks");
+const project_task = require("../models/projectTasks");
 
 /* Middleware to check if the user is logged in  */
 const isloggedIn = (req, res, next) => {
@@ -289,8 +289,9 @@ router.post("/project/AddTask/:projectId", isloggedIn, async (req, res) => {
     const projectId = req.params.projectId;
     const description = req.body.description;
 
-    const task = await projTask.create({
+    const task = await project_task.create({
       description: description,
+      projectId: projectId,
     });
 
     await Project.findByIdAndUpdate(projectId, {
@@ -302,6 +303,7 @@ router.post("/project/AddTask/:projectId", isloggedIn, async (req, res) => {
       task: task,
     });
   } catch (e) {
+    console.log(e);
     res.status(500).json({
       error: e.message,
     });
