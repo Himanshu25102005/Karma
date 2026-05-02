@@ -1,10 +1,10 @@
-const UserBadge = require("../models/userbadge");
-const Badge = require("../models/Badge");
+const userbadge = require("../models/userbadge");
+const Badge = require("../models/badges");
 
 const checkAndAwardBadges = async (userId, userStats) => {
   try {
     // 1. Get IDs of badges this user ALREADY has
-    const earnedBadgeObjects = await UserBadge.find({ userId }).select("badgeId");
+    const earnedBadgeObjects = await userbadge.find({ userId }).select("badgeId");
     const earnedBadgeIds = earnedBadgeObjects.map(b => b.badgeId.toString());
 
     // 2. Find badges they haven't earned yet
@@ -33,7 +33,7 @@ const checkAndAwardBadges = async (userId, userStats) => {
 
       // 4. Allocate if eligible
       if (isEligible) {
-        const newBadge = await UserBadge.create({
+        await userbadge.create({
           userId: userId,
           badgeId: badge._id
         });
@@ -41,9 +41,12 @@ const checkAndAwardBadges = async (userId, userStats) => {
       }
     }
 
-    return newAwards; // Returns names of newly unlocked badges
+    return newAwards; 
   } catch (error) {
     console.error("Badge Error:", error);
     return [];
   }
 };
+
+// Export using CommonJS
+module.exports = { checkAndAwardBadges };

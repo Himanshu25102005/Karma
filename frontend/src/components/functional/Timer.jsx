@@ -1,22 +1,33 @@
 import React, { useState } from "react";
 import ShiftingStopwatch from "@/components/ui/Countdown-stopwatch";
 import ShiftingCountdown from "@/components/ui/Countdown-timer";
+import { motion } from "framer-motion";
 
 const Timer = () => {
-  const [mode, setMode] = useState("stopwatch"); // single source of truth
+  const [mode, setMode] = useState("stopwatch"); 
 
   return (
     <>
       {/* Switch */}
       <div className="w-full flex justify-center items-center py-4">
-        <div className="inline-flex items-center rounded-full bg-white/5 border border-white/10 p-1 backdrop-blur-sm">
+        <div className="relative inline-flex items-center rounded-full bg-white/5 border border-white/10 p-3 backdrop-blur-sm">
+
+          {/* Sliding Indicator */}
+          <motion.div
+            layout
+            transition={{ type: "spring", stiffness: 300, damping: 25 }}
+            className="absolute top-1 bottom-1 w-1/2 rounded-full bg-white shadow-sm"
+            style={{
+              left: mode === "timer" ? "4px" : "calc(50% + 0px)",
+            }}
+          />
 
           {/* Timer */}
           <button
             onClick={() => setMode("timer")}
-            className={`px-4 py-3 text-xl cursor-target font-medium rounded-full transition-all
+            className={`relative z-10 px-7 py-2 cursor-target text-lg text-center font-medium rounded-full transition-colors
               ${mode === "timer"
-                ? "bg-white text-black shadow-sm"
+                ? "text-black"
                 : "text-white/60 hover:text-white"
               }`}
           >
@@ -26,9 +37,9 @@ const Timer = () => {
           {/* Stopwatch */}
           <button
             onClick={() => setMode("stopwatch")}
-            className={`px-4 py-3 text-xl cursor-target font-medium rounded-full transition-all
+            className={`relative z-10 px-7 py-2 cursor-target text-lg font-medium rounded-full transition-colors
               ${mode === "stopwatch"
-                ? "bg-white text-black shadow-sm"
+                ? "text-black"
                 : "text-white/60 hover:text-white"
               }`}
           >

@@ -1,8 +1,11 @@
 "use client";
-
 import React, { useEffect, useRef, useState } from "react";
 import { IconRestore, IconPlus } from "@tabler/icons-react";
 import { useAnimate } from "framer-motion";
+import useProjectStore from "@/store/useProjectStore";
+import { useUserStore } from "@/store/useUserStore";
+import { motion } from "framer-motion";
+import api from "@/services/api";
 
 // Configuration constants
 /* const COUNTDOWN_FROM = "2026-10-01T00:00:00"; */
@@ -13,6 +16,8 @@ const DAY = HOUR * 24;
 
 export default function ShiftingCountdown() {
 
+  const currentProjectId = useProjectStore((state) => state.currentProjectId);
+  const userId = useUserStore((state) => state.userId);
   const [isStart, setIsStart] = useState(false);
   const [isPause, setIsPause] = useState(false);
   const [savedTime, setSavedTime] = useState(0);
@@ -48,17 +53,25 @@ export default function ShiftingCountdown() {
     const parsed = parseInt(form.minutes);
 
     if (!isNaN(parsed) && parsed > 0) {
-      setSavedTime(parsed * MINUTE);   
-      setDuration(parsed);             
-      setForm({ minutes: "" });        
+      setSavedTime(parsed * MINUTE);
+      setDuration(parsed);
+      setForm({ minutes: "" });
     }
   };
 
-  const setStart = () => {
+  const setStart = async () => {
     setCOUNTDOWN_FROM(Date.now() + savedTime);
     setIsStart(true);
+    const currprojectDetails = await api.getCurrentProjectInfo(currentProjectId);
+    const currentProjectType = currprojectDetails.data.data.type;
+    await api.startSession(currentProjectId, currentProjectType);
   }
 
+  const endSession = async () => {
+    const res = await api.endSession(userId);
+    console.log(res.data);
+    setReset();
+  }
   return (
     <section className="bg-white text-black dark:bg-black dark:text-white transition-colors duration-500 p-4">
       <div className="flex w-full max-w-5xl items-center mx-auto">
@@ -68,21 +81,25 @@ export default function ShiftingCountdown() {
         <CountdownItem unit="Second" label="Seconds" COUNTDOWN_FROM={COUNTDOWN_FROM} isStart={isStart} savedTime={savedTime} isPause={setPause} />
       </div>
 
-      <div className=" p-5 w-full max-w-5xl items-center mx-auto flex justify-evenly items-center gap-10">
+      <div className="p-5 w-full max-w-5xl mx-auto flex justify-evenly items-center gap-6 flex-wrap">
 
-        <button className="border-2 border-solid cursor-target borde-white text-3xl px-2 py-1 rounded-xl" onClick={() => setDuration(25)} >
-          25 Mins
-        </button>
-        <button className="border-2 border-solid cursor-target borde-white text-3xl px-2 py-1 rounded-xl" onClick={() => setDuration(45)}>
-          45 Mins
-        </button>
-        <button className="border-2 border-solid cursor-target borde-white text-3xl px-2 py-1 rounded-xl" onClick={() => setDuration(60)}>
-          60 Mins
-        </button>
+        {[25, 45, 60].map((min) => (
+          <motion.button
+            key={min}
+            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.05 }}
+            onClick={() => setDuration(min)}
+            className="px-4 py-2 text-lg cursor-target rounded-xl border border-white/20 bg-white/[0.04] 
+      hover:bg-white/[0.08] hover:border-white/30 transition-all duration-200 backdrop-blur-sm"
+          >
+            {min} Mins
+          </motion.button>
+        ))}
 
+        {/* Custom Input */}
         <form
           onSubmit={handleSubmit}
-          className="flex items-center gap-2 border border-white rounded-xl px-3 py-2 w-fit"
+          className="flex items-center gap-2 border border-white/20 rounded-xl px-3 py-2 bg-white/[0.03] backdrop-blur-sm"
         >
           <input
             type="number"
@@ -90,34 +107,64 @@ export default function ShiftingCountdown() {
             value={form.minutes || ""}
             onChange={handleChange}
             placeholder="Custom (in minutes)"
-            className="bg-transparent outline-none text-white placeholder-gray-400 w-44"
+            className="bg-transparent outline-none text-white placeholder-gray-400 w-40 text-sm"
           />
 
-          <button
+          <motion.button
+            whileTap={{ scale: 0.9 }}
             type="submit"
-            className="bg-white cursor-target text-black px-3 py-1 rounded-md hover:bg-gray-200 transition"
+            className="px-3 py-1 cursor-target rounded-lg bg-white/10 hover:bg-white/20 border border-white/20 transition"
           >
             Set
-          </button>
+          </motion.button>
         </form>
-
       </div>
 
-      <div className=" p-3 w-full max-w-5xl items-center mx-auto flex justify-center items-center gap-10">
-        {isStart ?
-          <button className="border-2 border-solid cursor-target borde-white text-4xl p-2 rounded-2xl" onClick={setPause}>
+
+      {/* SESSION CONTROLS */}
+      <div className="p-3 w-full max-w-5xl mx-auto flex justify-center items-center gap-6 flex-wrap">
+
+        {/* Start / Pause */}
+        {isStart ? (
+          <motion.button
+            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.04 }}
+            onClick={setPause}
+            className="px-6 py-3 text-2xl cursor-target rounded-2xl border border-yellow-400/30 bg-yellow-400/10 hover:bg-yellow-400/20 transition-all duration-200"
+          >
             Pause Session
-          </button>
-          :
-          <button className="border-2 border-solid cursor-target borde-white text-4xl p-2 rounded-2xl" onClick={setStart}>
+          </motion.button>
+        ) : (
+          <motion.button
+            whileTap={{ scale: 0.95 }}
+            whileHover={{ scale: 1.04 }}
+            onClick={setStart}
+            className="px-6 py-3 text-2xl cursor-target rounded-2xl border border-green-400/30 bg-green-400/10 hover:bg-green-400/20 transition-all duration-200"
+          >
             Start Session
-          </button>}
-        <button className="border-2 border-solid cursor-target borde-white text-4xl p-2 rounded-2xl" onClick={setReset}>
-          <IconRestore color="#DFDFDF" size={32} />
-        </button>
-        <button className="border-2 border-solid cursor-target borde-white text-4xl p-2 rounded-2xl">
+          </motion.button>
+        )}
+
+        {/* Reset */}
+        <motion.button
+          whileTap={{ scale: 0.9 }}
+          whileHover={{ scale: 1.05 }}
+          onClick={setReset}
+          className="p-3 rounded-xl cursor-target border border-white/20 bg-white/[0.04] hover:bg-white/[0.1] transition-all duration-200"
+        >
+          <IconRestore color="#DFDFDF" size={28} />
+        </motion.button>
+
+        {/* End Session */}
+        <motion.button
+          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.04 }}
+          onClick={endSession}
+          className="px-6 py-3 text-2xl cursor-target rounded-2xl border border-red-400/30 bg-red-400/10 hover:bg-red-400/20 transition-all duration-200"
+        >
           End Session
-        </button>
+        </motion.button>
+
       </div>
     </section>
   );

@@ -1,7 +1,7 @@
 'use client'
 import api from "@/services/api";
 import { useProjectStore } from '../../store/useProjectStore'
-import { useParams } from 'next/navigation';
+import { useAnimation, motion } from "framer-motion";
 import React, { useState, useEffect, Fragment } from 'react'
 import { IconPlus, IconCheck } from "@tabler/icons-react";
 import { div } from "framer-motion/client";
@@ -76,51 +76,184 @@ const Sprint = ({ }) => {
 
 
     return (
-        <div className='h-1/2 '>
+        <div className='h-1/2  '>
 
             {/* Heading */}
-            <div className='text-left p-3 mb-2 font-semibold text-4xl'>
-                Today&apos;s Sprint
-            </div>
+            <motion.div
+                initial={{ opacity: 0, y: -10 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.4, ease: "easeOut" }}
+                className="flex items-center justify-between px-4 py-3 mb-3"
+            >
+
+                {/* LEFT: Title */}
+                <div className="flex flex-col">
+                    <span className="text-3xl font-semibold tracking-tight text-white">
+                        Today’s Sprint
+                    </span>
+
+                    {/* subtle underline */}
+                    <div className="mt-1 h-[2px] w-10 bg-white/20 rounded-full" />
+                </div>
+
+                {/* OPTIONAL RIGHT (future use) */}
+                <div className="text-sm text-gray-400">{tasks.length} Tasks</div>
+
+            </motion.div>
 
             {/* Tasks Section */}
-            <div className="flex px-10 border-2 border-solid rounded-xl h-full px-2 py-13">
+            {/*  <div className="flex px-10 h-full py-13 rounded-2xl shadow-[inset_0_0_20px_rgba(255,255,255,0.03)]"> */}
+            <div className="flex px-10 h-full py-13 bg-white/[0.02] rounded-2xl">
 
 
                 {/* LEFT SIDE (continuous line system) */}
-                <div className="flex flex-col items-center mr-4 ">
+                <div className="flex flex-col items-center mr-4 relative">
 
-                    {tasks?.map((task) => (
+                    {/* Vertical base line */}
+                    <div className="absolute top-0 bottom-0 w-[2px] bg-white/10" />
+
+                    {tasks?.map((task, index) => (
                         <Fragment key={task._id}>
-                            <div className={`h-5 w-5 ${task.isCompleted ? 'bg-green-500' : 'bg-white'} rounded-full`}></div>
-                            <div className={`w-1 ${task.isCompleted ? 'bg-yellow-500' : 'bg-white'} h-10`}></div>
+
+                            {/* DOT */}
+                            <motion.div
+                                initial={{ scale: 0, opacity: 0 }}
+                                animate={{ scale: 1, opacity: 1 }}
+                                transition={{
+                                    delay: index * 0.08,
+                                    type: "spring",
+                                    stiffness: 260,
+                                    damping: 18
+                                }}
+                                className={`relative z-10 h-5 w-5 rounded-full flex items-center justify-center
+                            ${task.isCompleted
+                                        ? "bg-green-400 shadow-[0_0_8px_rgba(34,197,94,0.6)]"
+                                        : "bg-white/80"}
+                            `}
+                            >
+                                {/* inner pulse (only if completed) */}
+                                {task.isCompleted && (
+                                    <motion.div
+                                        initial={{ scale: 0 }}
+                                        animate={{ scale: [0.8, 1.2, 1] }}
+                                        transition={{ duration: 0.4 }}
+                                        className="absolute h-full w-full rounded-full bg-green-400/30"
+                                    />
+                                )}
+                            </motion.div>
+
+                            {/* LINE */}
+                            {index !== tasks.length - 1 && (
+                                <motion.div
+                                    initial={{ height: 0 }}
+                                    animate={{ height: 40 }}
+                                    transition={{
+                                        delay: index * 0.08 + 0.05,
+                                        duration: 0.3,
+                                        ease: "easeOut"
+                                    }}
+                                    className={`w-[2px]
+                                  ${task.isCompleted
+                                            ? "bg-gradient-to-b from-green-400 to-yellow-400"
+                                            : "bg-white/20"}
+                                    `}
+                                />
+                            )}
+
                         </Fragment>
                     ))}
-
 
                 </div>
 
                 {/* RIGHT SIDE (tasks with gap) */}
-                <div className="flex flex-col gap-5 w-full ">
+                <div className="flex flex-col gap-5 w-full">
 
-                    {tasks?.map((task) => (
-                        <div key={task._id} className={`border-2 border-white rounded-2xl p-2  flex gap-5 items-center`}>
-                            <button onClick={() => { completeTask(task._id) }} className={`${task.isCompleted ? 'bg-gray-900' : 'border-transparent'} h-10 cursor-target w-10 border-2 border-white rounded-xl `}>
-                                {task.isCompleted?
-                                <IconCheck color="#DFDFDF" className='bg-white/5 rounded-md' size={25} />
-                            :
-                            <p/>}
-                            </button>
-                            <p className={`text-2xl ${task.isCompleted ? 'line-through opacity-50' : ''}`}>{task.description}</p>
-                        </div>
+                    {(Array.isArray(tasks) ? tasks : []).map((task, index) => (
+
+                        <motion.div
+                            key={task._id}
+
+                            initial={{ opacity: 0, y: 15 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{
+                                delay: index * 0.06,
+                                duration: 0.25,
+                                ease: "easeOut"
+                            }}
+
+                            className={`group border rounded-2xl p-3 flex gap-5 items-center transition-all duration-200
+                        ${task.isCompleted
+                                    ? "border-white/10 bg-white/[0.03]"
+                                    : "border-white/20 bg-white/[0.04] hover:bg-white/[0.07]"}
+                        `}
+                        >
+
+                            {/* CHECK BUTTON */}
+                            <motion.button
+                                onClick={() => completeTask(task._id)}
+
+                                whileTap={{ scale: 0.9 }}
+                                animate={{
+                                    backgroundColor: task.isCompleted ? "#0f172a" : "transparent"
+                                }}
+                                transition={{ duration: 0.2 }}
+
+                                className={`h-10 w-10 cursor-target flex items-center justify-center rounded-xl border-2 transition-all duration-200
+                        ${task.isCompleted
+                                        ? "border-green-400 shadow-[0_0_8px_rgba(34,197,94,0.5)]"
+                                        : "border-white/30 group-hover:border-white/50"}
+                        `}
+                            >
+                                {task.isCompleted && (
+                                    <motion.div
+                                        initial={{ scale: 0 }}
+                                        animate={{ scale: 1 }}
+                                        transition={{ type: "spring", stiffness: 260, damping: 15 }}
+                                        className="h-3 w-3 rounded-full bg-green-400"
+                                    />
+                                )}
+                            </motion.button>
+
+                            {/* TASK TEXT */}
+                            <motion.p
+                                layout
+                                className={`text-xl transition-all duration-200
+                        ${task.isCompleted
+                                        ? "line-through opacity-40 text-gray-400"
+                                        : "text-white"}
+                        `}
+                            >
+                                {task.description}
+                            </motion.p>
+
+                        </motion.div>
                     ))}
 
-                    {/* Add Task Div */}
-                    <form action="" onSubmit={addNewTask} className="border-2 border-white rounded-2xl p-2 flex gap-5 items-center">
-                        <button type="submit" className="h-10 cursor-pointer w-10  flex justify-center items-center rounded-xl cursor-target">
-                            <IconPlus color="#DFDFDF" size={32} /></button>
-                        <input placeholder="Add Task" onChange={addTaskOnChange} name="description" value={newTask} className="text-2xl" />
-                    </form>
+                    {/* ADD TASK */}
+                    <motion.form
+                        onSubmit={addNewTask}
+                        initial={{ opacity: 0, y: 10 }}
+                        animate={{ opacity: 1, y: 0 }}
+                        transition={{ delay: 0.2 }}
+
+                        className="border border-white/20 rounded-2xl p-3 flex gap-5 items-center bg-white/[0.03] hover:bg-white/[0.06] transition-all duration-200"
+                    >
+                        <button
+                            type="submit"
+                            className="h-10 w-10 cursor-target flex justify-center items-center rounded-xl hover:bg-white/10 transition"
+                        >
+                            <IconPlus size={26} />
+                        </button>
+
+                        <input
+                            placeholder="Add Task"
+                            onChange={addTaskOnChange}
+                            name="description"
+                            value={newTask}
+                            className="text-xl bg-transparent outline-none placeholder:text-gray-500 w-full"
+                        />
+                    </motion.form>
+
                 </div>
 
             </div>

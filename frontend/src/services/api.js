@@ -65,13 +65,17 @@ const api = {
 
   /* Session Routes */
 
-  startSession: (projectId, tag) => {
+  startSession: (projectId, type) => {
     const data = {
       projectId,
-      tag,
+      type,
     };
 
     return apiClient.post("/session/start", data);
+  },
+
+  endSession: (userId) => {
+    return apiClient.patch(`/session/stop/${userId}`);
   },
 
   currentSessionInfo: () => {
@@ -88,12 +92,16 @@ const api = {
     return apiClient.get("/project");
   },
 
+  getCurrentProjectInfo: (projectId) => {
+    return apiClient.get(`/project/${projectId}`);
+  },
+
   createProject: (data) => {
-    return apiClient.post('/project/create', data)
+    return apiClient.post("/project/create", data);
   },
 
   updateProject: (projectId, data) => {
-    return apiClient.patch(`/project/update/${projectId}`, data)
+    return apiClient.patch(`/project/update/${projectId}`, data);
   },
 
   getAllTask: (projectId, data) => {

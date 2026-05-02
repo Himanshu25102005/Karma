@@ -14,6 +14,7 @@ var indexRouter = require("./routes/index");
 var usersRouter = require("./routes/users");
 var projectRouter = require("./routes/projects");
 var profileRouter = require("./routes/profile");
+var sessionRouter = require("./routes/FocusSession");
 
 var app = express();
 //db connection
@@ -64,6 +65,7 @@ app.use("/", indexRouter);
 app.use("/users", usersRouter);
 app.use("/", projectRouter);
 app.use("/", profileRouter);
+app.use("/", sessionRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

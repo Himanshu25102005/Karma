@@ -1,6 +1,7 @@
 const userSchema = require("../models/users");
 const express = require("express");
 const Session = require("../models/focSessions");
+const mongoose = require("mongoose");
 var router = express.Router();
 const Project = require("../models/projects");
 const project_task = require("../models/projectTasks");
@@ -183,6 +184,7 @@ router.get("/project/:id", isloggedIn, async (req, res) => {
       data: project,
     });
   } catch (e) {
+    console.log(e);
     res.status(500).json({ error: e.message });
   }
 });

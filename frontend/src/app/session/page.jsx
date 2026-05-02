@@ -8,6 +8,7 @@ import Navbar from "../../components/functional/Navbar";
 import Activity from "../../components/functional/Activity";
 import ProjectSelector from "../../components/functional/ProjectSelector";
 import Sprint from "../../components/functional/Sprint";
+import { useUserStore } from "@/store/useUserStore";
 import Timer from "../../components/functional/Timer";
 import useProjectStore from '@/store/useProjectStore';
 import {
@@ -81,6 +82,8 @@ const SessionPage = () => {
 
   const setCurrentProjectId = useProjectStore((state) => state.setCurrentProjectId);
 
+  const setCurrentUser = useUserStore((state) => state.setCurrentUser);
+
   const [projects, setProjects] = useState([]);
 
   useEffect(() => {
@@ -88,10 +91,10 @@ const SessionPage = () => {
       try {
 
         const res = await api.getAllProjects();
-
         /* Priont the full recieved Object */
         console.log("Full response data:", res.data);
         setProjects(res.data.projects);
+        setCurrentUser();
         /* const currentProject = projects.find(p => p.isCurrent) || null;
 
         setCurrentProjectId(currentProject?._id || null); */
@@ -154,11 +157,11 @@ const SessionPage = () => {
 
         <div className=' h-[94vh] overflow-hidden mt-2 border-white flex items-center p-3 gap-5'>
 
-          <div className='text-white border-1 border-dashed rounded-xl px-8 py-2 border-gray-500 h-full w-1/4'>
+          <div className='text-white rounded-xl px-8 py-2 border-gray-500 h-full w-1/4'>
             <Sprint />
           </div>
 
-          <div className='text-white w-1/2 h-full '>
+          <div className='text-white w-1/2 h-full'>
             <ProjectSelector projects={projects} setProjects={setProjects} />
             <Timer />
           </div>

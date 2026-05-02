@@ -1,11 +1,12 @@
 const userSchema = require("../models/users");
+const express = require("express");
 const Session = require("../models/focSessions");
 var router = express.Router();
 const Project = require("../models/projects");
 const passport = require("passport");
 const UserBadge = require("../models/userbadge");
-const Badge = require("../models/Badge");
-const checkAndAwardBadges = ("../utils/checkAndAwardBadges");
+const Badge = require("../models/badges");
+const { checkAndAwardBadges } = require("../utils/checkAndAwardBadges");
 
 /* Middleware to check if the user is logged in  */
 const isloggedIn = (req, res, next) => {
@@ -20,29 +21,32 @@ const isloggedIn = (req, res, next) => {
 
 router.post("/session/start", isloggedIn, async (req, res) => {
   try {
-    const { projectId, tag } = req.body;
+    const { projectId, type } = req.body;
 
     const activeSession = await Session.findOne({
       userId: req.user._id,
-      status: "running", 
+      status: "running",
     });
 
     if (activeSession) {
       return res.status(400).json({
-        error: "You already have an active session. Stop it before starting a new one.",
+        error:
+          "You already have an active session. Stop it before starting a new one.",
       });
     }
 
     const newSession = await Session.create({
-      projectId, 
-      tag,
+      projectId,
+      type,
       userId: req.user._id,
-      status: "running", 
-      startTime: new Date(), 
+      type: type,
+      status: "running",
+      startTime: new Date(),
     });
 
     res.status(201).json(newSession);
   } catch (e) {
+    console.log(e);
     res.status(500).json({ error: e.message });
   }
 });
@@ -58,6 +62,11 @@ router.patch("/session/stop/:id", isloggedIn, async (req, res) => {
 
     const userId = req.params.id;
 
+    const user = await userSchema.findOne({
+      _id: userId,
+    });
+    const projectId = updateSesh.projectId;
+
     if (!updateSesh) {
       return res.status(404).json({ error: "Focus Session not found" });
     }
@@ -65,7 +74,19 @@ router.patch("/session/stop/:id", isloggedIn, async (req, res) => {
     updateSesh.endTime = Date.now();
     updateSesh.status = "completed";
     updateSesh.duration = Math.floor(
-      (updateSesh.endTime - updateSesh.startTime) / (1000 * 60),
+      (updateSesh.endTime - updateSesh.startTime) / 1000,
+    );
+
+    const project = await Project.findOneAndUpdate(
+      {
+        _id: projectId,
+      },
+      {
+        $inc: {
+          totalMinutes: updateSesh.duration/60,
+          totalSessions: 1,
+        },
+      },
     );
 
     await userSchema.findByIdAndUpdate(userId, {
@@ -75,7 +96,7 @@ router.patch("/session/stop/:id", isloggedIn, async (req, res) => {
     });
     await updateSesh.save();
 
-    const newAwards = checkAndAwardBadges(req.user._id, totalSessions);
+    const newAwards = checkAndAwardBadges(req.user._id, user.totalSessions);
     res.status(200).json({
       success: true,
       data: {
@@ -84,6 +105,7 @@ router.patch("/session/stop/:id", isloggedIn, async (req, res) => {
       },
     });
   } catch (err) {
+    console.log(err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -144,7 +166,7 @@ router.get("/session/history", isloggedIn, async (req, res) => {
         .skip(skip)
         .limit(limit)
         .populate("projectId", "name description")
-        .select("duration startTime endTime tag projectId"),
+        .select("duration startTime endTime type projectId"),
 
       Session.countDocuments(filter),
     ]);
@@ -162,6 +184,5 @@ router.get("/session/history", isloggedIn, async (req, res) => {
     res.status(500).json({ error: e.message });
   }
 });
-
 
 module.exports = router;
