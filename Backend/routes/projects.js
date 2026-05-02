@@ -347,7 +347,7 @@ router.patch("/project/checkTask/:taskId", isloggedIn, async (req, res) => {
   try {
     const { taskId } = req.params;
 
-    const task = await projTask.findOneAndUpdate(
+    const task = await project_task.findOneAndUpdate(
       {
         _id: taskId,
         isCompleted: false,
@@ -372,6 +372,7 @@ router.patch("/project/checkTask/:taskId", isloggedIn, async (req, res) => {
       });
     }
   } catch (e) {
+    console.log(e)
     res.status(500).json({
       error: e.message,
     });

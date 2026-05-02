@@ -3,8 +3,8 @@ import api from "@/services/api";
 import { useProjectStore } from '../../store/useProjectStore'
 import { useParams } from 'next/navigation';
 import React, { useState, useEffect, Fragment } from 'react'
-import { IconPlus } from "@tabler/icons-react";
-import { convertSegmentPathToStaticExportFilename } from "next/dist/shared/lib/segment-cache/segment-value-encoding";
+import { IconPlus, IconCheck } from "@tabler/icons-react";
+import { div } from "framer-motion/client";
 const Sprint = ({ }) => {
 
     const currentProjectId = useProjectStore((state) => state.currentProjectId);
@@ -105,7 +105,12 @@ const Sprint = ({ }) => {
 
                     {tasks?.map((task) => (
                         <div key={task._id} className={`border-2 border-white rounded-2xl p-2  flex gap-5 items-center`}>
-                            <button onClick={() => { completeTask(task._id) }} className={`${task.isCompleted ? 'bg-gray-900' : 'border-transparent'}h-10 w-10 border-2 border-white rounded-xl `}></button>
+                            <button onClick={() => { completeTask(task._id) }} className={`${task.isCompleted ? 'bg-gray-900' : 'border-transparent'} h-10 cursor-target w-10 border-2 border-white rounded-xl `}>
+                                {task.isCompleted?
+                                <IconCheck color="#DFDFDF" className='bg-white/5 rounded-md' size={25} />
+                            :
+                            <p/>}
+                            </button>
                             <p className={`text-2xl ${task.isCompleted ? 'line-through opacity-50' : ''}`}>{task.description}</p>
                         </div>
                     ))}
