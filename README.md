@@ -1,6 +1,6 @@
-# KARMA
+# कARMA
 
-KARMA is a full-stack focus tracking and project productivity application. The current codebase is split into a Next.js frontend and an Express/MongoDB backend. It supports local signup/login, Google OAuth, project creation and selection, project tasks, focus timer UI, profile data, and partially implemented focus-session, stats, badge, and social-follow modules.
+कARMA is a full-stack focus tracking and project productivity application. The current codebase is split into a Next.js frontend and an Express/MongoDB backend. It supports local signup/login, Google OAuth, project creation and selection, project tasks, focus timer UI, profile data, and partially implemented focus-session, stats, badge, and social-follow modules.
 
 This document describes the implementation as it exists in the repository. Some backend modules are present but are not mounted in `Backend/app.js`, and several files contain implementation bugs. Those are documented explicitly in the Known Issues section.
 
