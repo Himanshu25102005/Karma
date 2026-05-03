@@ -104,6 +104,7 @@ const ProjectSelector = ({ projects, setProjects }) => {
             <IconChevronDown className='cursor-target' color="#DFDFDF" onClick={showDropdown} size={25} />
           </div>
         </div>
+        
 
         {/* Dropdown */}
         <AnimatePresence>
