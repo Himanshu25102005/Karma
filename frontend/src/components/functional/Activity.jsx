@@ -1,8 +1,34 @@
 import React from 'react'
+import { useAnimation, motion } from "framer-motion";
 
 const Activity = () => {
   return (
-    <div className='text-center text-5xl p-5 font-semibold'>Activities</div>
+    <div className='h-full w-full  p-2'>
+      {/* Toggle Switch */}
+      <div className='h-15 w-full '>
+        <motion.div
+          initial={{ opacity: 0, y: -10 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.4, ease: "easeOut" }}
+          className="flex items-center justify-between px-4 py-3 mb-3"
+        >
+
+          {/* LEFT: Title */}
+          <div className="flex flex-col">
+            <span className="text-3xl font-semibold tracking-tight text-white">
+              Activity
+            </span>
+
+            {/* subtle underline */}
+            <div className="mt-1 h-[2px] w-10 bg-white/20 rounded-full" />
+          </div>
+
+          {/* OPTIONAL RIGHT (future use) */}
+          <div className="text-sm text-gray-400">Tasks</div>
+
+        </motion.div>
+      </div>
+    </div>
   )
 }
 

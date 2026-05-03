@@ -7,6 +7,7 @@ import { FloatingDock } from "../../components/ui/Floating-dock";
 import Navbar from "../../components/functional/Navbar";
 import Activity from "../../components/functional/Activity";
 import ProjectSelector from "../../components/functional/ProjectSelector";
+import Personal_Stats from "../../components/functional/Personal_Stats";
 import Sprint from "../../components/functional/Sprint";
 import { useUserStore } from "@/store/useUserStore";
 import Timer from "../../components/functional/Timer";
@@ -157,8 +158,18 @@ const SessionPage = () => {
 
         <div className=' h-[94vh] overflow-hidden mt-2 border-white flex items-center p-3 gap-5'>
 
-          <div className='text-white rounded-xl px-8 py-2 border-gray-500 h-full w-1/4'>
-            <Sprint />
+          <div className="text-white rounded-xl px-6 py-4 w-1/4 h-screen flex flex-col gap-6 overflow-hidden">
+
+            {/* Sprint (takes available space) */}
+            <div className="flex-1 min-h-0 mt-5 ">
+              <Sprint />
+            </div>
+
+            {/* Personal Stats (fixed height) */}
+            <div className="h-[35%] ">
+              <Personal_Stats />
+            </div>
+
           </div>
 
           <div className='text-white w-1/2 h-full'>
@@ -166,7 +177,7 @@ const SessionPage = () => {
             <Timer />
           </div>
 
-          <div className='text-white h-full w-1/5 border-1 border-dashed rounded-xl border-gray-500  h-full'>
+          <div className='text-white h-full w-1/5 border-1 border-dashed rounded-xl border-gray-500  h-full p-2'>
             <Activity />
           </div>
         </div>

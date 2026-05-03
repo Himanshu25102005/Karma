@@ -76,7 +76,7 @@ const Sprint = ({ }) => {
 
 
     return (
-        <div className='h-1/2  '>
+        <div className='max-h-1/2'>
 
             {/* Heading */}
             <motion.div
@@ -103,7 +103,7 @@ const Sprint = ({ }) => {
 
             {/* Tasks Section */}
             {/*  <div className="flex px-10 h-full py-13 rounded-2xl shadow-[inset_0_0_20px_rgba(255,255,255,0.03)]"> */}
-            <div className="flex px-10 h-full py-13 bg-white/[0.02] rounded-2xl">
+            <div className="flex px-10 h-[420px] py-10 bg-white/[0.02] rounded-2xl">
 
 
                 {/* LEFT SIDE (continuous line system) */}
@@ -166,69 +166,69 @@ const Sprint = ({ }) => {
                 </div>
 
                 {/* RIGHT SIDE (tasks with gap) */}
-                <div className="flex flex-col gap-5 w-full">
+                <div className="flex flex-col w-full h-full">
+                    <div className="flex-1 overflow-y-auto pr-2 space-y-5 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
+                        {(Array.isArray(tasks) ? tasks : []).map((task, index) => (
 
-                    {(Array.isArray(tasks) ? tasks : []).map((task, index) => (
+                            <motion.div
+                                key={task._id}
 
-                        <motion.div
-                            key={task._id}
-
-                            initial={{ opacity: 0, y: 15 }}
-                            animate={{ opacity: 1, y: 0 }}
-                            transition={{
-                                delay: index * 0.06,
-                                duration: 0.25,
-                                ease: "easeOut"
-                            }}
-
-                            className={`group border rounded-2xl p-3 flex gap-5 items-center transition-all duration-200
-                        ${task.isCompleted
-                                    ? "border-white/10 bg-white/[0.03]"
-                                    : "border-white/20 bg-white/[0.04] hover:bg-white/[0.07]"}
-                        `}
-                        >
-
-                            {/* CHECK BUTTON */}
-                            <motion.button
-                                onClick={() => completeTask(task._id)}
-
-                                whileTap={{ scale: 0.9 }}
-                                animate={{
-                                    backgroundColor: task.isCompleted ? "#0f172a" : "transparent"
+                                initial={{ opacity: 0, y: 15 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{
+                                    delay: index * 0.06,
+                                    duration: 0.25,
+                                    ease: "easeOut"
                                 }}
-                                transition={{ duration: 0.2 }}
 
-                                className={`h-10 w-10 cursor-target flex items-center justify-center rounded-xl border-2 transition-all duration-200
+                                className={`group border rounded-2xl p-3 flex gap-5 items-center transition-all duration-200
                         ${task.isCompleted
-                                        ? "border-green-400 shadow-[0_0_8px_rgba(34,197,94,0.5)]"
-                                        : "border-white/30 group-hover:border-white/50"}
+                                        ? "border-white/10 bg-white/[0.03]"
+                                        : "border-white/20 bg-white/[0.04] hover:bg-white/[0.07]"}
                         `}
                             >
-                                {task.isCompleted && (
-                                    <motion.div
-                                        initial={{ scale: 0 }}
-                                        animate={{ scale: 1 }}
-                                        transition={{ type: "spring", stiffness: 260, damping: 15 }}
-                                        className="h-3 w-3 rounded-full bg-green-400"
-                                    />
-                                )}
-                            </motion.button>
 
-                            {/* TASK TEXT */}
-                            <motion.p
-                                layout
-                                className={`text-xl transition-all duration-200
+                                {/* CHECK BUTTON */}
+                                <motion.button
+                                    onClick={() => completeTask(task._id)}
+
+                                    whileTap={{ scale: 0.9 }}
+                                    animate={{
+                                        backgroundColor: task.isCompleted ? "#0f172a" : "transparent"
+                                    }}
+                                    transition={{ duration: 0.2 }}
+
+                                    className={`h-10 w-10 cursor-target flex items-center justify-center rounded-xl border-2 transition-all duration-200
                         ${task.isCompleted
-                                        ? "line-through opacity-40 text-gray-400"
-                                        : "text-white"}
+                                            ? "border-green-400 shadow-[0_0_8px_rgba(34,197,94,0.5)]"
+                                            : "border-white/30 group-hover:border-white/50"}
                         `}
-                            >
-                                {task.description}
-                            </motion.p>
+                                >
+                                    {task.isCompleted && (
+                                        <motion.div
+                                            initial={{ scale: 0 }}
+                                            animate={{ scale: 1 }}
+                                            transition={{ type: "spring", stiffness: 260, damping: 15 }}
+                                            className="h-3 w-3 rounded-full bg-green-400"
+                                        />
+                                    )}
+                                </motion.button>
 
-                        </motion.div>
-                    ))}
+                                {/* TASK TEXT */}
+                                <motion.p
+                                    layout
+                                    className={`text-xl transition-all duration-200
+                        ${task.isCompleted
+                                            ? "line-through opacity-40 text-gray-400"
+                                            : "text-white"}
+                        `}
+                                >
+                                    {task.description}
+                                </motion.p>
 
+                            </motion.div>
+                        ))}
+                    </div>
                     {/* ADD TASK */}
                     <motion.form
                         onSubmit={addNewTask}
@@ -236,7 +236,7 @@ const Sprint = ({ }) => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2 }}
 
-                        className="border border-white/20 rounded-2xl p-3 flex gap-5 items-center bg-white/[0.03] hover:bg-white/[0.06] transition-all duration-200"
+                        className="mt-4 border border-white/20 rounded-2xl p-3 flex gap-5 items-center bg-white/[0.03] hover:bg-white/[0.06] transition-all duration-200"
                     >
                         <button
                             type="submit"
