@@ -24,7 +24,7 @@ const Activity = () => {
           </div>
 
           {/* OPTIONAL RIGHT (future use) */}
-          <div className="text-sm text-gray-400">Tasks</div>
+          <div className="text-sm text-gray-400">Sessions</div>
 
         </motion.div>
       </div>
