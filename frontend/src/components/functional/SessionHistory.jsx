@@ -4,6 +4,7 @@ import { motion } from 'framer-motion';
 
 const SessionHistory = () => {
     const [myActivity, setMyActivity] = useState(true);
+    const [isEmpty, setIsEmpty] = useState(false)
     return (
         <>
             <div className='min-h-[320px] max-h-[340px] w-full border-1 border-solid border-neutral-500 rounded-xl p-2 mt-4 flex flex-col'>
@@ -59,34 +60,41 @@ const SessionHistory = () => {
                 </div>
 
                 {/* History */}
-                <div className=' flex-1 mt-4   flex flex-col gap-2 overflow-y-auto  '>
-                    {/* Individual Sessions */}
-                    <div className='h-[3.2rem] w-full bg-[#1A1A1A] border border-neutral-800 rounded-lg flex-shrink-0 p-1 flex gap-1 '>
-                        <div className='h-full w-[58%] flex gap-3 border-r-2 border-neutral-600'>
-                            <div className='h-full w-[20%] flex justify-center items-center bg-green-600/20 rounded-xl border border-green-500/30'>
-                                <IconClockCode className='text-green-500 h-8 w-8' />
-                            </div>
-
-                            <div className='flex-1 flex flex-col justify-center items-start leading-tight'>
-                                <span className='text-white text-sm font-medium'>Karma</span>
-                                <span className='text-neutral-400 text-[10px]'>Saas</span>
-                            </div>
+                <div className=' flex-1 mt-4 flex flex-col gap-2 overflow-y-auto  '>
+                    {isEmpty ? (
+                        <div className="flex-1 text-neutral-500 italic flex justify-center items-center p-4 ">
+                            No history found. Start working to see sessions!
                         </div>
+                    ) : (
+                        <>
+                            {/* Individual Sessions */}
+                            <div className='h-[3.2rem] w-full bg-[#1A1A1A] border border-neutral-800 rounded-lg flex-shrink-0 p-1 flex gap-1'>
+                                <div className='h-full w-[58%] flex gap-3 border-r-2 border-neutral-600'>
+                                    <div className='h-full w-[20%] flex justify-center items-center bg-green-600/20 rounded-xl border border-green-500/30'>
+                                        <IconClockCode className='text-green-500 h-8 w-8' />
+                                    </div>
 
-                        {/* Right side green block */}
-                        <div className='flex-1  rounded-md  flex'>
-                            <div className='h-full w-[80%] flex flex-col justify-center items-start px-2 leading-tight'>
-                                <span className='text-white text-sm font-medium'>1h 20m</span>
-                                <span className='text-neutral-400 text-[10px]'>07/05/26, 23:33</span>
-                            </div>
+                                    <div className='flex-1 flex flex-col justify-center items-start leading-tight'>
+                                        <span className='text-white text-sm font-medium'>Karma</span>
+                                        <span className='text-neutral-400 text-[10px]'>Saas</span>
+                                    </div>
+                                </div>
 
-                            <div className=' flex-1 flex justify-center items-center '>
-                                <IconFileCheck className='text-green-500 h-6 w-6' /> {/* use IconFile for unchecked or ongoing tasks or smth */}
+                                {/* Right side status block */}
+                                <div className='flex-1 rounded-md flex'>
+                                    <div className='h-full w-[80%] flex flex-col justify-center items-start px-2 leading-tight'>
+                                        <span className='text-white text-sm font-medium'>1h 20m</span>
+                                        <span className='text-neutral-400 text-[10px]'>07/05/26, 23:33</span>
+                                    </div>
+
+                                    <div className='flex-1 flex justify-center items-center'>
+                                        <IconFileCheck className='text-green-500 h-6 w-6' />
+                                    </div>
+                                </div>
                             </div>
-                        </div>
-                    </div>
+                        </>
+                    )}
                 </div>
-
             </div>
 
 
