@@ -2,6 +2,8 @@ import React from 'react'
 import { useAnimation, motion } from "framer-motion";
 import { IconActivity } from "@tabler/icons-react";
 import SessionHistory from './SessionHistory';
+import LiveCoding from './LiveCoding';
+
 
 const Activity = () => {
   return (
@@ -33,6 +35,8 @@ const Activity = () => {
         </motion.div>
       </div>
 
+      {/* Whose coding rn */}
+      <LiveCoding />  
       {/* Session History */}
       <SessionHistory />
 
