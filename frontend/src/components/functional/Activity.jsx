@@ -1,10 +1,12 @@
 import React from 'react'
 import { useAnimation, motion } from "framer-motion";
+import { IconActivity } from "@tabler/icons-react";
+import SessionHistory from './SessionHistory';
 
 const Activity = () => {
   return (
-    <div className='h-full w-full  p-2'>
-      {/* Toggle Switch */}
+    <div className='h-full w-full  p-2  rounded-xl'>
+      {/* Heading */}
       <div className='h-15 w-full '>
         <motion.div
           initial={{ opacity: 0, y: -10 }}
@@ -24,10 +26,17 @@ const Activity = () => {
           </div>
 
           {/* OPTIONAL RIGHT (future use) */}
-          <div className="text-sm text-gray-400">Sessions</div>
+          <div className="text-sm text-gray-400">
+            <IconActivity />
+          </div>
 
         </motion.div>
       </div>
+
+      {/* Session History */}
+      <SessionHistory />
+
+
     </div>
   )
 }
