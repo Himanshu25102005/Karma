@@ -3,6 +3,7 @@ import { useAnimation, motion } from "framer-motion";
 import { IconActivity } from "@tabler/icons-react";
 import SessionHistory from './SessionHistory';
 import LiveCoding from './LiveCoding';
+import QuickInsight from './QuickInsight';
 
 
 const Activity = () => {
@@ -39,6 +40,8 @@ const Activity = () => {
       <LiveCoding />  
       {/* Session History */}
       <SessionHistory />
+      {/* Quick Insights */}
+      <QuickInsight/>
 
 
     </div>

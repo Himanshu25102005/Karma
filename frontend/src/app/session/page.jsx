@@ -177,7 +177,7 @@ const SessionPage = () => {
             <Timer />
           </div>
 
-          <div className='text-white h-full w-1/5 h-full p-2'>
+          <div className='text-white h-full border-1 border-neutral-600 rounded-xl w-1/5 h-full p-2'>
             <Activity />
           </div>
         </div>

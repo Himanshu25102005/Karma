@@ -7,7 +7,7 @@ const SessionHistory = () => {
     const [isEmpty, setIsEmpty] = useState(false)
     return (
         <>
-            <div className='min-h-[320px] max-h-[340px] w-full border-1 border-solid border-neutral-500 rounded-xl p-2 mt-4 flex flex-col'>
+            <div className='min-h-[400px] max-h-[400px] w-full border-1 border-solid border-neutral-500 rounded-xl p-2 mt-4 flex flex-col'>
                 {/* Heading */}
                 <div className='h-8 w-full  flex justify-between items-center'>
                     <motion.div
@@ -72,14 +72,14 @@ const SessionHistory = () => {
                                 initial={{ opacity: 0, y: -10 }}
                                 animate={{ opacity: 1, y: 0 }}
                                 transition={{ duration: 0.4, ease: "easeOut" }}
-                                className='h-[3.2rem] w-full bg-[#1A1A1A] border border-neutral-800 rounded-lg flex-shrink-0 p-1 flex gap-1'>
+                                className='h-[4rem] w-full bg-[#1A1A1A] border border-neutral-800 rounded-lg flex-shrink-0 p-1 flex gap-1'>
                                 <div className='h-full w-[58%] flex gap-3 border-r-2 border-neutral-600'>
                                     <div className='h-full w-[20%] flex justify-center items-center bg-green-600/20 rounded-xl border border-green-500/30'>
                                         <IconClockCode className='text-green-500 h-8 w-8' />
                                     </div>
 
                                     <div className='flex-1 flex flex-col justify-center items-start leading-tight'>
-                                        <span className='text-white text-sm font-medium'>Karma</span>
+                                        <span className='text-white text-lg font-medium'>Karma</span>
                                         <span className='text-neutral-400 text-[10px]'>Saas</span>
                                     </div>
                                 </div>
