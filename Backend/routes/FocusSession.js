@@ -1,8 +1,8 @@
 const userSchema = require("../models/users");
+const Project = require("../models/projects");
 const express = require("express");
 const Session = require("../models/focSessions");
 var router = express.Router();
-const Project = require("../models/projects");
 const passport = require("passport");
 const UserBadge = require("../models/userbadge");
 const Badge = require("../models/badges");
@@ -83,7 +83,7 @@ router.patch("/session/stop/:id", isloggedIn, async (req, res) => {
       },
       {
         $inc: {
-          totalMinutes: updateSesh.duration/60,
+          totalMinutes: updateSesh.duration / 60,
           totalSessions: 1,
         },
       },
@@ -165,7 +165,7 @@ router.get("/session/history", isloggedIn, async (req, res) => {
         .sort({ startTime: -1 })
         .skip(skip)
         .limit(limit)
-        .populate("projectId", "name description")
+        .populate("projectId", "name description color createdAt type")
         .select("duration startTime endTime type projectId"),
 
       Session.countDocuments(filter),
@@ -181,6 +181,7 @@ router.get("/session/history", isloggedIn, async (req, res) => {
       sessions,
     });
   } catch (e) {
+    console.log(e);
     res.status(500).json({ error: e.message });
   }
 });

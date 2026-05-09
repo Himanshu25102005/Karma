@@ -1,10 +1,33 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { IconClockCode, IconChevronRight, IconFileCheck, IconFile } from "@tabler/icons-react";
 import { motion } from 'framer-motion';
+import api from '@/services/api';
 
 const SessionHistory = () => {
     const [myActivity, setMyActivity] = useState(true);
     const [isEmpty, setIsEmpty] = useState(false)
+    const [sessionHistory, setSessionHistory] = useState([]);
+    const fetchSessionHistory = async () => {
+        const res = await api.sessionHistory();
+        console.log("API Response from session history", res.data.sessions)
+        setSessionHistory(res.data.sessions);
+    }
+
+    useEffect(() => {
+        const loadData = async () => {
+            try {
+                await fetchSessionHistory();
+            } catch (err) {
+                console.error("Failed to load history:", err);
+            }
+        };
+
+        loadData();
+    }, []);
+    useEffect(() => {
+        console.log("Session History has updated:", sessionHistory);
+    }, [sessionHistory]);
+
     return (
         <>
             <div className='min-h-[400px] max-h-[400px] w-full border-1 border-solid border-neutral-500 rounded-xl p-2 mt-4 flex flex-col'>
@@ -68,34 +91,51 @@ const SessionHistory = () => {
                     ) : (
                         <>
                             {/* Individual Sessions */}
-                            <motion.div
-                                initial={{ opacity: 0, y: -10 }}
-                                animate={{ opacity: 1, y: 0 }}
-                                transition={{ duration: 0.4, ease: "easeOut" }}
-                                className='h-[4rem] w-full bg-[#1A1A1A] border border-neutral-800 rounded-lg flex-shrink-0 p-1 flex gap-1'>
-                                <div className='h-full w-[58%] flex gap-3 border-r-2 border-neutral-600'>
-                                    <div className='h-full w-[20%] flex justify-center items-center bg-green-600/20 rounded-xl border border-green-500/30'>
-                                        <IconClockCode className='text-green-500 h-8 w-8' />
+                            {sessionHistory.map((session) => {
+                                return <motion.div
+                                    key={session._id}
+                                    initial={{ opacity: 0, y: -10 }}
+                                    animate={{ opacity: 1, y: 0 }}
+                                    transition={{ duration: 0.4, ease: "easeOut" }}
+                                    className='h-[4rem] w-full bg-[#1A1A1A] border border-neutral-800 rounded-lg flex-shrink-0 p-1 flex gap-1'>
+                                    <div className='h-full w-[58%] flex gap-3 border-r-2 border-neutral-600'>
+                                        <div className='h-full w-[20%] flex justify-center items-center bg-green-600/20 rounded-xl'
+                                            style={{
+                                                backgroundColor: session.projectId?.color ? `${session.projectId.color}33` : '#16a34a33'
+                                            }}>
+                                            <IconClockCode className='text-green-500 h-8 w-8' />
+                                        </div>
+
+                                        <div className='flex-1 flex flex-col justify-center items-start leading-tight'>
+                                            <span className='text-white text-lg font-medium'>{session.projectId.name}</span>
+                                            <span className='text-neutral-400 text-[10px]'>{session.projectId.type}</span>
+                                        </div>
                                     </div>
 
-                                    <div className='flex-1 flex flex-col justify-center items-start leading-tight'>
-                                        <span className='text-white text-lg font-medium'>Karma</span>
-                                        <span className='text-neutral-400 text-[10px]'>Saas</span>
-                                    </div>
-                                </div>
+                                    {/* Right side status block */}
+                                    <div className='flex-1 rounded-md flex'>
+                                        <div className='h-full w-[80%] flex flex-col justify-center items-start px-2 leading-tight'>
+                                            <span className='text-white text-sm font-medium'>
+                                                {session.duration >= 3600 && `${Math.floor(session.duration / 3600)}h `}
+                                                {Math.floor((session.duration % 3600) / 60)}m
+                                            </span>
+                                            <span className='text-neutral-400 text-[10px]'>{new Date(session.startTime).toLocaleString('en-GB', {
+                                                day: '2-digit',
+                                                month: '2-digit',
+                                                year: '2-digit',
+                                                hour: '2-digit',
+                                                minute: '2-digit',
+                                                hour12: false
+                                            })}</span>
+                                        </div>
 
-                                {/* Right side status block */}
-                                <div className='flex-1 rounded-md flex'>
-                                    <div className='h-full w-[80%] flex flex-col justify-center items-start px-2 leading-tight'>
-                                        <span className='text-white text-sm font-medium'>1h 20m</span>
-                                        <span className='text-neutral-400 text-[10px]'>07/05/26, 23:33</span>
+                                        <div className='flex-1 flex justify-center items-center'>
+                                            <IconFileCheck className='text-green-500 h-6 w-6' />
+                                        </div>
                                     </div>
+                                </motion.div>
 
-                                    <div className='flex-1 flex justify-center items-center'>
-                                        <IconFileCheck className='text-green-500 h-6 w-6' />
-                                    </div>
-                                </div>
-                            </motion.div>
+                            })}
                         </>
                     )}
                 </div>

@@ -9,7 +9,7 @@ const focSessionSchema = mongoose.Schema({
   duration: Number,
   projectId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "project",
+    ref: "Project",
     required: true,
   },
   

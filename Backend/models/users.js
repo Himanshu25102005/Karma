@@ -9,6 +9,7 @@ const userSchema = mongoose.Schema({
     trim: true,
     unique: true,
   },
+  isOnline:String,
   avatar: String,
   isPublic: {
     type: Boolean,
