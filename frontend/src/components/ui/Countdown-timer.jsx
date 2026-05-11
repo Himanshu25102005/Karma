@@ -76,9 +76,9 @@ export default function ShiftingCountdown() {
     <section className="bg-white text-black dark:bg-black dark:text-white transition-colors duration-500 p-4">
       <div className="flex w-full max-w-5xl items-center mx-auto">
         {/* <CountdownItem unit="Day" label="Days" COUNTDOWN_FROM={COUNTDOWN_FROM} isStart={isStart} savedTime={savedTime} isPause={setPause} /> */}
-        <CountdownItem unit="Hour" label="Hours" COUNTDOWN_FROM={COUNTDOWN_FROM} isStart={isStart} savedTime={savedTime} isPause={setPause} />
-        <CountdownItem unit="Minute" label="Minutes" COUNTDOWN_FROM={COUNTDOWN_FROM} isStart={isStart} savedTime={savedTime} isPause={setPause} />
-        <CountdownItem unit="Second" label="Seconds" COUNTDOWN_FROM={COUNTDOWN_FROM} isStart={isStart} savedTime={savedTime} isPause={setPause} />
+        <CountdownItem unit="Hour"  COUNTDOWN_FROM={COUNTDOWN_FROM} isStart={isStart} savedTime={savedTime} isPause={setPause} />
+        <CountdownItem unit="Minute" COUNTDOWN_FROM={COUNTDOWN_FROM} isStart={isStart} savedTime={savedTime} isPause={setPause} />
+        <CountdownItem unit="Second" COUNTDOWN_FROM={COUNTDOWN_FROM} isStart={isStart} savedTime={savedTime} isPause={setPause} />
       </div>
 
       <div className="p-5 w-full max-w-5xl mx-auto flex justify-evenly items-center gap-6 flex-wrap">

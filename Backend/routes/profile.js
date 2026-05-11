@@ -161,6 +161,9 @@ router.get("/profile/:username", isloggedIn, async (req, res) => {
   }
 });
 
-
+/* Get Online Members */
+router.get('/profile/isOnline', isloggedIn, async(req, res) => {
+  
+})
 
 module.exports = router;
