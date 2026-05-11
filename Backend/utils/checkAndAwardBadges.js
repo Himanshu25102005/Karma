@@ -49,4 +49,4 @@ const checkAndAwardBadges = async (userId, userStats) => {
 };
 
 // Export using CommonJS
-module.exports = { checkAndAwardBadges };
+module.exports =  checkAndAwardBadges ;

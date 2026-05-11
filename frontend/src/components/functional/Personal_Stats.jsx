@@ -1,10 +1,22 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useAnimation, motion } from "framer-motion";
+import api from '@/services/api';
+
 
 const Personal_Stats = () => {
+  
+  useEffect(() => {
+    const fetchOverview = async() => {
+      const res = await api.overview();
+      console.log('Data from stats overview: ',res.data);
+    }
+  
+    fetchOverview();
+  }, [])
+  
   return (
     <div className='h-full w-full  p-2'>
-      {/* Toggle Switch */}
+      {/* Heading */}
       <div className='h-15 w-full '>
         <motion.div
           initial={{ opacity: 0, y: -10 }}

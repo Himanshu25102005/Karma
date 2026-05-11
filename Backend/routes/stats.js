@@ -1,10 +1,11 @@
 const userSchema = require("../models/users");
+const express = require("express");
+const mongoose = require("mongoose");
 const Session = require("../models/focSessions");
 var router = express.Router();
 const UserBadge = require("../models/userbadge");
-const Badge = require("../models/Badge");
-const passport = require("passport");
-const checkAndAwardBadges = ("../utils/checkAndAwardBadges");
+const Badge = require("../models/badges");
+const checkAndAwardBadges = require("../utils/checkAndAwardBadges");
 
 /* Middleware to check if the user is logged in  */
 const isloggedIn = (req, res, next) => {
@@ -49,6 +50,7 @@ router.get("/stats/overview", isloggedIn, async (req, res) => {
       totalFocusTime: totalFocusTime,
     });
   } catch (e) {
+    console.log(e);
     res.status(500).json({ error: e.message });
   }
 });
@@ -88,6 +90,7 @@ router.get("/stats/by-project", isloggedIn, async (req, res) => {
 
     res.status(200).json(project);
   } catch (e) {
+    console.log(e);
     res.status(500).json({ error: e.message });
   }
 });
@@ -103,6 +106,7 @@ router.get("/stats/daily", isloggedIn, async (req, res) => {
           status: "completed",
         },
       },
+
       {
         $group: {
           _id: {
@@ -112,15 +116,35 @@ router.get("/stats/daily", isloggedIn, async (req, res) => {
               timezone: "Asia/Kolkata",
             },
           },
-          totalTime: { $sum: "$duration" },
-          totalSessions: { $sum: 1 },
+
+          totalTime: {
+            $sum: "$duration",
+          },
+
+          totalSessions: {
+            $sum: 1,
+          },
+        },
+      },
+
+      {
+        $sort: {
+          _id: 1,
         },
       },
     ]);
 
-    res.status(200).json(daily);
+    res.status(200).json({
+      success: true,
+      daily,
+    });
   } catch (e) {
-    res.status(500).json({ error: e.message });
+    console.error("Aggregation Error:", e);
+
+    res.status(500).json({
+      success: false,
+      error: e.message,
+    });
   }
 });
 
@@ -148,7 +172,6 @@ router.get("/stats/streak", isloggedIn, async (req, res) => {
       { $sort: { _id: -1 } },
     ]);
 
-    
     const dates = streakData.map((item) => item._id);
 
     if (dates.length === 0) {
@@ -159,7 +182,6 @@ router.get("/stats/streak", isloggedIn, async (req, res) => {
       });
     }
 
-    
     const dateObjects = dates.map((d) => new Date(d));
 
     const today = new Date();
@@ -167,7 +189,6 @@ router.get("/stats/streak", isloggedIn, async (req, res) => {
 
     let currentStreak = 0;
 
-    
     const firstDate = new Date(dateObjects[0]);
     if (firstDate.getTime() !== today.getTime()) {
       currentStreak = 0;
@@ -186,7 +207,6 @@ router.get("/stats/streak", isloggedIn, async (req, res) => {
       }
     }
 
-    
     let longestStreak = 1;
     let tempStreak = 1;
 
@@ -205,18 +225,18 @@ router.get("/stats/streak", isloggedIn, async (req, res) => {
       }
     }
 
-    const newAwards = checkAndAwardBadges(req.user._id, currentStreak);
+    const newAwards = await checkAndAwardBadges(req.user._id, currentStreak);
 
     res.status(200).json({
       currentStreak,
       longestStreak,
       lastActiveDate: dates[0],
-      newAwards: newAwards
+      newAwards: newAwards,
     });
   } catch (e) {
+    console.log(e);
     res.status(500).json({ error: e.message });
   }
 });
-
 
 module.exports = router;
