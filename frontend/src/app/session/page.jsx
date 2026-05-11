@@ -158,7 +158,7 @@ const SessionPage = () => {
 
         <div className=' h-[94vh] overflow-hidden mt-2 border-white flex items-center p-3 gap-5'>
 
-          <div className="text-white rounded-xl px-6 py-4 w-1/4 h-screen flex flex-col gap-6 overflow-hidden">
+          <div className="text-white rounded-xl px-6 py-4 w-1/4 h-[99vh] flex flex-col gap-6 overflow-hidden">
 
             {/* Sprint (takes available space) */}
             <div className="flex-1 min-h-0 mt-5 ">
