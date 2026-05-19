@@ -115,10 +115,14 @@ const api = {
   completeTask: (taskid) => {
     return apiClient.patch(`/project/checkTask/${taskid}`);
   },
-  
+
   /* Stats Route */
   overview: () => {
-    return apiClient.get('/stats/overview')
+    return apiClient.get("/stats/overview");
+  },
+
+  getStreak: () => {
+    return apiClient.get("stats/streak");
   },
 };
 

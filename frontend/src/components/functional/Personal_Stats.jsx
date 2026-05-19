@@ -1,20 +1,32 @@
-import React, { useEffect } from 'react'
+import React, { useEffect, useState } from 'react'
 import { useAnimation, motion } from "framer-motion";
 import api from '@/services/api';
-import { IconClock, IconArrowUp, IconCircleCheck, IconArrowDown, IconTrendingUp, IconFlame } from '@tabler/icons-react';
-
+import { IconClock, IconArrowUp, IconCircleCheck, IconArrowDown, IconSparkles, IconTrendingUp, IconFlame } from '@tabler/icons-react';
 
 
 const Personal_Stats = () => {
 
+  const [summary, setSummary] = useState([]);
+  const [streakData, setStreakData] = useState([]);
+
   useEffect(() => {
     const fetchOverview = async () => {
       const res = await api.overview();
-      console.log('Data from stats overview: ', res.data);
+      const streak = await api.getStreak();
+
+      setSummary(res.data);
+      setStreakData(streak.data);
     }
+
 
     fetchOverview();
   }, [])
+
+  useEffect(() => {
+    console.log('Stats Summary: ', summary);
+    console.log('Streak data: ', streakData);
+  }, [summary, streakData])
+
 
   const cardVariants = {
     hidden: { opacity: 0, y: 20 },
@@ -77,19 +89,38 @@ const Personal_Stats = () => {
           </div>
           <div className='h-full w-[50%] flex flex-col '>
             <span className='text-lg text-neutral-100 font-semibold leading-tight'>Streak</span>
-            <span className='text-sm text-neutral-500'>Active focus days</span>
+            <span className='text-sm text-neutral-500'>Keep showing up. You're on a roll!</span>
           </div>
-          <div className='h-full w-[25%] text-end'>
-            <span className='text-xl w-full text-green-300/90 font-semibold'>5 Days</span>
-            <div className='w-full h-[1.5rem] flex flex-row justify-center items-center gap-1'>
-              <div className='h-4 w-4 bg-green-600 rounded-sm'></div>
-              <div className='h-4 w-4 bg-green-600 rounded-sm'></div>
-              <div className='h-4 w-4 bg-green-600 rounded-sm'></div>
-              <div className='h-4 w-4 bg-green-600 rounded-sm'></div>
-              <div className='h-4 w-4 bg-green-600 rounded-sm'></div>
-              <div className='h-4 w-4 rounded-sm border-1 border-neutral-500'></div>
-              <div className='h-4 w-4 rounded-sm border-1 border-neutral-500'></div>
-            </div> 
+          <div className='h-full w-[25%] flex flex-col justify-center items-end'>
+            <span className='text-xl w-full text-green-300/90 font-semibold text-end'>
+              {streakData?.currentStreak || 0} Days
+            </span>
+
+            <div className='w-full h-[1.5rem] flex flex-row justify-end items-center gap-1 mt-0.5'>
+              {(() => {
+                const streak = streakData?.currentStreak || 0;
+                const greenBoxes = streak === 0 ? 0 : (streak % 7 === 0 ? 7 : streak % 7);
+                const neutralBoxes = 7 - greenBoxes;
+
+                return (
+                  <>
+                    {Array.from({ length: greenBoxes }).map((_, i) => (
+                      <div
+                        key={`green-${i}`}
+                        className='h-3.5 w-3.5 bg-green-500 rounded-sm shadow-[0_0_8px_rgba(34,197,94,0.2)]'
+                      />
+                    ))}
+
+                    {Array.from({ length: neutralBoxes }).map((_, i) => (
+                      <div
+                        key={`neutral-${i}`}
+                        className='h-3.5 w-3.5 rounded-sm border border-neutral-700 bg-neutral-950/40'
+                      />
+                    ))}
+                  </>
+                );
+              })()}
+            </div>
           </div>
         </motion.div>
 
@@ -108,10 +139,23 @@ const Personal_Stats = () => {
             <span className='text-sm text-neutral-500'>Total time in deep work</span>
           </div>
           <div className='h-full w-[25%] text-end'>
-            <span className='text-xl w-full text-green-300/90 font-semibold'>2h 14m</span>
+            <span className='text-xl w-full text-green-300/90 font-semibold'>
+              {/* Calculate hours and remaining minutes */}
+              {(() => {
+                const hours = Math.floor(summary.totalFocusTime / 3600);
+                const minutes = Math.floor((summary.totalFocusTime % 3600) / 60);
+
+                return (
+                  <>
+                    {hours > 0 && `${hours}h `}
+                    {minutes}m
+                  </>
+                );
+              })()}
+            </span>
             <div className='flex flex-row justify-end items-center gap-1'>
-              <IconArrowUp className='h-3 w-3 text-green-400' />
-              <span className='text-[9px] text-neutral-400'>18% vs yesterday</span>
+              <IconSparkles className='h-3 w-3 text-green-400' />
+              <span className='text-[9px] text-neutral-400'>From {summary?.summary?.[0]?.totalSessions} sessions</span>
             </div>
           </div>
         </motion.div>
@@ -128,13 +172,13 @@ const Personal_Stats = () => {
           </div>
           <div className='h-full w-[50%] flex flex-col '>
             <span className='text-lg text-neutral-100 font-semibold leading-tight'>Tasks Done</span>
-            <span className='text-sm text-neutral-500'>Milestones reached</span>
+            <span className='text-sm text-neutral-500'>Total Tasks</span>
           </div>
           <div className='h-full w-[25%] text-end'>
-            <span className='text-xl w-full text-green-300/90 font-semibold'>4</span>
+            <span className='text-xl w-full text-green-300/90 font-semibold'>{summary.totalCompletedTasks}</span>
             <div className='flex flex-row justify-end items-center gap-1'>
-              <IconArrowUp className='h-3 w-3 text-green-400' />
-              <span className='text-[9px] text-neutral-400'>+1 from yesterday</span>
+              <IconSparkles className='h-3 w-3 text-green-400' />
+              <span className='text-[9px] text-neutral-400'>{summary.totalTasks} tasks</span>
             </div>
           </div>
         </motion.div>
@@ -151,13 +195,43 @@ const Personal_Stats = () => {
           </div>
           <div className='h-full w-[50%] flex flex-col '>
             <span className='text-lg text-neutral-100 font-semibold leading-tight'>Peak Session</span>
-            <span className='text-sm text-neutral-500'>Best individual sprint</span>
+            <span className='text-sm text-neutral-500'>Average Session Duration</span>
           </div>
           <div className='h-full w-[25%] text-end'>
-            <span className='text-xl w-full text-green-300/90 font-semibold'>52m</span>
+            <span className='text-xl w-full text-green-300/90 font-semibold'>
+              {(() => {
+                const seconds = summary?.summary?.[0]?.longestSession || 0;
+
+                const hours = Math.floor(seconds / 3600);
+                const minutes = Math.floor((seconds % 3600) / 60);
+
+                return (
+                  <>
+                    {hours > 0 && `${hours}h `}
+                    {minutes}m
+                  </>
+                );
+              })()}
+            </span>
             <div className='flex flex-row justify-end items-center gap-1'>
-              <IconArrowDown className='h-3 w-3 text-red-400' />
-              <span className='text-[9px] text-neutral-400'>8m vs yesterday</span>
+              <IconSparkles className='h-3 w-3 text-red-400' />
+              <span className='text-[9px] text-neutral-400'>
+                {(() => {
+                  const avgSeconds = summary?.summary?.[0]?.averageSessionDuration || 0;
+
+                  const totalMinutes = Math.round(avgSeconds / 60);
+
+                  const hours = Math.floor(totalMinutes / 60);
+                  const minutes = totalMinutes % 60;
+
+                  return (
+                    <>
+                      Avg: {hours > 0 && `${hours}h `}
+                      {minutes}m
+                    </>
+                  );
+                })()}
+              </span>
             </div>
           </div>
         </motion.div>

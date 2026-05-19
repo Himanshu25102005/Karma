@@ -51,11 +51,16 @@ router.get("/stats/overview", isloggedIn, async (req, res) => {
       isCompleted: true,
     });
 
+    const totalTasks = await project_task.countDocuments({
+      userId: req.user._id,
+    });
+
     res.json({
       success: true,
       totalFocusTime: totalFocusTime,
       summary: summary,
-      totalCompletedTasks: totalCompletedTasks
+      totalTasks: totalTasks,
+      totalCompletedTasks: totalCompletedTasks,
     });
   } catch (e) {
     console.log(e);
