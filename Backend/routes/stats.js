@@ -3,6 +3,7 @@ const express = require("express");
 const mongoose = require("mongoose");
 const Session = require("../models/focSessions");
 var router = express.Router();
+const project_task = require("../models/projectTasks");
 const UserBadge = require("../models/userbadge");
 const Badge = require("../models/badges");
 const checkAndAwardBadges = require("../utils/checkAndAwardBadges");
@@ -45,9 +46,16 @@ router.get("/stats/overview", isloggedIn, async (req, res) => {
     // If there's no data, summary will be [], otherwise [{_id: null, totalSum: X}]
     const totalFocusTime = summary.length > 0 ? summary[0].totalSum : 0;
 
+    const totalCompletedTasks = await project_task.countDocuments({
+      userId: req.user._id,
+      isCompleted: true,
+    });
+
     res.json({
       success: true,
       totalFocusTime: totalFocusTime,
+      summary: summary,
+      totalCompletedTasks: totalCompletedTasks
     });
   } catch (e) {
     console.log(e);

@@ -1,10 +1,10 @@
 const mongoose = require("mongoose");
 
 const project_task_schema = mongoose.Schema({
-projectId:{
+  projectId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "projects"
-},
+    ref: "projects",
+  },
   description: {
     type: String,
     required: true,
@@ -13,8 +13,12 @@ projectId:{
     type: Boolean,
     default: false,
   },
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "user",
+    required: true,
+    index: true,
+  },
 });
 
 module.exports = mongoose.model("project_task", project_task_schema);
-
-

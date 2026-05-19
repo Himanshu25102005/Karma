@@ -290,10 +290,12 @@ router.post("/project/AddTask/:projectId", isloggedIn, async (req, res) => {
   try {
     const projectId = req.params.projectId;
     const description = req.body.description;
+    const userId = req.user._id;
 
     const task = await project_task.create({
       description: description,
       projectId: projectId,
+      userId: userId
     });
 
     await Project.findByIdAndUpdate(projectId, {
