@@ -3,10 +3,11 @@ import api from "@/services/api";
 import { useProjectStore } from '../../store/useProjectStore'
 import { useAnimation, motion } from "framer-motion";
 import React, { useState, useEffect, Fragment } from 'react'
-import { IconPlus, IconCheck } from "@tabler/icons-react";
-import { div } from "framer-motion/client";
-const Sprint = ({ }) => {
+import { IconPlus, IconTrash, IconEdit } from "@tabler/icons-react";
+import useRefreshStore from "@/store/useRefreshStore";
 
+const Sprint = ({ }) => {
+    const triggerRefresh = useRefreshStore((state) => state.triggerRefresh);
     const currentProjectId = useProjectStore((state) => state.currentProjectId);
     const [newTask, setNewTasks] = useState('');
     const [tasks, setTasks] = useState([]);
@@ -27,6 +28,7 @@ const Sprint = ({ }) => {
             }
 
             setNewTasks('');
+            triggerRefresh();
 
         } catch (error) {
             console.log(error)
@@ -35,7 +37,7 @@ const Sprint = ({ }) => {
 
     const addTaskOnChange = (e) => {
         const description = e.target.value;
-
+        triggerRefresh();
         setNewTasks(description)
     }
 
@@ -54,11 +56,21 @@ const Sprint = ({ }) => {
                     })
                 );
             }
+            triggerRefresh();
         } catch (err) {
             console.log(err);
         }
     };
 
+    const delTask = async (taskId) => {
+        const res = await api.delTask(taskId, currentProjectId);
+        console.log(res.data);
+
+        setTasks((prevTasks) => {
+            return prevTasks.filter((task) => task._id !== taskId);
+        });
+        triggerRefresh();
+    }
 
     useEffect(() => {
 
@@ -71,6 +83,8 @@ const Sprint = ({ }) => {
 
         getAllTasks();
     }, [currentProjectId])
+
+
 
 
 
@@ -167,7 +181,7 @@ const Sprint = ({ }) => {
 
                 {/* RIGHT SIDE (tasks with gap) */}
                 <div className="flex flex-col w-full h-full">
-                    <div className="flex-1 overflow-y-auto pr-2 space-y-5 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent">
+                    <div className="flex-1 overflow-y-auto pr-2 space-y-5 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent relative">
                         {(Array.isArray(tasks) ? tasks : []).map((task, index) => (
 
                             <motion.div
@@ -182,10 +196,10 @@ const Sprint = ({ }) => {
                                 }}
 
                                 className={`group border rounded-2xl p-3 flex gap-5 items-center transition-all duration-200
-                        ${task.isCompleted
+                                ${task.isCompleted
                                         ? "border-white/10 bg-white/[0.03]"
                                         : "border-white/20 bg-white/[0.04] hover:bg-white/[0.07]"}
-                        `}
+                                `}
                             >
 
                                 {/* CHECK BUTTON */}
@@ -199,10 +213,10 @@ const Sprint = ({ }) => {
                                     transition={{ duration: 0.2 }}
 
                                     className={`h-10 w-10 cursor-target flex items-center justify-center rounded-xl border-2 transition-all duration-200
-                        ${task.isCompleted
+                                    ${task.isCompleted
                                             ? "border-green-400 shadow-[0_0_8px_rgba(34,197,94,0.5)]"
                                             : "border-white/30 group-hover:border-white/50"}
-                        `}
+                                    `}
                                 >
                                     {task.isCompleted && (
                                         <motion.div
@@ -218,13 +232,29 @@ const Sprint = ({ }) => {
                                 <motion.p
                                     layout
                                     className={`text-xl transition-all duration-200
-                        ${task.isCompleted
-                                            ? "line-through opacity-40 text-gray-400"
+                                     ${task.isCompleted
+                                            ? "line-through opacity-25 text-gray-400"
                                             : "text-white"}
-                        `}
+                                     `}
                                 >
                                     {task.description}
                                 </motion.p>
+
+                                <motion.div
+                                    className="absolute h-10 w-13 right-5 border border-neutral-800 rounded-lg flex flex-row justify-center items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 cursor-target"
+                                >
+                                    <motion.div
+                                        whileHover={{ scale: 1.1, color: '#ef4444' }}
+                                        whileTap={{ scale: 0.9, rotate: -5 }}
+                                        transition={{ type: 'spring', stiffness: 400, damping: 15 }}
+                                        className="h-7 w-7 flex justify-center items-center "
+                                    >
+                                        <IconTrash
+                                            className="h-full w-full text-red-600 transition-colors"
+                                            onClick={() => delTask(task._id)}
+                                        />
+                                    </motion.div>
+                                </motion.div>
 
                             </motion.div>
                         ))}

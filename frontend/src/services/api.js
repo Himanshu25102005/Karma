@@ -104,9 +104,8 @@ const api = {
     return apiClient.patch(`/project/update/${projectId}`, data);
   },
 
-
   mostActiveProject: () => {
-    return apiClient.get('/project/mostActive');
+    return apiClient.get("/project/mostActive");
   },
 
   getAllTask: (projectId, data) => {
@@ -119,6 +118,10 @@ const api = {
 
   completeTask: (taskid) => {
     return apiClient.patch(`/project/checkTask/${taskid}`);
+  },
+
+  delTask: (taskId, projectId) => {
+    return apiClient.delete(`/project/DeleteTask/${taskId}/${projectId}`);
   },
 
   /* Stats Route */

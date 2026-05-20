@@ -30,6 +30,7 @@ const ProjectSelector = ({ projects, setProjects }) => {
       console.log("Project updated in DB");
       const res = await api.getAllProjects();
       setProjects(res.data.projects);
+      setDropdown(false);
     } catch (err) {
       console.error("Update failed", err);
       setIsSelected(false);

@@ -5,7 +5,8 @@ import { useAnimate, motion } from "framer-motion";
 import useProjectStore from "@/store/useProjectStore";
 import { useUserStore } from "@/store/useUserStore";
 import api from "@/services/api";
-import { appRouterContext } from "next/dist/server/route-modules/app-route/shared-modules";
+import useRefreshStore from "@/store/useRefreshStore";
+
 
 // Configuration constants
 // const COUNTDOWN_FROM = "2026-04-11T15:00:00";
@@ -19,6 +20,7 @@ const DAY = HOUR * 24;
 
 export default function ShiftingCountdown() {
 
+  const triggerRefresh = useRefreshStore((state) => state.triggerRefresh);
   const currentProjectId = useProjectStore((state) => state.currentProjectId);
   const userId = useUserStore((state) => state.userId);
   const [isPause, setIsPause] = useState(false);
@@ -39,6 +41,7 @@ export default function ShiftingCountdown() {
     const res = await api.endSession(userId);
     console.log(res.data);
     setReset();
+    triggerRefresh();
   }
 
   const setReset = () => {
@@ -70,7 +73,7 @@ export default function ShiftingCountdown() {
 
       <div className="flex w-full max-w-5xl items-center mx-auto">
         {/* <CountdownItem unit="Day" label="Days" isStart={isStart} startTime={startTime} elapsedTime={elapsedTime} /> */}
-        <CountdownItem unit="Hour"  isStart={isStart} startTime={startTime} elapsedTime={elapsedTime} />
+        <CountdownItem unit="Hour" isStart={isStart} startTime={startTime} elapsedTime={elapsedTime} />
         <CountdownItem unit="Minute" isStart={isStart} startTime={startTime} elapsedTime={elapsedTime} />
         <CountdownItem unit="Second" isStart={isStart} startTime={startTime} elapsedTime={elapsedTime} />
       </div>

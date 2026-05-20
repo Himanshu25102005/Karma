@@ -340,7 +340,7 @@ router.delete(
     try {
       const { taskId, projectId } = req.params;
 
-      const task = await projTask.findByIdAndDelete({
+      const task = await project_task.findByIdAndDelete({
         _id: taskId,
       });
 
@@ -357,6 +357,7 @@ router.delete(
         success: true,
       });
     } catch (e) {
+      console.log(e);
       res.status(500).json({
         error: e.message,
       });

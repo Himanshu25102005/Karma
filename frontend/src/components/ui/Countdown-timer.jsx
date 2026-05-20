@@ -6,6 +6,7 @@ import useProjectStore from "@/store/useProjectStore";
 import { useUserStore } from "@/store/useUserStore";
 import { motion } from "framer-motion";
 import api from "@/services/api";
+import useRefreshStore from "@/store/useRefreshStore";
 
 // Configuration constants
 /* const COUNTDOWN_FROM = "2026-10-01T00:00:00"; */
@@ -16,6 +17,7 @@ const DAY = HOUR * 24;
 
 export default function ShiftingCountdown() {
 
+  const triggerRefresh = useRefreshStore((state) => state.triggerRefresh);
   const currentProjectId = useProjectStore((state) => state.currentProjectId);
   const userId = useUserStore((state) => state.userId);
   const [isStart, setIsStart] = useState(false);
@@ -71,12 +73,13 @@ export default function ShiftingCountdown() {
     const res = await api.endSession(userId);
     console.log(res.data);
     setReset();
+    triggerRefresh();
   }
   return (
     <section className="bg-white text-black dark:bg-black dark:text-white transition-colors duration-500 p-4">
       <div className="flex w-full max-w-5xl items-center mx-auto">
         {/* <CountdownItem unit="Day" label="Days" COUNTDOWN_FROM={COUNTDOWN_FROM} isStart={isStart} savedTime={savedTime} isPause={setPause} /> */}
-        <CountdownItem unit="Hour"  COUNTDOWN_FROM={COUNTDOWN_FROM} isStart={isStart} savedTime={savedTime} isPause={setPause} />
+        <CountdownItem unit="Hour" COUNTDOWN_FROM={COUNTDOWN_FROM} isStart={isStart} savedTime={savedTime} isPause={setPause} />
         <CountdownItem unit="Minute" COUNTDOWN_FROM={COUNTDOWN_FROM} isStart={isStart} savedTime={savedTime} isPause={setPause} />
         <CountdownItem unit="Second" COUNTDOWN_FROM={COUNTDOWN_FROM} isStart={isStart} savedTime={savedTime} isPause={setPause} />
       </div>

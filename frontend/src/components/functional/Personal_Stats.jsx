@@ -2,10 +2,13 @@ import React, { useEffect, useState } from 'react'
 import { useAnimation, motion } from "framer-motion";
 import api from '@/services/api';
 import { IconClock, IconArrowUp, IconCircleCheck, IconArrowDown, IconSparkles, IconTrendingUp, IconFlame } from '@tabler/icons-react';
+import useRefreshStore from '@/store/useRefreshStore';
+
 
 
 const Personal_Stats = () => {
 
+  const refreshToggle = useRefreshStore((state) => state.refreshToggle);
   const [summary, setSummary] = useState([]);
   const [streakData, setStreakData] = useState([]);
 
@@ -20,12 +23,8 @@ const Personal_Stats = () => {
 
 
     fetchOverview();
-  }, [])
+  }, [refreshToggle])
 
-  useEffect(() => {
-    console.log('Stats Summary: ', summary);
-    console.log('Streak data: ', streakData);
-  }, [summary, streakData])
 
 
   const cardVariants = {

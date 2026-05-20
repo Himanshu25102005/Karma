@@ -2,8 +2,12 @@ import React, { useEffect, useState } from 'react'
 import { IconClockCode, IconChevronRight, IconFileCheck, IconFile } from "@tabler/icons-react";
 import { motion } from 'framer-motion';
 import api from '@/services/api';
+import useRefreshStore from '@/store/useRefreshStore';
+
 
 const SessionHistory = () => {
+
+    const refreshToggle = useRefreshStore((state) => state.refreshToggle);
     const [myActivity, setMyActivity] = useState(true);
     const [isEmpty, setIsEmpty] = useState(false)
     const [sessionHistory, setSessionHistory] = useState([]);
@@ -23,10 +27,10 @@ const SessionHistory = () => {
         };
 
         loadData();
-    }, []);
+    }, [refreshToggle]);
     useEffect(() => {
         console.log("Session History has updated:", sessionHistory);
-    }, [sessionHistory]);
+    }, [sessionHistory, refreshToggle]);
 
     return (
         <>
