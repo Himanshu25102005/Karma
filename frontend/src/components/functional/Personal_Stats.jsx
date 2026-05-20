@@ -89,10 +89,10 @@ const Personal_Stats = () => {
           </div>
           <div className='h-full w-[50%] flex flex-col '>
             <span className='text-lg text-neutral-100 font-semibold leading-tight'>Streak</span>
-            <span className='text-sm text-neutral-500'>Keep showing up. You're on a roll!</span>
+            <span className='text-sm text-neutral-500'>{"Keep showing up. You're on a roll!"}</span>
           </div>
           <div className='h-full w-[25%] flex flex-col justify-center items-end'>
-            <span className='text-xl w-full text-green-300/90 font-semibold text-end'>
+            <span className='text-xl w-full text-pink-400/90 font-semibold text-end'>
               {streakData?.currentStreak || 0} Days
             </span>
 
@@ -107,7 +107,7 @@ const Personal_Stats = () => {
                     {Array.from({ length: greenBoxes }).map((_, i) => (
                       <div
                         key={`green-${i}`}
-                        className='h-3.5 w-3.5 bg-green-500 rounded-sm shadow-[0_0_8px_rgba(34,197,94,0.2)]'
+                        className='h-3.5 w-3.5 bg-pink-400/90 rounded-sm shadow-[0_0_8px_rgba(34,197,94,0.2)]'
                       />
                     ))}
 
@@ -175,9 +175,9 @@ const Personal_Stats = () => {
             <span className='text-sm text-neutral-500'>Total Tasks</span>
           </div>
           <div className='h-full w-[25%] text-end'>
-            <span className='text-xl w-full text-green-300/90 font-semibold'>{summary.totalCompletedTasks}</span>
+            <span className='text-xl w-full text-blue-500 font-semibold'>{summary.totalCompletedTasks}</span>
             <div className='flex flex-row justify-end items-center gap-1'>
-              <IconSparkles className='h-3 w-3 text-green-400' />
+              <IconSparkles className='h-3 w-3 text-blue-500' />
               <span className='text-[9px] text-neutral-400'>{summary.totalTasks} tasks</span>
             </div>
           </div>
@@ -198,7 +198,7 @@ const Personal_Stats = () => {
             <span className='text-sm text-neutral-500'>Average Session Duration</span>
           </div>
           <div className='h-full w-[25%] text-end'>
-            <span className='text-xl w-full text-green-300/90 font-semibold'>
+            <span className='text-xl w-full text-yellow-500 font-semibold'>
               {(() => {
                 const seconds = summary?.summary?.[0]?.longestSession || 0;
 
@@ -214,7 +214,7 @@ const Personal_Stats = () => {
               })()}
             </span>
             <div className='flex flex-row justify-end items-center gap-1'>
-              <IconSparkles className='h-3 w-3 text-red-400' />
+              <IconSparkles className='h-3 w-3 text-yellow-500' />
               <span className='text-[9px] text-neutral-400'>
                 {(() => {
                   const avgSeconds = summary?.summary?.[0]?.averageSessionDuration || 0;

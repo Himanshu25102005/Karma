@@ -50,6 +50,24 @@ router.post("/project/create", isloggedIn, async (req, res) => {
   }
 });
 
+/* Most Active Project */
+router.get("/project/mostActive", isloggedIn, async (req, res) => {
+  try{
+
+    const ActiveProject = await Project.findOne({
+    userId: req.user._id,
+  }).sort({totalMinutes: -1});
+
+  res.status(200).json({
+    ActiveProject
+  })
+  }catch (e) {
+    console.log(e);
+    res.status(500).json({ error: e.message });
+  }
+});
+
+
 /* Complete a Project */
 
 router.patch("/project/complete/:id", isloggedIn, async (req, res) => {
@@ -295,7 +313,7 @@ router.post("/project/AddTask/:projectId", isloggedIn, async (req, res) => {
     const task = await project_task.create({
       description: description,
       projectId: projectId,
-      userId: userId
+      userId: userId,
     });
 
     await Project.findByIdAndUpdate(projectId, {
@@ -376,7 +394,7 @@ router.patch("/project/checkTask/:taskId", isloggedIn, async (req, res) => {
       });
     }
   } catch (e) {
-    console.log(e)
+    console.log(e);
     res.status(500).json({
       error: e.message,
     });

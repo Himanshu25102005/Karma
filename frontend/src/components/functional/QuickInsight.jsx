@@ -1,11 +1,29 @@
-import React from 'react'
+import React, { useEffect, useState } from 'react'
 import { motion } from 'framer-motion'
 import { IconBrandGithub } from "@tabler/icons-react";
+import api from '@/services/api';
 
 const QuickInsight = () => {
+
+  const [activeProject, setActiveProject] = useState(null);
+
+  useEffect(() => {
+    const fetchMostActiveProject = async () => {
+      try {
+        const res = await api.mostActiveProject();
+        console.log("Active Project ", res.data)
+        setActiveProject(res.data.ActiveProject);
+      } catch (err) {
+        console.error("Error fetching most active project:", err);
+      }
+    };
+
+    fetchMostActiveProject();
+  }, []);
+
   return (
     <>
-      <div className='h-[15rem] w-full border-1 border-solid mt-2 border-neutral-500 rounded-xl p-2 flex flex-col'>
+      <div className='h-[15rem] w-full  mt-2 border-1 border-solid border-neutral-800 bg-white/[0.02] rounded-xl p-2 flex flex-col'>
         {/* Heading */}
         <div className='h-[2.5rem] w-full flex justify-between items-center'>
           <motion.div
@@ -34,11 +52,33 @@ const QuickInsight = () => {
 
           {/* Text Div */}
           <div className='h-full w-[80%] flex flex-col px-2 py-2'>
-            <span className='text-xl text-neutral-100 font-semibold '>DevSync</span>
-            <span className='text-2xl text-green-700 font-semibold mt-1'>18h 23m</span>
+            {/* 1. Added optional chaining (?.) and a fallback placeholder */}
+            <span className='text-xl text-neutral-100 font-semibold '>
+              {activeProject?.name || "Loading Project..."}
+            </span>
+
+            <span className='text-2xl text-green-700 font-semibold mt-1'>
+              {(() => {
+                const totalMinutes = Math.round(activeProject?.totalMinutes || 0);
+                const hours = Math.floor(totalMinutes / 60);
+                const minutes = totalMinutes % 60;
+
+                return (
+                  <>
+                    {hours > 0 && `${hours}h `}
+                    {minutes}m
+                  </>
+                );
+              })()}
+            </span>
+
             <div className='w-[60%] bg-neutral-600 h-px mt-1'></div>
-            <span className='text-[11px] text-neutral-500 pt-1'>Last Worked:</span>
-            <span className='text-[13px] text-neutral-200'>Fix Authentication Flow</span>
+            <span className='text-[11px] text-neutral-500 pt-1'>Description:</span>
+
+            {/* 2. Added optional chaining (?.) here as well */}
+            <span className='text-[13px] text-neutral-200'>
+              {activeProject?.description || "No description provided."}
+            </span>
           </div>
         </div>
       </div>

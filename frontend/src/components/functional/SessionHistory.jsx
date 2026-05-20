@@ -30,7 +30,7 @@ const SessionHistory = () => {
 
     return (
         <>
-            <div className='min-h-[400px] max-h-[400px] w-full border-1 border-solid border-neutral-500 rounded-xl p-2 mt-4 flex flex-col'>
+            <div className='min-h-[400px] max-h-[400px] w-full border-1 border-solid border-neutral-800 bg-white/[0.02] rounded-xl p-2 mt-4 flex flex-col'>
                 {/* Heading */}
                 <div className='h-8 w-full  flex justify-between items-center'>
                     <motion.div

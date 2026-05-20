@@ -6,7 +6,7 @@ var router = express.Router();
 const passport = require("passport");
 const UserBadge = require("../models/userbadge");
 const Badge = require("../models/badges");
-const { checkAndAwardBadges } = require("../utils/checkAndAwardBadges");
+const checkAndAwardBadges = require("../utils/checkAndAwardBadges"); 
 
 /* Middleware to check if the user is logged in  */
 const isloggedIn = (req, res, next) => {

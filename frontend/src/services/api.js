@@ -104,6 +104,11 @@ const api = {
     return apiClient.patch(`/project/update/${projectId}`, data);
   },
 
+
+  mostActiveProject: () => {
+    return apiClient.get('/project/mostActive');
+  },
+
   getAllTask: (projectId, data) => {
     return apiClient.get(`/project/tasks/${projectId}`, data);
   },
