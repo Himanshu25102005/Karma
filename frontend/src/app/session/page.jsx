@@ -134,7 +134,6 @@ const SessionPage = () => {
         hoverDuration={0.2} />
       <Navbar />
 
-      {/* Older Background */}
       <div className="absolute inset-0 opacity-20 pointer-events-none">
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
           <defs>

@@ -1,9 +1,8 @@
 import React, { useEffect, useState } from 'react'
 import { useAnimation, motion } from "framer-motion";
 import api from '@/services/api';
-import { IconClock, IconArrowUp, IconCircleCheck, IconArrowDown, IconSparkles, IconTrendingUp, IconFlame } from '@tabler/icons-react';
+import { IconClock, IconCircleCheck, IconChevronRight, IconSparkles, IconTrendingUp, IconFlame } from '@tabler/icons-react';
 import useRefreshStore from '@/store/useRefreshStore';
-
 
 
 const Personal_Stats = () => {
@@ -33,7 +32,9 @@ const Personal_Stats = () => {
     show: { opacity: 1, y: 0, transition: { type: 'spring', stiffness: 300, damping: 24 } }
   };
 
+
   return (
+
     <div className='h-full w-full p-2 flex flex-col'>
       {/* Heading */}
       <div className='h-15 w-full '>
@@ -56,7 +57,16 @@ const Personal_Stats = () => {
 
           {/* OPTIONAL RIGHT (future use) */}
           {/* <div className="text-sm text-gray-400">Tasks</div> */}
-
+          <motion.a
+            initial={{ opacity: 0, y: -10 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ duration: 0.4, ease: "easeOut" }}
+            href="http://localhost:3000/analytics"
+            className='flex gap-2 justify-center cursor-target items-center'
+          >
+            <span className='text-neutral-500 hover:text-neutral-300 transition-colors'>View full history</span>
+            <IconChevronRight className='h-5 w-5 text-neutral-500' />
+          </motion.a>
         </motion.div>
       </div>
 
