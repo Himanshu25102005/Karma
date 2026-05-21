@@ -178,6 +178,7 @@ router.get("/stats/streak", isloggedIn, async (req, res) => {
             $dateToString: {
               format: "%Y-%m-%d",
               date: "$startTime",
+              timezone: "Asia/Kolkata", 
             },
           },
         },
@@ -195,17 +196,26 @@ router.get("/stats/streak", isloggedIn, async (req, res) => {
       });
     }
 
-    const dateObjects = dates.map((d) => new Date(d));
+    // Build date objects from strings in local midnight terms — no timezone shift
+    const dateObjects = dates.map((d) => {
+      const [year, month, day] = d.split("-").map(Number);
+      return new Date(year, month - 1, day); // local midnight, no UTC conversion
+    });
 
     const today = new Date();
     today.setHours(0, 0, 0, 0);
 
-    let currentStreak = 0;
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
 
-    const firstDate = new Date(dateObjects[0]);
-    if (firstDate.getTime() !== today.getTime()) {
-      currentStreak = 0;
-    } else {
+    // Fix bug 2: allow streak if last session was today OR yesterday
+    let currentStreak = 0;
+    const lastDate = dateObjects[0];
+
+    if (
+      lastDate.getTime() === today.getTime() ||
+      lastDate.getTime() === yesterday.getTime()
+    ) {
       currentStreak = 1;
 
       for (let i = 0; i < dateObjects.length - 1; i++) {
@@ -220,6 +230,7 @@ router.get("/stats/streak", isloggedIn, async (req, res) => {
       }
     }
 
+    // Longest streak logic — was correct, keeping as is
     let longestStreak = 1;
     let tempStreak = 1;
 
@@ -244,10 +255,10 @@ router.get("/stats/streak", isloggedIn, async (req, res) => {
       currentStreak,
       longestStreak,
       lastActiveDate: dates[0],
-      newAwards: newAwards,
+      newAwards,
     });
   } catch (e) {
-    console.log(e);
+    console.error(e);
     res.status(500).json({ error: e.message });
   }
 });

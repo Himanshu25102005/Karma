@@ -181,7 +181,13 @@ const Sprint = ({ }) => {
 
                 {/* RIGHT SIDE (tasks with gap) */}
                 <div className="flex flex-col w-full h-full">
-                    <div className="flex-1 overflow-y-auto pr-2 space-y-5 scrollbar-thin scrollbar-thumb-white/10 scrollbar-track-transparent relative">
+                    <div className="flex-1 overflow-y-auto pr-2 space-y-5 relative 
+                    [&::-webkit-scrollbar]:w-1.5
+                    [&::-webkit-scrollbar-track]:bg-transparent
+                    [&::-webkit-scrollbar-thumb]:bg-neutral-800
+                    [&::-webkit-scrollbar-thumb]:rounded-full
+                    hover:[&::-webkit-scrollbar-thumb]:bg-neutral-700
+                    ">
                         {(Array.isArray(tasks) ? tasks : []).map((task, index) => (
 
                             <motion.div
@@ -241,7 +247,7 @@ const Sprint = ({ }) => {
                                 </motion.p>
 
                                 <motion.div
-                                    className="absolute h-10 w-13 right-5 border border-neutral-800 rounded-lg flex flex-row justify-center items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 cursor-target"
+                                    className="absolute h-13 w-13 right-5 border border-neutral-800 rounded-full flex flex-row justify-center items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity duration-200 cursor-target"
                                 >
                                     <motion.div
                                         whileHover={{ scale: 1.1, color: '#ef4444' }}

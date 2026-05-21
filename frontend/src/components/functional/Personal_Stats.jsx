@@ -17,6 +17,7 @@ const Personal_Stats = () => {
       const res = await api.overview();
       const streak = await api.getStreak();
 
+      console.log("Streak Data ", streak.data);
       setSummary(res.data);
       setStreakData(streak.data);
     }

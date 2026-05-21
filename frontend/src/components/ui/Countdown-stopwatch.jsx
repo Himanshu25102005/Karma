@@ -146,7 +146,7 @@ const CountdownItem = ({ unit, label, isStart, startTime, elapsedTime }) => {
         <div className="relative w-full overflow-hidden text-center">
           <span
             ref={ref}
-            className="block text-3xl font-mono font-semibold md:text-5xl lg:text-[9rem]"
+            className="block text-3xl font-mono font-semibold md:text-5xl lg:text-[10.5rem]"
           >
             {display}
           </span>
