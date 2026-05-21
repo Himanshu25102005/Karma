@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import ShiftingStopwatch from "@/components/ui/Countdown-stopwatch";
-import ShiftingCountdown from "@/components/ui/Countdown-timer";
+import ShiftingStopwatch from "@/components/Session/Countdown-stopwatch";
+import ShiftingCountdown from "@/components/Session/Countdown-timer";
 import { motion } from "framer-motion";
 
 const Timer = () => {

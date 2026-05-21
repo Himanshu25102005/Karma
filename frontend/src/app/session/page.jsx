@@ -2,84 +2,80 @@
 
 import React, { useEffect, useState } from 'react';
 import api from "@/services/api";
-import SmoothCursor from "../../components/ui/Smooth-cursor"
-import { FloatingDock } from "../../components/ui/Floating-dock";
-import Navbar from "../../components/functional/Navbar";
-import Activity from "../../components/functional/Activity";
-import ProjectSelector from "../../components/functional/ProjectSelector";
-import Personal_Stats from "../../components/functional/Personal_Stats";
-import Sprint from "../../components/functional/Sprint";
+import SmoothCursor from "../../components/Effects/Smooth-cursor"
+import { FloatingDock } from "../../components/Common/Floating-dock";
+import Navbar from "../../components/Session/Navbar";
+import Activity from "../../components/Session/Activity";
+import ProjectSelector from "../../components/Session/ProjectSelector";
+import Personal_Stats from "../../components/Session/Personal_Stats";
+import Sprint from "../../components/Session/Sprint";
 import { useUserStore } from "@/store/useUserStore";
-import Timer from "../../components/functional/Timer";
+import Timer from "../../components/Session/Timer";
 import useProjectStore from '@/store/useProjectStore';
 import {
   IconBrandGithub,
   IconBrandX,
-  IconExchange,
+  IconHomeStats,
   IconHome,
-  IconNewSection,
+  IconDeviceLaptop,
   IconTerminal2,
+  IconClockPlay,
 } from "@tabler/icons-react";
 
 const SessionPage = () => {
   const links = [
-    {
-      title: "Home",
-      icon: (
-        <IconHome className="h-full w-full text-neutral-500 dark:text-neutral-300" />
-      ),
-      href: "#",
-    },
+        {
+            title: "Home",
+            icon: (
+                <IconHome className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+            ),
+            href: "#",
+        },
 
-    {
-      title: "Products",
-      icon: (
-        <IconTerminal2 className="h-full w-full text-neutral-500 dark:text-neutral-300" />
-      ),
-      href: "#",
-    },
-    {
-      title: "Components",
-      icon: (
-        <IconNewSection className="h-full w-full text-neutral-500 dark:text-neutral-300" />
-      ),
-      href: "#",
-    },
-    {
-      title: "Aceternity UI",
-      icon: (
-        <img
-          src="https://assets.aceternity.com/logo-dark.png"
-          width={20}
-          height={20}
-          alt="Aceternity Logo"
-        />
-      ),
-      href: "#",
-    },
-    {
-      title: "Changelog",
-      icon: (
-        <IconExchange className="h-full w-full text-neutral-500 dark:text-neutral-300" />
-      ),
-      href: "#",
-    },
+        {
+            title: "Products",
+            icon: (
+                <IconTerminal2 className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+            ),
+            href: "#",
+        },
+        {
+            title: "Projects",
+            icon: (
+                <IconDeviceLaptop className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+            ),
+            href: "#",
+        },
+        {
+            title: "Session",
+            icon: (
+                <IconClockPlay className='h-20 w-20 text-white' />
+            ),
+            href: "http://localhost:3000/session",
+        },
+        {
+            title: "Dashboard",
+            icon: (
+                <IconHomeStats className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+            ),
+            href: "http://localhost:3000/analytics",
+        },
 
-    {
-      title: "Twitter",
-      icon: (
-        <IconBrandX className="h-full w-full text-neutral-500 dark:text-neutral-300" />
-      ),
-      href: "#",
-    },
-    {
-      title: "GitHub",
-      icon: (
-        <IconBrandGithub className="h-full w-full text-neutral-500 dark:text-neutral-300" />
-      ),
-      href: "#",
-    },
-  ];
+        {
+            title: "Twitter",
+            icon: (
+                <IconBrandX className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+            ),
+            href: "#",
+        },
+        {
+            title: "GitHub",
+            icon: (
+                <IconBrandGithub className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+            ),
+            href: "#",
+        },
+    ];
 
   const setCurrentProjectId = useProjectStore((state) => state.setCurrentProjectId);
 
@@ -137,6 +133,8 @@ const SessionPage = () => {
         parallaxOn
         hoverDuration={0.2} />
       <Navbar />
+
+      {/* Older Background */}
       <div className="absolute inset-0 opacity-20 pointer-events-none">
         <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
           <defs>
@@ -146,12 +144,16 @@ const SessionPage = () => {
                 fill="none"
                 stroke={isDark ? '#ffffff' : '#000000'}
                 strokeWidth="0.5"
+                opacity="0.3"
               />
             </pattern>
           </defs>
           <rect width="100%" height="100%" fill="url(#grid)" />
         </svg>
       </div>
+
+
+      
       <div className='bg-black min-h-screen pt-16'>
 
         {/* Main Outer Div */}

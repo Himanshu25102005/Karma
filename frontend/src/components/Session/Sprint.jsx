@@ -117,7 +117,7 @@ const Sprint = ({ }) => {
 
             {/* Tasks Section */}
             {/*  <div className="flex px-10 h-full py-13 rounded-2xl shadow-[inset_0_0_20px_rgba(255,255,255,0.03)]"> */}
-            <div className="flex px-10 h-[450px] py-10 bg-white/[0.02] rounded-2xl">
+            <div className="flex px-10 h-[450px] py-10 bg-white/[0.01] w-[97%] rounded-2xl">
 
 
                 {/* LEFT SIDE (continuous line system) */}

@@ -4,7 +4,7 @@ import { useAnimation } from "framer-motion";
 import { useRouter } from 'next/navigation';
 import React, { useState } from 'react'
 import { motion } from "motion/react";
-import { LampContainer } from "../../components/ui/Lamp";
+import { LampContainer } from "../../components/Effects/Lamp";
 
 const Page = () => {
     const [form, setform] = useState({
