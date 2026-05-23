@@ -6,7 +6,7 @@ var router = express.Router();
 const passport = require("passport");
 const UserBadge = require("../models/userbadge");
 const Badge = require("../models/badges");
-const checkAndAwardBadges = require("../utils/checkAndAwardBadges"); 
+const checkAndAwardBadges = require("../utils/checkAndAwardBadges");
 
 /* Middleware to check if the user is logged in  */
 const isloggedIn = (req, res, next) => {
@@ -15,6 +15,33 @@ const isloggedIn = (req, res, next) => {
     success: false,
     error: "Authentication required",
   });
+};
+
+const getDays = (startTime) => {
+  const dateObj = new Date(startTime);
+
+  const dayOfWeek = new Intl.DateTimeFormat("en-IN", {
+    timeZone: "Asia/Kolkata",
+    weekday: "long",
+  }).format(dateObj);
+
+  return dayOfWeek;
+};
+
+const getMonths = (startTime) => {
+  const dateObj = new Date(startTime);
+  const month = new Intl.DateTimeFormat("en-IN", {
+    timeZone: "Asia/Kolkata",
+    month: "short",
+  }).format(dateObj);
+
+  return month;
+};
+
+const getDuration = (duration) => {
+  if (duration == 0) return duration;
+  duration = Math.round(duration / 60);
+  return duration;
 };
 
 /* start session API */
@@ -183,6 +210,147 @@ router.get("/session/history", isloggedIn, async (req, res) => {
   } catch (e) {
     console.log(e);
     res.status(500).json({ error: e.message });
+  }
+});
+
+/* API to Provide JSON data for Histogram (Weekly) */
+router.get("/session/histogram/data/weekly", isloggedIn, async (req, res) => {
+  try {
+    const sessions = await Session.find({
+      userId: req.user._id,
+      status: "completed",
+    })
+      .select("startTime duration -_id")
+      .lean();
+
+    const data = [
+      {
+        day: "Monday",
+        duration: 0,
+      },
+      {
+        day: "Tuesday",
+        duration: 0,
+      },
+      {
+        day: "Wednesday",
+        duration: 0,
+      },
+      {
+        day: "Thursday",
+        duration: 0,
+      },
+      {
+        day: "Friday",
+        duration: 0,
+      },
+      {
+        day: "Saturday",
+        duration: 0,
+      },
+      {
+        day: "Sunday",
+        duration: 0,
+      },
+    ];
+
+    for (let i = 0; i < sessions.length; i++) {
+      sessions[i].startTime = getDays(sessions[i].startTime);
+      sessions[i].duration = getDuration(sessions[i].duration);
+    }
+
+    for (let i = 0; i < data.length; i++) {
+      for (let j = 0; j < sessions.length; j++) {
+        if (sessions[j].startTime == data[i].day) {
+          data[i].duration = data[i].duration + sessions[j].duration;
+        } else continue;
+      }
+    }
+
+    res.status(200).json(data);
+  } catch (e) {
+    console.log(e);
+    res.status(500).json(e.message);
+  }
+});
+
+/* API to Provide JSON data for Histogram (Monthly) */
+router.get("/session/histogram/data/monthly", isloggedIn, async (req, res) => {
+  try {
+    const data = [
+      {
+        month: "Jan",
+        duration: 0,
+      },
+      {
+        month: "Feb",
+        duration: 0,
+      },
+      {
+        month: "Mar",
+        duration: 0,
+      },
+      {
+        month: "Apr",
+        duration: 0,
+      },
+      {
+        month: "May",
+        duration: 0,
+      },
+      {
+        month: "Jun",
+        duration: 0,
+      },
+      {
+        month: "Jul",
+        duration: 0,
+      },
+      {
+        month: "Aug",
+        duration: 0,
+      },
+      {
+        month: "Sep",
+        duration: 0,
+      },
+      {
+        month: "Oct",
+        duration: 0,
+      },
+      {
+        month: "Nov",
+        duration: 0,
+      },
+      {
+        month: "Dec",
+        duration: 0,
+      },
+    ];
+
+    const sessions = await Session.find({
+      userId: req.user._id,
+      status: "completed",
+    })
+      .select("startTime duration -_id")
+      .lean();
+
+    for (let i = 0; i < sessions.length; i++) {
+      sessions[i].startTime = getMonths(sessions[i].startTime);
+      sessions[i].duration = getDuration(sessions[i].duration);
+    }
+
+    for (let i = 0; i < data.length; i++) {
+      for (let j = 0; j < sessions.length; j++) {
+        if (sessions[j].startTime == data[i].month) {
+          data[i].duration = data[i].duration + sessions[j].duration;
+        } else continue;
+      }
+    }
+
+    res.status(200).json(data);
+  } catch (e) {
+    res.status(500).json(e.message);
   }
 });
 

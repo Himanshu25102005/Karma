@@ -86,6 +86,14 @@ const api = {
     return apiClient.get("/session/history");
   },
 
+  weeklySessionHistogramData: () => {
+    return apiClient.get('/session/histogram/data/weekly')
+  },
+
+  monthlySessionHistogramData: () => {
+    return apiClient.get('/session/histogram/data/monthly')
+  },
+
   /* Project Routes */
 
   getAllProjects: () => {

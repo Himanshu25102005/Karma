@@ -61,7 +61,7 @@ const Personal_Stats = () => {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
-            href="http://localhost:3000/analytics"
+            href="http://localhost:3000/dashboard"
             className='flex gap-2 justify-center cursor-target items-center'
           >
             <span className='text-neutral-500 hover:text-neutral-300 transition-colors'>View full history</span>

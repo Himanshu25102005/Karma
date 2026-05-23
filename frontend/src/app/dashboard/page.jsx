@@ -6,6 +6,8 @@ import { SmoothCursor } from '@/components/Effects/Smooth-Cursor2';
 import {
     IconBrandGithub, IconBrandX, IconHome, IconClock, IconSparkles, IconTerminal2, IconClockPlay, IconHomeStats, IconDeviceLaptop, IconCircleCheck, IconTrendingUp
 } from "@tabler/icons-react";
+import Histogram from '@/components/Dashboard/Histogram';
+
 
 const AnalyticsPage = () => {
     const links = [
@@ -43,7 +45,7 @@ const AnalyticsPage = () => {
             icon: (
                 <IconHomeStats className="h-full w-full text-neutral-500 dark:text-neutral-300" />
             ),
-            href: "http://localhost:3000/analytics",
+            href: "http://localhost:3000/dashboard",
         },
 
         {
@@ -317,8 +319,8 @@ const AnalyticsPage = () => {
                             </div>
 
                             {/* Histogram */}
-                            <div className='col-span-2  text-white h-[23rem] rounded-xl bg-[#141414]'>
-                                <span>Focus Time Over Time (Histogram)</span>
+                            <div className='col-span-2  text-white h-[23rem] rounded-xl bg-[#141414] p-4'>
+                                <Histogram/>
                             </div>
 
                             {/* Calender */}

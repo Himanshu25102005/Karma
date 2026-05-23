@@ -58,7 +58,7 @@ const SessionPage = () => {
             icon: (
                 <IconHomeStats className="h-full w-full text-neutral-500 dark:text-neutral-300" />
             ),
-            href: "http://localhost:3000/analytics",
+            href: "http://localhost:3000/dashboard",
         },
 
         {
