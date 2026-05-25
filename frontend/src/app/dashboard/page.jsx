@@ -3,10 +3,9 @@
 import React, { useEffect, useState } from 'react';
 import { FloatingDock } from "../../components/Common/Floating-dock";
 import { SmoothCursor } from '@/components/Effects/Smooth-Cursor2';
-import {
-    IconBrandGithub, IconBrandX, IconHome, IconClock, IconSparkles, IconTerminal2, IconClockPlay, IconHomeStats, IconDeviceLaptop, IconCircleCheck, IconTrendingUp
-} from "@tabler/icons-react";
+import { IconBrandGithub, IconBrandX, IconHome, IconClock, IconSparkles, IconTerminal2, IconClockPlay, IconHomeStats, IconDeviceLaptop, IconCircleCheck, IconTrendingUp } from "@tabler/icons-react";
 import Histogram from '@/components/Dashboard/Histogram';
+import ActivityCalender from '@/components/Dashboard/ActivityCalender';
 
 
 const AnalyticsPage = () => {
@@ -320,12 +319,12 @@ const AnalyticsPage = () => {
 
                             {/* Histogram */}
                             <div className='col-span-2  text-white h-[23rem] rounded-xl bg-[#141414] p-4'>
-                                <Histogram/>
+                                <Histogram />
                             </div>
 
                             {/* Calender */}
-                            <div className='col-span-2 text-white h-[23rem] rounded-xl bg-[#141414]'>
-                                <span>Activity Calender</span>
+                            <div className='col-span-2 text-white h-[23rem] rounded-xl bg-[#141414] p-4'>
+                                <ActivityCalender/>
                             </div>
 
                             {/* Pie Chart */}
