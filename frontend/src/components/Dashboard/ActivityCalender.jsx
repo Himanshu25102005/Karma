@@ -3,7 +3,8 @@
 import { IconCircleCheckFilled, IconChevronDown } from '@tabler/icons-react'
 import { AnimatePresence, motion } from 'framer-motion'
 import React, { useEffect, useState } from 'react'
-
+import Calender from "react-calendar"
+import 'react-calendar/dist/Calendar.css';
 const months = [
     {
         no: 1,
@@ -55,7 +56,7 @@ const months = [
     },
 ]
 const ActivityCalender = () => {
-const [value, onChange] = useState(new Date());
+    const [value, onChange] = useState(new Date());
     const [dropdown, setDropdown] = useState(false)
     const [Month, setMonth] = useState(null);
     return (
@@ -116,7 +117,7 @@ const [value, onChange] = useState(new Date());
             </div>
 
             <div className='flex-1 border border-neutral-800 rounded-xl p-2 bg-neutral-900/10 '>
-                
+                {/* <Calender/> */} 
             </div>
         </div>
     )
