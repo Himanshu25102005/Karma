@@ -216,42 +216,27 @@ router.get("/session/history", isloggedIn, async (req, res) => {
 /* API to Provide JSON data for Histogram (Weekly) */
 router.get("/session/histogram/data/weekly", isloggedIn, async (req, res) => {
   try {
+    
+    const sevenDaysAgo = new Date();
+    sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
+
+    // ⚡ 2. UPDATE THE DATABASE FILTER
     const sessions = await Session.find({
       userId: req.user._id,
       status: "completed",
+      startTime: { $gte: sevenDaysAgo },
     })
       .select("startTime duration -_id")
       .lean();
 
     const data = [
-      {
-        day: "Monday",
-        duration: 0,
-      },
-      {
-        day: "Tuesday",
-        duration: 0,
-      },
-      {
-        day: "Wednesday",
-        duration: 0,
-      },
-      {
-        day: "Thursday",
-        duration: 0,
-      },
-      {
-        day: "Friday",
-        duration: 0,
-      },
-      {
-        day: "Saturday",
-        duration: 0,
-      },
-      {
-        day: "Sunday",
-        duration: 0,
-      },
+      { day: "Monday", duration: 0 },
+      { day: "Tuesday", duration: 0 },
+      { day: "Wednesday", duration: 0 },
+      { day: "Thursday", duration: 0 },
+      { day: "Friday", duration: 0 },
+      { day: "Saturday", duration: 0 },
+      { day: "Sunday", duration: 0 },
     ];
 
     for (let i = 0; i < sessions.length; i++) {
@@ -263,7 +248,7 @@ router.get("/session/histogram/data/weekly", isloggedIn, async (req, res) => {
       for (let j = 0; j < sessions.length; j++) {
         if (sessions[j].startTime == data[i].day) {
           data[i].duration = data[i].duration + sessions[j].duration;
-        } else continue;
+        }
       }
     }
 

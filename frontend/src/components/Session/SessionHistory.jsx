@@ -87,7 +87,7 @@ const SessionHistory = () => {
                 </div>
 
                 {/* History */}
-                <div className=' flex-1 mt-4 flex flex-col gap-2 overflow-y-auto p-1 
+                <div className=' flex-1 mt-4 flex flex-col gap-2 overflow-y-auto py-1 pr-1
                     [&::-webkit-scrollbar]:w-1.5
                     [&::-webkit-scrollbar-track]:bg-transparent
                     [&::-webkit-scrollbar-thumb]:bg-neutral-800
