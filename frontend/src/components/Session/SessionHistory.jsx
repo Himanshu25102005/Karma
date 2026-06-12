@@ -87,7 +87,12 @@ const SessionHistory = () => {
                 </div>
 
                 {/* History */}
-                <div className=' flex-1 mt-4 flex flex-col gap-2 overflow-y-auto  '>
+                <div className=' flex-1 mt-4 flex flex-col gap-2 overflow-y-auto p-1 
+                    [&::-webkit-scrollbar]:w-1.5
+                    [&::-webkit-scrollbar-track]:bg-transparent
+                    [&::-webkit-scrollbar-thumb]:bg-neutral-800
+                    [&::-webkit-scrollbar-thumb]:rounded-full
+                    hover:[&::-webkit-scrollbar-thumb]:bg-neutral-700  '>
                     {isEmpty ? (
                         <div className="flex-1 text-neutral-500 italic flex justify-center items-center p-4 ">
                             No history found. Start working to see sessions!
