@@ -52,21 +52,19 @@ router.post("/project/create", isloggedIn, async (req, res) => {
 
 /* Most Active Project */
 router.get("/project/mostActive", isloggedIn, async (req, res) => {
-  try{
-
+  try {
     const ActiveProject = await Project.findOne({
-    userId: req.user._id,
-  }).sort({totalMinutes: -1});
+      userId: req.user._id,
+    }).sort({ totalMinutes: -1 });
 
-  res.status(200).json({
-    ActiveProject
-  })
-  }catch (e) {
+    res.status(200).json({
+      ActiveProject,
+    });
+  } catch (e) {
     console.log(e);
     res.status(500).json({ error: e.message });
   }
 });
-
 
 /* Complete a Project */
 
@@ -176,6 +174,45 @@ router.get("/project", isloggedIn, async (req, res) => {
   } catch (e) {
     console.error("BACKEND CRASH:", e);
     res.status(500).json({ error: e.message });
+  }
+});
+
+/* Pie Chart Data */
+/* router.get("/project/piechart", isloggedIn, async (req, res) => {
+  try {
+    const GlobalMinutes = await Project.aggregate([
+      {
+        $match: {
+          userId: req.user._id,
+          isActive: true,
+          totalMinutes: { $gte: 0 },
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalUsersMinutes: { $sum: "$totalMinutes" },
+        },
+      },
+    ]);
+
+    const totalGlobalMinutes = GlobalMinutes[0]?.totalUsersMinutes || 1;
+  } catch (e) {
+    res.status(500).json(e.message);
+  }
+}); */
+
+router.get("/project/piechart", isloggedIn, async (req, res) => {
+  try {
+    const data = await Project.find({
+      userId: req.user._id,
+      isActive: true,
+    }).select("name totalMinutes color type");
+
+    res.status(200).json(data);
+  } catch (e) {
+    console.log(e);
+    res.status(500).json(e.message);
   }
 });
 

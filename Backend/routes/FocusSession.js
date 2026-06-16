@@ -216,7 +216,6 @@ router.get("/session/history", isloggedIn, async (req, res) => {
 /* API to Provide JSON data for Histogram (Weekly) */
 router.get("/session/histogram/data/weekly", isloggedIn, async (req, res) => {
   try {
-    
     const sevenDaysAgo = new Date();
     sevenDaysAgo.setDate(sevenDaysAgo.getDate() - 7);
 

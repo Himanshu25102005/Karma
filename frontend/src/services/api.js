@@ -132,6 +132,10 @@ const api = {
     return apiClient.delete(`/project/DeleteTask/${taskId}/${projectId}`);
   },
 
+  projectPiechart:() => {
+    return apiClient.get("/project/piechart");
+  },
+
   /* Stats Route */
   overview: () => {
     return apiClient.get("/stats/overview");
