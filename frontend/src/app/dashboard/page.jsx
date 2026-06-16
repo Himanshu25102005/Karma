@@ -6,6 +6,7 @@ import { SmoothCursor } from '@/components/Effects/Smooth-Cursor2';
 import { IconBrandGithub, IconBrandX, IconHome, IconClock, IconSparkles, IconTerminal2, IconClockPlay, IconHomeStats, IconDeviceLaptop, IconCircleCheck, IconTrendingUp } from "@tabler/icons-react";
 import Histogram from '@/components/Dashboard/Histogram';
 import ActivityCalender from '@/components/Dashboard/ActivityCalender';
+import TimeByProject from '@/components/Dashboard/TimeByProject';
 
 
 const AnalyticsPage = () => {
@@ -328,8 +329,8 @@ const AnalyticsPage = () => {
                             </div>
 
                             {/* Pie Chart */}
-                            <div className='col-span-2  text-white h-[16.5rem] rounded-xl bg-[#141414]'>
-                                <span>Time by Project (Pie Chart) </span>
+                            <div className='col-span-2  text-white h-[16.5rem] rounded-xl bg-[#141414] p-4'>
+                                <TimeByProject/>
                             </div>
 
                             {/* Weekly Heatmap */}
