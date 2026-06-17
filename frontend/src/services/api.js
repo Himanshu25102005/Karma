@@ -87,11 +87,15 @@ const api = {
   },
 
   weeklySessionHistogramData: () => {
-    return apiClient.get('/session/histogram/data/weekly')
+    return apiClient.get("/session/histogram/data/weekly");
   },
 
   monthlySessionHistogramData: () => {
-    return apiClient.get('/session/histogram/data/monthly')
+    return apiClient.get("/session/histogram/data/monthly");
+  },
+
+  heatmapData: () => {
+    return apiClient.get("/session/heatmapData");
   },
 
   /* Project Routes */
@@ -132,7 +136,7 @@ const api = {
     return apiClient.delete(`/project/DeleteTask/${taskId}/${projectId}`);
   },
 
-  projectPiechart:() => {
+  projectPiechart: () => {
     return apiClient.get("/project/piechart");
   },
 

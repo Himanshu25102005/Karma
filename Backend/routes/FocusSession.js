@@ -338,4 +338,29 @@ router.get("/session/histogram/data/monthly", isloggedIn, async (req, res) => {
   }
 });
 
+router.get("/session/heatmapData", isloggedIn, async (req, res) => {
+  try {
+    const data = await Session.aggregate([
+      {
+        $match: {
+          userId: req.user._id,
+          status: "completed",
+          duration: { $gte: 0 },
+        }
+      },
+      {
+        $group: {
+          _id: { $dateToString: { format: "%Y-%m-%d", date: "$startTime" } },
+          count: { $sum: 1 }
+        }
+      }
+    ]);
+
+    res.status(200).json(data);
+  } catch (e) {
+    console.log(e);
+    res.status(500).json(e.message);
+  }
+});
+
 module.exports = router;

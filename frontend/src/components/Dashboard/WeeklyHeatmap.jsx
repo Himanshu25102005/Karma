@@ -4,8 +4,10 @@ import React, { useEffect, useState } from 'react';
 import HeatMap from '@uiw/react-heat-map';
 import Tooltip from '@uiw/react-tooltip';
 import { motion } from "motion/react";
+import api from '@/services/api';
 
-const value = [
+
+/* const value = [
     { date: '2016/01/11', count: 2 },
     { date: '2016/04/12', count: 2 },
     { date: '2016/05/01', count: 17 },
@@ -13,8 +15,31 @@ const value = [
     { date: '2016/05/03', count: 27 },
     { date: '2016/05/04', count: 11 },
     { date: '2016/05/08', count: 32 },
-];
+]; */
+
+
 const WeeklyHeatmap = () => {
+    const [value, setValue] = useState([]);
+    useEffect(() => {
+        let fetchData = async () => {
+            try {
+                const res = await api.heatmapData();
+                console.log("data for heatmap: ", res.data);
+                const rawData = res.data;
+                const formattedData = rawData.map((item) => ({
+                    date: item._id,
+                    count: item.count,
+                }));
+
+                setValue(formattedData);
+            } catch (e) {
+                console.log("Error fetching heatmap data: ", e)
+            }
+        }
+
+        fetchData();
+
+    }, [])
     return (
         <>
             <div className='h-[87%] w-full flex flex-col gap-2'>
@@ -38,7 +63,7 @@ const WeeklyHeatmap = () => {
                             value={value}
                             width={600}
                             style={{ color: '#99a1af', '--rhm-rect-active': 'red' }}
-                            startDate={new Date('2016/01/01')}
+                            startDate={new Date('2026/01/01')}
                             panelColors={['#212121', '#e4b293', '#d48462', '#c2533a', '#ad001d', '#6c0012']}
                             rectRender={(props, data) => {
                                 // Fixed a tiny typo found in your original sample data object ("data.czount" -> "data.count")
