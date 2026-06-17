@@ -7,6 +7,8 @@ import { IconBrandGithub, IconBrandX, IconHome, IconClock, IconSparkles, IconTer
 import Histogram from '@/components/Dashboard/Histogram';
 import ActivityCalender from '@/components/Dashboard/ActivityCalender';
 import TimeByProject from '@/components/Dashboard/TimeByProject';
+import WeeklyHeatmap from '@/components/Dashboard/WeeklyHeatmap';
+
 
 
 const AnalyticsPage = () => {
@@ -334,8 +336,8 @@ const AnalyticsPage = () => {
                             </div>
 
                             {/* Weekly Heatmap */}
-                            <div className='col-span-2  text-white h-[16.5rem] rounded-xl bg-[#141414]'>
-                                <span>Weekly Heatmap </span>
+                            <div className='col-span-2  text-white h-[16.5rem] rounded-xl bg-[#141414] p-4'>
+                                <WeeklyHeatmap/>
                             </div>
 
                             {/* Recent Sessions */}

@@ -12,28 +12,6 @@ import {
 import api from '@/services/api';
 
 
-
-const data = [
-    { browser: "chrome", visitors: 275 },
-    { browser: "safari", visitors: 200 },
-    { browser: "firefox", visitors: 187 },
-];
-
-/* const chartConfig = {
-    chrome: {
-        label: "Chrome",
-        colors: { light: ["#3b82f6"] },
-    },
-    safari: {
-        label: "Safari",
-        colors: { light: ["#10b981"] },
-    },
-    firefox: {
-        label: "Firefox",
-        colors: { light: ["#f59e0b"] },
-    },
-}; */
-
 const TimeByProject = () => {
 
     const [chartConfig, setChartConfig] = useState({});
@@ -83,8 +61,6 @@ const TimeByProject = () => {
         fetchData();
     }, []);
 
-    console.log(data)
-
     return (
         <>
             <div className='h-full w-full flex flex-col gap-2'>
@@ -97,7 +73,7 @@ const TimeByProject = () => {
                     {/* Pie Chart */}
 
                     {
-                        data ?
+                        data?
                             <EvilPieChart
                                 className='w-[50%] h-50'
                                 data={data}
@@ -106,6 +82,7 @@ const TimeByProject = () => {
                                 config={chartConfig}
                             >
                                 <Tooltip />
+                                <Label/>
                                 <Pie isClickable paddingAngle={5} cornerRadius={8} />
                             </EvilPieChart>
                             :
@@ -124,7 +101,7 @@ const TimeByProject = () => {
 
 
                     {/* Data */}
-                    <div className='w-[50%] h-full flex justify-center items-center p-2'>
+                    <div className='w-[50%] h-full flex justify-center items-center p-4 '>
                         <div className='w-full h-full overflow-y-auto
                     [&::-webkit-scrollbar]:w-1.5
                     [&::-webkit-scrollbar-track]:bg-transparent

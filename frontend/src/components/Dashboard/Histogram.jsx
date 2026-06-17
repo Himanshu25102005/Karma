@@ -19,11 +19,11 @@ const Histogram = () => {
     useEffect(() => {
         const fetchData = async () => {
             const res = await api.weeklySessionHistogramData();
-            console.log("Histogram Data Weekly ", res.data);
+            // console.log("Histogram Data Weekly ", res.data);
             setWeekData(res.data);
 
             const resp = await api.monthlySessionHistogramData();
-            console.log("Monthly Histogram Data ", resp.data)
+            // console.log("Monthly Histogram Data ", resp.data)
             setMonthData(resp.data)
         }
 

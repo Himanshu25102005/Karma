@@ -14,6 +14,8 @@
     "@mui/material": "^9.0.1",
     "@mui/x-date-pickers": "^9.3.0",
     "@tabler/icons-react": "^3.41.1",
+    "@uiw/react-heat-map": "^2.3.4",
+    "@uiw/react-tooltip": "^4.22.3",
     "axios": "^1.13.6",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
