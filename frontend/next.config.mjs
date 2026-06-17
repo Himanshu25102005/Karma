@@ -5,11 +5,21 @@ const nextConfig = {
       {
         protocol: 'https',
         hostname: 'i.pinimg.com',
-        // Existing Pinterest config...
+        pathname: '/**', // Added path catch-all fallback
       },
       {
         protocol: 'https',
-        hostname: 'encrypted-tbn0.gstatic.com', // Add this line
+        hostname: '**.alphacoders.com', // ⚡ Added wildcard prefix to cover any subdomains
+        pathname: '/**',                // ⚡ Added catch-all path match rule
+      },
+      {
+        protocol: 'https',
+        hostname: 'alphacoders.com',    // Keep the root domain definition safe too
+        pathname: '/**', 
+      },
+      {
+        protocol: 'https',
+        hostname: 'encrypted-tbn0.gstatic.com',
         port: '',
         pathname: '/**',
       },

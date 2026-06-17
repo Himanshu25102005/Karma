@@ -8,7 +8,8 @@ import Histogram from '@/components/Dashboard/Histogram';
 import ActivityCalender from '@/components/Dashboard/ActivityCalender';
 import TimeByProject from '@/components/Dashboard/TimeByProject';
 import WeeklyHeatmap from '@/components/Dashboard/WeeklyHeatmap';
-
+import ProfileSection from '@/components/Dashboard/ProfileSection';
+ 
 
 
 const AnalyticsPage = () => {
@@ -316,8 +317,8 @@ const AnalyticsPage = () => {
                             </div>
 
                             {/* Profile and Achievments Section */} {/* REMOVE THIS HEIGHT AND DEFINE ITS HEIGHT IN THE COMPONENT ITSELF */}
-                            <div className='col-span-1 row-span-2 text-white h-[40rem] rounded-xl bg-[#141414]'>
-                                Profile and Achievements Section
+                            <div className='col-span-1 row-span-2 text-white h-[40rem] rounded-xl bg-[#141414] p-4'>
+                               <ProfileSection/>
                             </div>
 
                             {/* Histogram */}

@@ -40,6 +40,7 @@ const WeeklyHeatmap = () => {
         fetchData();
 
     }, [])
+    const [selected, setSelected] = useState('')
     return (
         <>
             <div className='h-[87%] w-full flex flex-col gap-2'>
@@ -66,11 +67,20 @@ const WeeklyHeatmap = () => {
                             startDate={new Date('2026/01/01')}
                             panelColors={['#212121', '#e4b293', '#d48462', '#c2533a', '#ad001d', '#6c0012']}
                             rectRender={(props, data) => {
-                                // Fixed a tiny typo found in your original sample data object ("data.czount" -> "data.count")
+                                const dynamicOpacity = selected !== ''
+                                    ? (data.date === selected ? 1 : 0.45)
+                                    : props.opacity;
+
                                 return (
-                                    <Tooltip placement="top" content={`count: ${data.count || 0}`}>
-                                        <rect {...props} />
-                                    </Tooltip>
+                                        <rect
+                                            {...props}
+                                            opacity={dynamicOpacity} 
+                                            onClick={() => {
+                                                setSelected(data.date === selected ? '' : data.date);
+                                            }}
+                                            content={`count: ${data.count || 0}`}
+                                            placement={top}
+                                        />
                                 );
                             }}
                         />
