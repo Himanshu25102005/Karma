@@ -87,7 +87,7 @@ const Personal_Stats = () => {
           variants={cardVariants}
           whileHover={{ scale: 1.02, backgroundColor: "rgba(23, 23, 23, 1)" }}
           whileTap={{ scale: 0.98 }}
-          className='w-full h-[4.5rem] flex justify-evenly items-center py-2.5 rounded-xl bg-neutral-900/80 border border-transparent hover:border-neutral-800 transition-colors cursor-pointer'
+          className='w-full h-18 flex justify-evenly items-center py-2.5 rounded-xl bg-neutral-900/80 border border-transparent hover:border-neutral-800 transition-colors cursor-pointer'
         >
           <div className='w-12 h-12 flex justify-center rounded-xl bg-pink-900/60 items-center'>
             <motion.div

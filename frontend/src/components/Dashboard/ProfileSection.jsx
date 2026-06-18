@@ -2,13 +2,23 @@
 
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import api from '@/services/api';
 import { motion } from "motion/react";
-import { IconFlameFilled, IconAlarm, IconPlayerPlay, IconCirclePlus } from '@tabler/icons-react';
+import { IconFlameFilled, IconAlarm, IconPlayerPlay, IconCirclePlus, IconSparklesFilled } from '@tabler/icons-react';
+import api from '@/services/api';
 
 
 
 const ProfileSection = () => {
+    const [streakData, setStreakData] = useState([]);
+    useEffect(() => {
+        const fetchOverview = async () => {
+            const streak = await api.getStreak();
+            setStreakData(streak.data);
+        }
+
+
+        fetchOverview();
+    }, [])
     return (
         <>
             <div className='h-full w-full flex flex-col gap-2'>
@@ -41,20 +51,28 @@ const ProfileSection = () => {
                             </div>
                         </div>
 
-                        <div className='flex-1 flex flex-row justify-evenly items-center gap-5'>
+                        <div className='flex-1 flex flex-row justify-center items-center gap-5'>
                             <motion.div
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 transition={{ duration: 0.5 }}
-                                className='flex flex-row justify-center gap-2 items-center border p-1.5 px-2 rounded-xl border-[#be3807] bg-orange-600/20'>
+                                className='flex flex-row justify-center gap-2 items-center border p-1.5 rounded-xl border-[#be3807] bg-orange-600/20'>
                                 <IconFlameFilled width={17} height={17} className='text-[#f3a30e]' />
-                                <span className='font-semibold text-neutral-200'>5 Day Streak</span>
+                                <span className='font-semibold text-neutral-200'>{streakData?.currentStreak || 0} Day Streak</span>
                             </motion.div>
                             <motion.div
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 transition={{ duration: 0.5 }}
-                                className='flex flex-row justify-center gap-2 items-center border p-1.5 px-2 rounded-xl border-[#423f3e] bg-[#111110]'>
+                                className='flex flex-row justify-center gap-2 items-center border p-1.5 rounded-xl border-[#6e9b07] bg-[#1b580b71]'>
+                                <IconSparklesFilled width={17} height={17} className='text-[#4ff30e]' />
+                                <span className='font-semibold text-neutral-200'>Best: {streakData?.longestStreak || 0} Days </span>
+                            </motion.div>
+                            <motion.div
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: 1 }}
+                                transition={{ duration: 0.5 }}
+                                className='flex flex-row justify-center gap-2 items-center border p-1.5 rounded-xl border-[#423f3e] bg-[#111110]'>
                                 <IconAlarm width={17} height={17} className='text-[#807779e8]' />
                                 <span className='font-semibold text-neutral-200'>Lv. 2</span>
                             </motion.div>
@@ -98,22 +116,24 @@ const QuickActions = () => {
             </span><br />
             <span className='font-thin text-neutral-500/90'>Instant triggers to spin up sessions or map out tasks.</span>
             <div className='flex-1 flex flex-row justify-between items-center gap-5  py-5'>
-                <motion.button
+                <motion.a
+                    href='/session'
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.5 }}
                     className='flex flex-row justify-center gap-2 items-center border cursor-pointer p-1.5 px-2 rounded-xl border-[#143609] bg-[#0c08253b]/30'>
                     <IconPlayerPlay width={25} height={25} className='text-[#36c20b]' stroke={2.3} />
                     <span className='font-semibold text-neutral-300 text-lg'>Start Session</span>
-                </motion.button>
-                <motion.button
+                </motion.a>
+                <motion.a
+                    href='/session'
                     initial={{ opacity: 0 }}
                     animate={{ opacity: 1 }}
                     transition={{ duration: 0.5 }}
                     className='cursor-pointer flex flex-row justify-center gap-2 items-center border p-1.5 px-2 rounded-xl border-[#5e410c] bg-[#0c08253b]/30'>
                     <IconCirclePlus width={25} height={25} className='text-[#e9a018]' stroke={2.1} />
                     <span className='font-semibold text-neutral-300 text-lg'>Add Task</span>
-                </motion.button>
+                </motion.a>
 
             </div>
         </>

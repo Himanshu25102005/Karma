@@ -7,6 +7,7 @@ import { motion } from "motion/react";
 import api from '@/services/api';
 
 
+
 /* const value = [
     { date: '2016/01/11', count: 2 },
     { date: '2016/04/12', count: 2 },
@@ -19,12 +20,13 @@ import api from '@/services/api';
 
 
 const WeeklyHeatmap = () => {
+    // const currentStreak = useSessionStore((state) => state.currentStreak);
     const [value, setValue] = useState([]);
     useEffect(() => {
         let fetchData = async () => {
             try {
                 const res = await api.heatmapData();
-                console.log("data for heatmap: ", res.data);
+                // console.log("data for heatmap: ", res.data);
                 const rawData = res.data;
                 const formattedData = rawData.map((item) => ({
                     date: item._id,
@@ -32,6 +34,7 @@ const WeeklyHeatmap = () => {
                 }));
 
                 setValue(formattedData);
+                // console.log("Current Streak Data: ", currentStreak)
             } catch (e) {
                 console.log("Error fetching heatmap data: ", e)
             }
@@ -55,7 +58,7 @@ const WeeklyHeatmap = () => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{
                             duration: 0.6,
-                            ease: [0.16, 1, 0.3, 1] // Premium, smooth cubic-bezier ease-out curve
+                            ease: [0.16, 1, 0.3, 1]
                         }}
                         className="w-full"
                     >
@@ -67,20 +70,23 @@ const WeeklyHeatmap = () => {
                             startDate={new Date('2026/01/01')}
                             panelColors={['#212121', '#e4b293', '#d48462', '#c2533a', '#ad001d', '#6c0012']}
                             rectRender={(props, data) => {
-                                const dynamicOpacity = selected !== ''
-                                    ? (data.date === selected ? 1 : 0.45)
-                                    : props.opacity;
+                                const { key, ...rectProps } = props;
+
+                                const dynamicOpacity =
+                                    selected !== ""
+                                        ? data.date === selected
+                                            ? 1
+                                            : 0.45
+                                        : props.opacity;
 
                                 return (
-                                        <rect
-                                            {...props}
-                                            opacity={dynamicOpacity} 
-                                            onClick={() => {
-                                                setSelected(data.date === selected ? '' : data.date);
-                                            }}
-                                            content={`count: ${data.count || 0}`}
-                                            placement={top}
-                                        />
+                                    <rect
+                                        {...rectProps}
+                                        opacity={dynamicOpacity}
+                                        onClick={() => {
+                                            setSelected(data.date === selected ? "" : data.date);
+                                        }}
+                                    />
                                 );
                             }}
                         />

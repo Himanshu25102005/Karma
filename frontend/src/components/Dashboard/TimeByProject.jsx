@@ -114,7 +114,7 @@ const TimeByProject = () => {
                             {/* Parent container controls the global alignment grid */}
                             <div className="w-full max-w-md grid grid-cols-4 gap-y-3 items-center font-mono text-sm text-neutral-200 select-none">
                                 {data.map((item) => (
-                                    <React.Fragment key={item._id}>
+                                    <React.Fragment key={item.projectName}>
 
                                         {/* Column 1 & 2: Project Name combined with the dynamic color dot */}
                                         <div className="col-span-2 flex items-center gap-3 truncate pr-4">
