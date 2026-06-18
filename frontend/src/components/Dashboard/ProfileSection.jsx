@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { motion } from "motion/react";
-import { IconFlameFilled, IconAlarm, IconPlayerPlay, IconCirclePlus, IconSparklesFilled } from '@tabler/icons-react';
+import { IconFlameFilled, IconAlarm, IconPlayerPlay, IconCirclePlus, IconCircleCheck, IconSparklesFilled } from '@tabler/icons-react';
 import api from '@/services/api';
 
 
@@ -80,12 +80,12 @@ const ProfileSection = () => {
                     </div>
 
                     {/* Achievements Section */}
-                    <div className='w-full h-[40%] p-1 py-2'>
+                    <div className='w-full h-[48%] p-1 py-2'>
                         <AchievementSection />
                     </div>
 
                     {/* Quick Actions */}
-                    <div className='w-full h-[20%] p-1 py-2'>
+                    <div className='flex-1  p-1 py-2 overflow-y-auto'>
                         <QuickActions />
                     </div>
                 </div>
@@ -99,10 +99,65 @@ const ProfileSection = () => {
 const AchievementSection = () => {
     return (
         <>
-            <div className='h-5 relative w-full flex justify-between items-center'>
-                <span className="text-lg font-semibold tracking-wide text-neutral-300 font-mono">
-                    Achievements
-                </span>
+            <div className='h-full w-full flex flex-col gap-1'>
+                <div className='w-full'>
+                    <span className="text-lg font-semibold tracking-wide text-neutral-300 font-mono">
+                        Achievements
+                    </span>
+                </div>
+
+                <div className='flex-1  p-1 flex flex-col items-center gap-1 overflow-y-auto
+                    [&::-webkit-scrollbar]:w-1.5
+                    [&::-webkit-scrollbar-track]:bg-transparent
+                    [&::-webkit-scrollbar-thumb]:bg-neutral-800
+                    [&::-webkit-scrollbar-thumb]:rounded-full
+                    hover:[&::-webkit-scrollbar-thumb]:bg-neutral-700'
+                >
+
+                    {/* Individual Achievement */}
+                    <div className='w-full rounded-lg py-2 px-1 flex flex-row justify-center items-center gap-2 bg-[#171717] border border-neutral-700 
+                     '>
+                        {/* Icon */}
+                        <div className='w-[15%] aspect-square rounded-full overflow-hidden border border-[#04f30c] flex justify-center items-center  bg-[#04f30c]/30'>
+                            <IconSparklesFilled className='text-[#04f30c]' />
+                        </div>
+                        {/* Content */}
+                        <div className='w-[53%] h-full flex flex-col justify-center items-start  shrink'>
+                            <span className='text-md text-neutral-200 font-semibold'>First Steps</span>
+                            <span className='text-sm text-neutral-400'>Complete your first session</span>
+                            <div className='text-md flex flex-row px-1 justify-center items-center border rounded-md bg-neutral-900 text-green-600'>
+                                <IconCircleCheck width={11} height={11} />
+                                <span className='text-[10px]'> Completed</span>
+                            </div>
+                        </div>
+                        {/* Information */}
+                        <div className='w-[25%] h-[80%] rounded-xl overflow-hidden border border-neutral-700 flex flex-col justify-center items-center  bg-neutral-800/40 gap-2 px-1'>
+                            <span className='text-md text-[#04f30c] font-semibold '>Rare</span>
+                            <span className='text-[7px] text-neutral-400'>May 29, 2025</span>
+                        </div>
+                    </div>
+                    <div className='w-full rounded-lg py-2 px-1 flex flex-row justify-center items-center gap-2 bg-[#171717] border border-neutral-700 
+                     '>
+                        {/* Icon */}
+                        <div className='w-[15%] aspect-square rounded-full overflow-hidden border border-[#f3ab04] flex justify-center items-center  bg-[#f3ab04]/30'>
+                            <IconFlameFilled className='text-[#f3ab04]' />
+                        </div>
+                        {/* Content */}
+                        <div className='w-[53%] h-full flex flex-col justify-center items-start  shrink'>
+                            <span className='text-md text-neutral-200 font-semibold'>Consistency King</span>
+                            <span className='text-sm text-neutral-400'>Maintain a 3 day Streak</span>
+                            <div className='text-md flex flex-row px-1 justify-center items-center border rounded-md bg-neutral-900 text-green-600'>
+                                <IconCircleCheck width={11} height={11} />
+                                <span className='text-[10px]'> Completed</span>
+                            </div>
+                        </div>
+                        {/* Information */}
+                        <div className='w-[25%] h-[80%] rounded-xl overflow-hidden border border-neutral-700 flex flex-col justify-center items-center  bg-neutral-800/40 gap-2 px-1'>
+                            <span className='text-md text-[#f3ab04] font-semibold '>Epic</span>
+                            <span className='text-[7px] text-neutral-400'>May 29, 2025</span>
+                        </div>
+                    </div>
+                </div>
             </div>
         </>
     )
@@ -111,11 +166,48 @@ const AchievementSection = () => {
 const QuickActions = () => {
     return (
         <>
-            <span className="text-lg font-semibold tracking-wide text-neutral-300 font-mono">
+            <div className='h-full w-full flex flex-col gap-1'>
+                <div className='w-full flex flex-col'>
+                    <span className="text-lg font-semibold tracking-wide text-neutral-300 font-mono">
+                        Quick Actions
+                    </span>
+                    <span className='font-thin text-sm text-neutral-500/90'>Instant triggers to spin up sessions or map out tasks.</span>
+                </div>
+                <div className='flex-1 flex flex-row justify-between items-center gap-2 px-6' >
+                    <motion.a
+                        href='/session'
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5 }}
+                        className='flex flex-row justify-center gap-2 items-center border cursor-pointer p-1.5 px-2 rounded-xl border-[#143609] bg-[#0c08253b]/30'>
+                        <IconPlayerPlay width={20} height={20} className='text-[#36c20b]' stroke={2.3} />
+                        <span className='font-semibold text-neutral-300 text-lg'>Start Session</span>
+                    </motion.a>
+                    <motion.a
+                        href='/session'
+                        initial={{ opacity: 0 }}
+                        animate={{ opacity: 1 }}
+                        transition={{ duration: 0.5 }}
+                        className='cursor-pointer flex flex-row justify-center gap-2 items-center border p-1.5 px-2 rounded-xl border-[#5e410c] bg-[#0c08253b]/30'>
+                        <IconCirclePlus width={20} height={20} className='text-[#e9a018]' stroke={2.1} />
+                        <span className='font-semibold text-neutral-300 text-lg'>Add Task</span>
+                    </motion.a>
+                </div>
+            </div>
+        </>
+    )
+}
+export default ProfileSection
+
+
+
+
+/* 
+<span className="text-lg font-semibold tracking-wide text-neutral-300 font-mono">
                 Quick Actions
             </span><br />
             <span className='font-thin text-neutral-500/90'>Instant triggers to spin up sessions or map out tasks.</span>
-            <div className='flex-1 flex flex-row justify-between items-center gap-5  py-5'>
+            <div className='w-full flex flex-row justify-between items-center gap-5  pt-4'>
                 <motion.a
                     href='/session'
                     initial={{ opacity: 0 }}
@@ -136,7 +228,4 @@ const QuickActions = () => {
                 </motion.a>
 
             </div>
-        </>
-    )
-}
-export default ProfileSection
+*/
