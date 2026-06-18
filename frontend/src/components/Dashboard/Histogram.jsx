@@ -3,10 +3,9 @@ import { IconChevronDown, IconCircleCheckFilled } from '@tabler/icons-react'
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from 'recharts'
 import React, { useEffect, useState } from 'react'
 import api from '@/services/api'
-import { David_Libre } from 'next/font/google'
 import { AnimatePresence, motion } from 'framer-motion'
-import { div } from 'framer-motion/client'
 
+import useUserStore from "@/store/useUserStore";
 
 
 
@@ -15,6 +14,23 @@ const Histogram = () => {
     const [monthdata, setMonthData] = useState(null);
     const [weekMode, setWeekMode] = useState(true)
     const [dropdown, setDropdown] = useState(false)
+    const username = useUserStore((state) => state.username)
+    const setCurrentUser = useUserStore((state) => state.setCurrentUser);
+    useEffect(() => {
+        setCurrentUser();
+        console.log("Current User's Username:", username);
+    }, []);
+
+    useEffect(() => {
+        let fetchUserData = async () => {
+            const res = await api.getPublicProfile(username);
+            console.log("Data from the new Profile route ", res.data)
+        }
+
+        fetchUserData();
+    }, [username])
+
+
 
     useEffect(() => {
         const fetchData = async () => {

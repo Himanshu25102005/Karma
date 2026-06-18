@@ -32,7 +32,7 @@ router.get("/badges", isloggedIn, async (req, res) => {
   }
 });
 
-/* Get all available badges */
+/* Get all User's badges */
 
 router.get("/badges/my", isloggedIn, async (req, res) => {
   try {

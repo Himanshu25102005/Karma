@@ -132,7 +132,7 @@ router.get("/profile/:username", isloggedIn, async (req, res) => {
     ]);
 
     const totalPages = Math.ceil(totalSessionsCount / limit);
-    const currStreak = await Streak(req.user._id)
+    const currStreak = await streak(req.user._id)
 
     // 4. Return everything in one response
     res.status(200).json({
@@ -157,6 +157,7 @@ router.get("/profile/:username", isloggedIn, async (req, res) => {
     });
 
   } catch (e) {
+    console.log(e);
     res.status(500).json({ error: e.message });
   }
 });

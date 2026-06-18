@@ -63,6 +63,10 @@ const api = {
     return apiClient.patch("/profile/me/update", data);
   },
 
+  getPublicProfile: (username) => {
+    return apiClient.get(`/profile/${username}`);
+  },
+
   /* Session Routes */
 
   startSession: (projectId, type) => {

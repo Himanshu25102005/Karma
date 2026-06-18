@@ -123,7 +123,7 @@ router.patch("/session/stop/:id", isloggedIn, async (req, res) => {
     });
     await updateSesh.save();
 
-    const newAwards = checkAndAwardBadges(req.user._id, user.totalSessions);
+    const newAwards = checkAndAwardBadges(req.user._id, user);
     res.status(200).json({
       success: true,
       data: {
@@ -346,14 +346,14 @@ router.get("/session/heatmapData", isloggedIn, async (req, res) => {
           userId: req.user._id,
           status: "completed",
           duration: { $gte: 0 },
-        }
+        },
       },
       {
         $group: {
           _id: { $dateToString: { format: "%Y-%m-%d", date: "$startTime" } },
-          count: { $sum: 1 }
-        }
-      }
+          count: { $sum: 1 },
+        },
+      },
     ]);
 
     res.status(200).json(data);
