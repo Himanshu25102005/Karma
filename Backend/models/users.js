@@ -9,7 +9,7 @@ const userSchema = mongoose.Schema({
     trim: true,
     unique: true,
   },
-  isOnline:String,
+  isOnline: String,
   avatar: String,
   isPublic: {
     type: Boolean,
@@ -21,6 +21,10 @@ const userSchema = mongoose.Schema({
     default: 0,
   },
   followingCount: {
+    type: Number,
+    default: 0,
+  },
+  currentStreak: {
     type: Number,
     default: 0,
   },

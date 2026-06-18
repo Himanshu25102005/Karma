@@ -165,6 +165,7 @@ router.get("/stats/daily", isloggedIn, async (req, res) => {
 
 router.get("/stats/streak", isloggedIn, async (req, res) => {
   try {
+    const user = req.user;
     const streakData = await Session.aggregate([
       {
         $match: {
@@ -178,7 +179,7 @@ router.get("/stats/streak", isloggedIn, async (req, res) => {
             $dateToString: {
               format: "%Y-%m-%d",
               date: "$startTime",
-              timezone: "Asia/Kolkata", 
+              timezone: "Asia/Kolkata",
             },
           },
         },
@@ -249,7 +250,15 @@ router.get("/stats/streak", isloggedIn, async (req, res) => {
       }
     }
 
-    const newAwards = await checkAndAwardBadges(req.user._id, currentStreak);
+    await userSchema.updateOne(
+      {
+        _id: req.user._id
+      },
+      {
+        currentStreak: currentStreak
+      }
+    )
+    const newAwards = await checkAndAwardBadges(req.user._id, user);
 
     res.status(200).json({
       currentStreak,

@@ -1,15 +1,17 @@
 const userbadge = require("../models/userbadge");
 const Badge = require("../models/badges");
 
-const checkAndAwardBadges = async (userId, userStats) => {
+const checkAndAwardBadges = async (userId, userStats, totalMinutes) => {
   try {
     // 1. Get IDs of badges this user ALREADY has
-    const earnedBadgeObjects = await userbadge.find({ userId }).select("badgeId");
-    const earnedBadgeIds = earnedBadgeObjects.map(b => b.badgeId.toString());
+    const earnedBadgeObjects = await userbadge
+      .find({ userId })
+      .select("badgeId");
+    const earnedBadgeIds = earnedBadgeObjects.map((b) => b.badgeId.toString());
 
     // 2. Find badges they haven't earned yet
     const potentialBadges = await Badge.find({
-      _id: { $nin: earnedBadgeIds }
+      _id: { $nin: earnedBadgeIds },
     });
 
     const newAwards = [];
@@ -24,7 +26,7 @@ const checkAndAwardBadges = async (userId, userStats) => {
           if (userStats.totalSessions >= count) isEligible = true;
           break;
         case "minutes":
-          if (userStats.totalMinutes >= count) isEligible = true;
+          if (totalMinutes >= count) isEligible = true;
           break;
         case "streak":
           if (userStats.currentStreak >= count) isEligible = true;
@@ -35,13 +37,13 @@ const checkAndAwardBadges = async (userId, userStats) => {
       if (isEligible) {
         await userbadge.create({
           userId: userId,
-          badgeId: badge._id
+          badgeId: badge._id,
         });
         newAwards.push(badge.name);
       }
     }
 
-    return newAwards; 
+    return newAwards;
   } catch (error) {
     console.error("Badge Error:", error);
     return [];
@@ -49,4 +51,4 @@ const checkAndAwardBadges = async (userId, userStats) => {
 };
 
 // Export using CommonJS
-module.exports =  checkAndAwardBadges ;
+module.exports = checkAndAwardBadges;

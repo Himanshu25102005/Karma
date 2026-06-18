@@ -123,12 +123,28 @@ router.patch("/session/stop/:id", isloggedIn, async (req, res) => {
     });
     await updateSesh.save();
 
-    const newAwards = checkAndAwardBadges(req.user._id, user);
+    const totalDuration = await Session.aggregate([
+      {
+        $match: {
+          userId: req.user._id,
+          status: "completed",
+        },
+      },
+      {
+        $group: {
+          _id: null,
+          totalMinutes: { $sum: { $divide: ["$duration", 60] } },
+        },
+      },
+    ]);
+
+    const newAwards = checkAndAwardBadges(req.user._id, user, totalDuration[0].totalMinutes);
     res.status(200).json({
       success: true,
       data: {
         updatedSession: updateSesh,
         newRewards: newAwards,
+        totalMinutes: totalDuration[0].totalMinutes,
       },
     });
   } catch (err) {
