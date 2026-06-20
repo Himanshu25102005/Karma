@@ -40,7 +40,7 @@ router.get("/badges/my", isloggedIn, async (req, res) => {
     const userBadges = await UserBadge.find({
       userId: req.user._id,
     })
-      .populate("badgeId", "name description icon rarity")
+      .populate("badgeId", "name description icon rarity color")
       .select(" badgeId earnedAt ");
 
     const earnedBadges = userBadges.map((b) => ({

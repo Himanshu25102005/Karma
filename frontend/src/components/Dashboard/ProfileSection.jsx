@@ -42,7 +42,7 @@ const ProfileSection = () => {
                         Profile and Achievements Section
                     </span>
                 </div>
-                <div className="w-full h-full border border-neutral-800 rounded-xl p-2 bg-neutral-900/10 divide-y divide-neutral-500 flex flex-col">
+                <div className="w-full h-[95%] border border-neutral-800 rounded-xl p-2 bg-neutral-900/10 divide-y divide-neutral-500 flex flex-col">
 
                     {/* Profile Section */}
                     <div className='w-full h-[30%] flex flex-col pb-2'>
@@ -71,6 +71,7 @@ const ProfileSection = () => {
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 transition={{ duration: 0.5 }}
+                                whileHover={{ scale: 1.01 }}
                                 className='flex flex-row justify-center gap-2 items-center border p-1.5 rounded-xl border-[#be3807] bg-orange-600/20'>
                                 <IconFlameFilled width={17} height={17} className='text-[#f3a30e]' />
                                 <span className='font-semibold text-neutral-200'>{streakData?.currentStreak || 0} Day Streak</span>
@@ -79,6 +80,7 @@ const ProfileSection = () => {
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 transition={{ duration: 0.5 }}
+                                whileHover={{ scale: 1.01 }}
                                 className='flex flex-row justify-center gap-2 items-center border p-1.5 rounded-xl border-[#6e9b07] bg-[#1b580b71]'>
                                 <IconSparklesFilled width={17} height={17} className='text-[#4ff30e]' />
                                 <span className='font-semibold text-neutral-200'>Best: {streakData?.longestStreak || 0} Days </span>
@@ -87,6 +89,7 @@ const ProfileSection = () => {
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
                                 transition={{ duration: 0.5 }}
+                                whileHover={{ scale: 1.02 }}
                                 className='flex flex-row justify-center gap-2 items-center border p-1.5 rounded-xl border-[#423f3e] bg-[#111110]'>
                                 <IconAlarm width={17} height={17} className='text-[#807779e8]' />
                                 <span className='font-semibold text-neutral-200'>Lv. 2</span>
@@ -95,7 +98,7 @@ const ProfileSection = () => {
                     </div>
 
                     {/* Achievements Section */}
-                    <div className='w-full h-[48%] p-1 py-2'>
+                    <div className='w-full h-[50%] p-1 py-2'>
                         <AchievementSection badgeData={badgeData} />
                     </div>
 
@@ -111,7 +114,7 @@ const ProfileSection = () => {
 
 
 
-const AchievementSection = ({badgeData}) => {
+const AchievementSection = ({ badgeData }) => {
     return (
         <>
             <div className='h-full w-full flex flex-col gap-1'>
@@ -132,12 +135,24 @@ const AchievementSection = ({badgeData}) => {
                     {/* Individual Achievement */}
 
                     {badgeData.map((badge) => (
-                        <div key={badge.badge?._id || badge.earnedAt} className='w-full rounded-lg py-2 px-1 flex flex-row justify-center items-center gap-2 bg-[#171717] border border-neutral-700 
+                        <motion.div
+                            initial={{ opacity: 0 }}
+                            animate={{ opacity: 1 }}
+                            transition={{ duration: 0.8 }}
+                            whileHover={{ scale: 1.02 }}
+                            key={badge.badge?._id || badge.earnedAt}
+                            className='w-full rounded-lg py-2 px-1 flex flex-row justify-center items-center gap-2 bg-[#171717] border border-neutral-700 
                      '>
                             {/* Icon */}
-                            <div className='w-[15%] aspect-square rounded-full overflow-hidden border border-[#04f30c] flex justify-center items-center  bg-[#04f30c]/30'>
+                            <div className='w-[15%] aspect-square rounded-full overflow-hidden border border-[#04f30c] flex justify-center items-center  '
+                                style={{
+                                    '--badge-theme-color': badge.badge?.color || '#525252',
+                                    backgroundColor: 'color-mix(in srgb, var(--badge-theme-color) 30%, transparent)',
+                                    borderColor: badge.badge?.color || '#525252'
+                                }}
+                            >
                                 {/* <IconSparklesFilled className='text-[#04f30c]' /> */}
-                                {badge.badge.icon}
+                                {badge.badge?.icon}
                             </div>
                             {/* Content */}
                             <div className='w-[53%] h-full flex flex-col justify-center items-start  shrink'>
@@ -146,14 +161,19 @@ const AchievementSection = ({badgeData}) => {
                                 <div className='text-md flex flex-row px-1 justify-center items-center border rounded-md bg-neutral-900 text-green-600'>
                                     <IconCircleCheck width={11} height={11} />
                                     <span className='text-[10px]'> Completed</span>
+
                                 </div>
                             </div>
                             {/* Information */}
                             <div className='w-[25%] h-[80%] rounded-xl overflow-hidden border border-neutral-700 flex flex-col justify-center items-center  bg-neutral-800/40 gap-2 px-1'>
-                                <span className='text-md text-[#04f30c] font-semibold '>{badge.badge.rarity}</span>
+                                <span className='text-md  font-semibold '
+                                    style={{
+                                        color: badge.badge?.color || '#ffffff'
+                                    }}
+                                >{badge.badge.rarity}</span>
                                 <span className='text-[7px] text-neutral-400'>{new Date(badge.earnedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                             </div>
-                        </div>
+                        </motion.div>
                     ))}
 
 
@@ -179,6 +199,7 @@ const QuickActions = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.5 }}
+                        whileHover={{ scale: 1.05 }}
                         className='flex flex-row justify-center gap-2 items-center border cursor-pointer p-1.5 px-2 rounded-xl border-[#143609] bg-[#0c08253b]/30'>
                         <IconPlayerPlay width={20} height={20} className='text-[#36c20b]' stroke={2.3} />
                         <span className='font-semibold text-neutral-300 text-lg'>Start Session</span>
@@ -188,6 +209,7 @@ const QuickActions = () => {
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.5 }}
+                        whileHover={{ scale: 1.05 }}
                         className='cursor-pointer flex flex-row justify-center gap-2 items-center border p-1.5 px-2 rounded-xl border-[#5e410c] bg-[#0c08253b]/30'>
                         <IconCirclePlus width={20} height={20} className='text-[#e9a018]' stroke={2.1} />
                         <span className='font-semibold text-neutral-300 text-lg'>Add Task</span>

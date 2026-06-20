@@ -9,7 +9,10 @@ import ActivityCalender from '@/components/Dashboard/ActivityCalender';
 import TimeByProject from '@/components/Dashboard/TimeByProject';
 import WeeklyHeatmap from '@/components/Dashboard/WeeklyHeatmap';
 import ProfileSection from '@/components/Dashboard/ProfileSection';
- 
+import useUserStore from '@/store/useUserStore';
+import { easeInOut, motion } from 'framer-motion';
+
+
 
 
 const AnalyticsPage = () => {
@@ -66,8 +69,7 @@ const AnalyticsPage = () => {
             href: "#",
         },
     ];
-
-    const [isDark, setIsDark] = useState(true);
+    const username = useUserStore((state) => state.username)
     return (
         <>
             <SmoothCursor />
@@ -76,7 +78,7 @@ const AnalyticsPage = () => {
 
                 {/* TOP MARGIN*/}
                 <div className=" h-[2rem] lg:h-[3.5rem] w-full border-b border-dashed border-neutral-700/60 flex items-center px-6">
-                    <span className="text-xs font-mono text-neutral-500 tracking-widest uppercase">कΛRMΛ // System_v2</span>
+                    {/* <span className="text-xs font-mono text-neutral-500 tracking-widest uppercase">कΛRMΛ // System_v2</span> */}
                 </div>
 
                 {/* left and right vertical margins*/}
@@ -88,7 +90,12 @@ const AnalyticsPage = () => {
                     {/* MAIN WORKING AREA */}
                     <div className="flex-1 h-full p-2 overflow-y-auto custom-scrollbar">
                         <div className='h-20 flex flex-col  p-2'>
-                            <span className='font-semibold text-3xl text-neutral-100'>Good Morning Himanshu</span>   {/* Animate using ReactBits */}
+                            <motion.span
+                                initial={{ opacity: 0 }}
+                                animate={{ opacity: [0, 0.5, 1] }}
+                                transition={{ duration: 0.8 }}
+                                className='font-semibold text-3xl text-neutral-100'>Good Morning {username}
+                            </motion.span>   {/* Animate using ReactBits */}
                             <span className='text-md text-neutral-400'>Overview of your focus and progress</span>
                         </div>
 
@@ -318,7 +325,7 @@ const AnalyticsPage = () => {
 
                             {/* Profile and Achievments Section */} {/* REMOVE THIS HEIGHT AND DEFINE ITS HEIGHT IN THE COMPONENT ITSELF */}
                             <div className='col-span-1 row-span-2 text-white h-[40rem] rounded-xl bg-[#141414] p-4'>
-                               <ProfileSection/>
+                                <ProfileSection />
                             </div>
 
                             {/* Histogram */}
@@ -328,22 +335,40 @@ const AnalyticsPage = () => {
 
                             {/* Calender */}
                             <div className='col-span-2 text-white h-[23rem] rounded-xl bg-[#141414] p-4'>
-                                <ActivityCalender/>
+                                <ActivityCalender />
                             </div>
 
                             {/* Pie Chart */}
                             <div className='col-span-2  text-white h-[16.5rem] rounded-xl bg-[#141414] p-4'>
-                                <TimeByProject/>
+                                <TimeByProject />
                             </div>
 
                             {/* Weekly Heatmap */}
                             <div className='col-span-2  text-white h-[16.5rem] rounded-xl bg-[#141414] p-4'>
-                                <WeeklyHeatmap/>
+                                <WeeklyHeatmap />
                             </div>
 
-                            {/* Recent Sessions */}
-                            <div className='col-span-5  text-white h-[18rem] rounded-xl bg-[#141414]'>
-                                <span>Recent Sessions</span>
+                            {/* Footer */}
+                            <div className='col-span-5 h-[18rem] rounded-xl relative overflow-hidden'>
+                                <motion.div
+                                    initial={{
+                                        opacity: 0,
+                                        x: -30
+                                    }}
+                                    animate={{
+                                        opacity: 1,
+                                        x: 0
+                                    }}
+                                    transition={{
+                                        duration: 0.6,
+                                        ease: [0.16, 1, 0.3, 1]
+                                    }}
+                                    className="absolute inset-0 flex items-center justify-center pointer-events-none"
+                                >
+                                    <span className="text-[20rem] font-bold tracking-tight text-white/[0.03] select-none">
+                                        क Λ R M:
+                                    </span>
+                                </motion.div>
                             </div>
                         </div>
                     </div>
@@ -356,8 +381,8 @@ const AnalyticsPage = () => {
 
                 {/*  BOTTOM MARGIN  */}
                 <div className="h-12 w-full border-t border-dashed border-neutral-700/60 flex items-center justify-between px-6 text-[10px] font-mono text-neutral-600">
-                    <span>LATENCY: 14MS</span>
-                    <span>STATUS: ACTIVE</span>
+                    {/* <span>LATENCY: 14MS</span>
+                        <span>STATUS: ACTIVE</span> */}
                 </div>
 
             </div>
