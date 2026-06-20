@@ -5,20 +5,35 @@ import Image from 'next/image';
 import { motion } from "motion/react";
 import { IconFlameFilled, IconAlarm, IconPlayerPlay, IconCirclePlus, IconCircleCheck, IconSparklesFilled } from '@tabler/icons-react';
 import api from '@/services/api';
+import useUserStore from '@/store/useUserStore';
 
 
 
 const ProfileSection = () => {
     const [streakData, setStreakData] = useState([]);
+    const [badgeData, setBadgeData] = useState([]);
+    const setCurrentUser = useUserStore((state) => state.setCurrentUser)
+    const username = useUserStore((state) => state.username)
+    const email = useUserStore((state) => state.email)
+    const profilePicture = useUserStore((state) => state.profilePicture)
     useEffect(() => {
         const fetchOverview = async () => {
             const streak = await api.getStreak();
+            const badges = await api.getMyBadges();
+            console.log("Data from the badge route ", badges.data.badges);
+            setBadgeData(badges.data.badges);
             setStreakData(streak.data);
-        }
 
+            await setCurrentUser();
+        }
 
         fetchOverview();
     }, [])
+
+    useEffect(() => {
+        console.log("badge data: ", badgeData)
+    }, [badgeData])
+
     return (
         <>
             <div className='h-full w-full flex flex-col gap-2'>
@@ -36,7 +51,7 @@ const ProfileSection = () => {
                             {/* PFP */}
                             <div className='w-[40%] aspect-square rounded-full overflow-hidden relative'>
                                 <Image
-                                    src="https://i.pinimg.com/736x/ae/a7/a9/aea7a9551cda1f88cc5e6e7ea52709f1.jpg"
+                                    src={profilePicture || "https://i.pinimg.com/736x/b2/ea/a0/b2eaa0d4918d54021f9c7aa3fc3d3cf3.jpg"}
                                     alt="User Profile Avatar Picture"
                                     width={160}
                                     height={160}
@@ -45,9 +60,9 @@ const ProfileSection = () => {
                             </div>
                             {/* User Details */}
                             <div className='w-full h-full flex flex-col justify-center items-start px-5 gap-1'>
-                                <span className='font-bold text-xl text-neutral-300'>Harsh</span>
+                                <span className='font-bold text-xl text-neutral-300'>{username}</span>
                                 <span className='font-semibold text-md text-neutral-400'>Building in Public</span>
-                                <span className='font-semibold text-sm text-neutral-600'>harsh@gmail.com</span>
+                                <span className='font-semibold text-sm text-neutral-600'>{email}</span>
                             </div>
                         </div>
 
@@ -81,7 +96,7 @@ const ProfileSection = () => {
 
                     {/* Achievements Section */}
                     <div className='w-full h-[48%] p-1 py-2'>
-                        <AchievementSection />
+                        <AchievementSection badgeData={badgeData} />
                     </div>
 
                     {/* Quick Actions */}
@@ -96,7 +111,7 @@ const ProfileSection = () => {
 
 
 
-const AchievementSection = () => {
+const AchievementSection = ({badgeData}) => {
     return (
         <>
             <div className='h-full w-full flex flex-col gap-1'>
@@ -115,48 +130,33 @@ const AchievementSection = () => {
                 >
 
                     {/* Individual Achievement */}
-                    <div className='w-full rounded-lg py-2 px-1 flex flex-row justify-center items-center gap-2 bg-[#171717] border border-neutral-700 
+
+                    {badgeData.map((badge) => (
+                        <div key={badge.badge?._id || badge.earnedAt} className='w-full rounded-lg py-2 px-1 flex flex-row justify-center items-center gap-2 bg-[#171717] border border-neutral-700 
                      '>
-                        {/* Icon */}
-                        <div className='w-[15%] aspect-square rounded-full overflow-hidden border border-[#04f30c] flex justify-center items-center  bg-[#04f30c]/30'>
-                            <IconSparklesFilled className='text-[#04f30c]' />
-                        </div>
-                        {/* Content */}
-                        <div className='w-[53%] h-full flex flex-col justify-center items-start  shrink'>
-                            <span className='text-md text-neutral-200 font-semibold'>First Steps</span>
-                            <span className='text-sm text-neutral-400'>Complete your first session</span>
-                            <div className='text-md flex flex-row px-1 justify-center items-center border rounded-md bg-neutral-900 text-green-600'>
-                                <IconCircleCheck width={11} height={11} />
-                                <span className='text-[10px]'> Completed</span>
+                            {/* Icon */}
+                            <div className='w-[15%] aspect-square rounded-full overflow-hidden border border-[#04f30c] flex justify-center items-center  bg-[#04f30c]/30'>
+                                {/* <IconSparklesFilled className='text-[#04f30c]' /> */}
+                                {badge.badge.icon}
+                            </div>
+                            {/* Content */}
+                            <div className='w-[53%] h-full flex flex-col justify-center items-start  shrink'>
+                                <span className='text-md text-neutral-200 font-semibold'>{badge.badge.name}</span>
+                                <span className='text-sm text-neutral-400'>{badge.badge.description}</span>
+                                <div className='text-md flex flex-row px-1 justify-center items-center border rounded-md bg-neutral-900 text-green-600'>
+                                    <IconCircleCheck width={11} height={11} />
+                                    <span className='text-[10px]'> Completed</span>
+                                </div>
+                            </div>
+                            {/* Information */}
+                            <div className='w-[25%] h-[80%] rounded-xl overflow-hidden border border-neutral-700 flex flex-col justify-center items-center  bg-neutral-800/40 gap-2 px-1'>
+                                <span className='text-md text-[#04f30c] font-semibold '>{badge.badge.rarity}</span>
+                                <span className='text-[7px] text-neutral-400'>{new Date(badge.earnedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                             </div>
                         </div>
-                        {/* Information */}
-                        <div className='w-[25%] h-[80%] rounded-xl overflow-hidden border border-neutral-700 flex flex-col justify-center items-center  bg-neutral-800/40 gap-2 px-1'>
-                            <span className='text-md text-[#04f30c] font-semibold '>Rare</span>
-                            <span className='text-[7px] text-neutral-400'>May 29, 2025</span>
-                        </div>
-                    </div>
-                    <div className='w-full rounded-lg py-2 px-1 flex flex-row justify-center items-center gap-2 bg-[#171717] border border-neutral-700 
-                     '>
-                        {/* Icon */}
-                        <div className='w-[15%] aspect-square rounded-full overflow-hidden border border-[#f3ab04] flex justify-center items-center  bg-[#f3ab04]/30'>
-                            <IconFlameFilled className='text-[#f3ab04]' />
-                        </div>
-                        {/* Content */}
-                        <div className='w-[53%] h-full flex flex-col justify-center items-start  shrink'>
-                            <span className='text-md text-neutral-200 font-semibold'>Consistency King</span>
-                            <span className='text-sm text-neutral-400'>Maintain a 3 day Streak</span>
-                            <div className='text-md flex flex-row px-1 justify-center items-center border rounded-md bg-neutral-900 text-green-600'>
-                                <IconCircleCheck width={11} height={11} />
-                                <span className='text-[10px]'> Completed</span>
-                            </div>
-                        </div>
-                        {/* Information */}
-                        <div className='w-[25%] h-[80%] rounded-xl overflow-hidden border border-neutral-700 flex flex-col justify-center items-center  bg-neutral-800/40 gap-2 px-1'>
-                            <span className='text-md text-[#f3ab04] font-semibold '>Epic</span>
-                            <span className='text-[7px] text-neutral-400'>May 29, 2025</span>
-                        </div>
-                    </div>
+                    ))}
+
+
                 </div>
             </div>
         </>

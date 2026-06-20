@@ -1,5 +1,6 @@
 const UserBadge = require("../models/userbadge");
-const Badge = require("../models/Badge");
+const express = require("express");
+const Badge = require("../models/badges");
 const userSchema = require("../models/users");
 const Session = require("../models/focSessions");
 var router = express.Router();
@@ -36,10 +37,10 @@ router.get("/badges", isloggedIn, async (req, res) => {
 
 router.get("/badges/my", isloggedIn, async (req, res) => {
   try {
-    const userBadges = await UserBadge.findOne({
+    const userBadges = await UserBadge.find({
       userId: req.user._id,
     })
-      .populate("badgeId", "name description icon")
+      .populate("badgeId", "name description icon rarity")
       .select(" badgeId earnedAt ");
 
     const earnedBadges = userBadges.map((b) => ({
@@ -52,9 +53,9 @@ router.get("/badges/my", isloggedIn, async (req, res) => {
       badges: earnedBadges,
     });
   } catch (e) {
+    console.log(e);
     res.status(500).json({ error: e.message });
   }
 });
-
 
 module.exports = router;

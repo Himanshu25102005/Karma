@@ -152,6 +152,11 @@ const api = {
   getStreak: () => {
     return apiClient.get("stats/streak");
   },
+
+  /* Achievements Route */
+  getMyBadges: () => {
+    return apiClient.get("/badges/my");
+  },
 };
 
 export default api;
