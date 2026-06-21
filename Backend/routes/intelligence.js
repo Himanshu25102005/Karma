@@ -56,6 +56,7 @@ Analyze the data and generate insights for the following sections:
    - Determine the project with the highest productivity impact.
    - Consider total focus time, consistency, and completed sessions.
    - Explain briefly why it stands out.
+   - In the insights for most productive project, do not only speak about focus time and session count, give a good quality insight
 
 3. focusLeak
    - Identify the day, project, or pattern where productivity was lost.
@@ -70,16 +71,30 @@ Analyze the data and generate insights for the following sections:
    - Generate one specific and actionable recommendation.
    - The recommendation must be directly supported by the user's data.
    - Avoid generic productivity advice.
+   - Focus on suggestions which can lead user to improve thier overall work styles.
+   - Give titles of maximum 2 words, but keep it meaningfull
+   - Don't focus only on certain aspects.
 
 Guidelines:
-- Keep titles concise.
-- Keep descriptions concise.
-- Be data-driven.
-- Prefer specific observations over motivational language.
-- If data is insufficient, provide the best reasonable insight and set confidence lower.
-- Never mention that you are an AI.
-- Never output null fields.
-
+- Base every insight strictly on the provided data.
+- Do not invent statistics, percentages, durations, trends, or events that cannot be inferred from the input.
+- If completed session count is below 10:
+  - Reduce confidence scores.
+  - Mention that more focus sessions are needed for stronger pattern detection.
+  - Prefer general but relevant recommendations instead of strong conclusions.
+- If evidence for a conclusion is weak, use cautious language.
+- Confidence should reflect the strength of the available evidence and sample size.
+- Prefer meaningful behavioral patterns over simple metric summaries.
+- Use human-readable terms such as weekdays, time ranges, and project names.
+- Keep titles concise and actionable.
+- Keep insights concise and easy to scan.
+- Be specific, practical, and data-driven.
+- Prefer observations and recommendations over motivational language.
+- Recommendations must be directly supported by the provided data.
+- Avoid repeating the same information across multiple sections.
+- Never mention AI, models, confidence calculations, datasets, databases, aggregations, or internal analysis processes.
+- Never output null, empty, or placeholder values.
+- Always return valid JSON matching the required schema.
 Return JSON using EXACTLY this schema:
 
 {
@@ -292,6 +307,24 @@ const API_Call_Logic = async (userId) => {
     7: "Saturday",
   };
 
+  const focusWindowDataFormatted = focusWindowData.map((item) => {
+    const startHour = item._id;
+    const endHour = (startHour + 1) % 24;
+
+    const formatHour = (hour) => {
+      const suffix = hour >= 12 ? "PM" : "AM";
+      const h = hour % 12 || 12;
+      return `${h}:00 ${suffix}`;
+    };
+
+    return {
+      timeRange: `${formatHour(startHour)} - ${formatHour(endHour)}`,
+      totalDurationMinutes: item.totalDurationMinutes,
+      avgDurationMinutes: item.avgDurationMinutes,
+      sessions: item.sessions,
+    };
+  });
+
   const formattedDayWiseData = dayWiseData.map((item) => ({
     day: days[item._id],
     totalSessions: item.totalSessions,
@@ -309,7 +342,7 @@ const API_Call_Logic = async (userId) => {
 
     topProjects: topProjects,
 
-    focusWindowData,
+    focusWindowDataFormatted,
 
     formattedDayWiseData,
   };

@@ -5,13 +5,13 @@ import { FloatingDock } from "../../components/Common/Floating-dock";
 import { SmoothCursor } from '@/components/Effects/Smooth-Cursor2';
 import { IconBrandGithub, IconBrandX, IconHome, IconClock, IconSparkles, IconTerminal2, IconClockPlay, IconHomeStats, IconDeviceLaptop, IconCircleCheck, IconTrendingUp } from "@tabler/icons-react";
 import Histogram from '@/components/Dashboard/Histogram';
-import ActivityCalender from '@/components/Dashboard/ActivityCalender';
 import TimeByProject from '@/components/Dashboard/TimeByProject';
 import WeeklyHeatmap from '@/components/Dashboard/WeeklyHeatmap';
 import ProfileSection from '@/components/Dashboard/ProfileSection';
 import useUserStore from '@/store/useUserStore';
 import { easeInOut, motion } from 'framer-motion';
 import api from '@/services/api';
+import Saarthi from '@/components/Dashboard/Saarthi';
 
 
 
@@ -71,18 +71,7 @@ const AnalyticsPage = () => {
         },
     ];
 
-    useEffect(() => {
-        const fetchIntell = async () => {
-            try {
-                const intell = await api.getIntell();
-                console.log(intell.data);
-            } catch (e) {
-                console.log("intelligence can not be fetched: ", e)
-            }
-        }
-
-        fetchIntell()
-    }, [])
+    
 
     const username = useUserStore((state) => state.username)
     return (
@@ -350,7 +339,7 @@ const AnalyticsPage = () => {
 
                             {/* Calender */}
                             <div className='col-span-2 text-white h-[23rem] rounded-xl bg-[#141414] p-4'>
-                                <ActivityCalender />
+                                <Saarthi />
                             </div>
 
                             {/* Pie Chart */}
