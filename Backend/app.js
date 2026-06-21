@@ -17,6 +17,7 @@ var profileRouter = require("./routes/profile");
 var sessionRouter = require("./routes/FocusSession");
 var statsRouter = require("./routes/stats");
 var badgeRouter = require("./routes/badge");
+var intelligenceRouter = require("./routes/intelligence");
 
 var app = express();
 //db connection
@@ -70,6 +71,7 @@ app.use("/", profileRouter);
 app.use("/", sessionRouter);
 app.use("/", statsRouter);
 app.use("/", badgeRouter);
+app.use("/", intelligenceRouter);
 
 // catch 404 and forward to error handler
 app.use(function (req, res, next) {

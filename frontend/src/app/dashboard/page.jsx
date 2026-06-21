@@ -11,6 +11,7 @@ import WeeklyHeatmap from '@/components/Dashboard/WeeklyHeatmap';
 import ProfileSection from '@/components/Dashboard/ProfileSection';
 import useUserStore from '@/store/useUserStore';
 import { easeInOut, motion } from 'framer-motion';
+import api from '@/services/api';
 
 
 
@@ -69,6 +70,20 @@ const AnalyticsPage = () => {
             href: "#",
         },
     ];
+
+    useEffect(() => {
+        const fetchIntell = async () => {
+            try {
+                const intell = await api.getIntell();
+                console.log(intell.data);
+            } catch (e) {
+                console.log("intelligence can not be fetched: ", e)
+            }
+        }
+
+        fetchIntell()
+    }, [])
+
     const username = useUserStore((state) => state.username)
     return (
         <>

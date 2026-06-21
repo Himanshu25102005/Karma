@@ -1,3 +1,4 @@
+require("dotenv").config();
 const userSchema = require("../models/users");
 const Project = require("../models/projects");
 const express = require("express");
@@ -10,7 +11,6 @@ const checkAndAwardBadges = require("../utils/checkAndAwardBadges");
 const cache = require("../models/cache");
 const Groq = require("groq-sdk");
 const streak = require("../utils/streak");
-
 const groq = new Groq({ apiKey: process.env.GROQ_API_KEY });
 
 /* Middleware to check if the user is logged in  */
@@ -22,12 +22,12 @@ const isloggedIn = (req, res, next) => {
   });
 };
 
-export async function main() {
+/* export async function main() {
   const chatCompletion = await getGroqChatCompletion();
   console.log(chatCompletion.choices[0]?.message?.content || "");
-}
+} */
 
-export async function getGroqChatCompletion(data) {
+const getGroqChatCompletion = async (data) => {
   return groq.chat.completions.create({
     messages: [
       {
@@ -42,7 +42,9 @@ Do not include markdown.
 Do not include explanations outside the JSON.
 Do not include code blocks.
 Do not invent data that cannot be reasonably inferred from the input.
-
+IMPORTANT:
+All duration values in the input data are measured in seconds.
+Convert to minutes or hours when generating insights.
 Analyze the data and generate insights for the following sections:
 
 1. bestFocusWindow
@@ -110,7 +112,7 @@ Return JSON using EXACTLY this schema:
         `,
       },
     ],
-    model: "llama-3.1-8b-instant",
+    model: "openai/gpt-oss-20b",
     response_format: {
       type: "json_schema",
       json_schema: {
@@ -173,7 +175,7 @@ Return JSON using EXACTLY this schema:
       },
     },
   });
-}
+};
 
 const API_Call_Logic = async (userId) => {
   const [sessionData, streakData, topProjects, focusWindowData, dayWiseData] =
@@ -230,8 +232,16 @@ const API_Call_Logic = async (userId) => {
         {
           $group: {
             _id: "$hour",
-            totalDuration: { $sum: "$duration" },
-            avgDuration: { $avg: "$duration" },
+            totalDurationMinutes: {
+              $sum: {
+                $divide: ["$duration", 60],
+              },
+            },
+            avgDurationMinutes: {
+              $avg: {
+                $divide: ["$duration", 60],
+              },
+            },
             sessions: { $sum: 1 },
           },
         },
@@ -272,6 +282,23 @@ const API_Call_Logic = async (userId) => {
     totalSessions: 0,
   };
 
+  const days = {
+    1: "Sunday",
+    2: "Monday",
+    3: "Tuesday",
+    4: "Wednesday",
+    5: "Thursday",
+    6: "Friday",
+    7: "Saturday",
+  };
+
+  const formattedDayWiseData = dayWiseData.map((item) => ({
+    day: days[item._id],
+    totalSessions: item.totalSessions,
+    completedSessions: item.completedSessions,
+    avgDuration: item.avgDuration,
+  }));
+
   const data = {
     overview: {
       totalFocusTime: overview.totalFocusTime,
@@ -284,7 +311,7 @@ const API_Call_Logic = async (userId) => {
 
     focusWindowData,
 
-    dayWiseData,
+    formattedDayWiseData,
   };
 
   const ModelResponse = await getGroqChatCompletion(data);
@@ -315,7 +342,6 @@ const API_Call_Logic = async (userId) => {
     },
     {
       upsert: true,
-      new: true,
     },
   );
 
@@ -323,9 +349,12 @@ const API_Call_Logic = async (userId) => {
 };
 
 const API_Call_Decider = async (userId) => {
-  const cacheDoc = await cache.findOne({
-    userId,
-  }).select("generatedAt totalSessions");
+  console.log("Checking cache...");
+  const cacheDoc = await cache
+    .findOne({
+      userId,
+    })
+    .select("generatedAt totalSessions");
 
   if (!cacheDoc) {
     return true;
@@ -341,11 +370,11 @@ const API_Call_Decider = async (userId) => {
     Date.now() - cacheDoc.generatedAt.getTime() > 24 * 60 * 60 * 1000;
 
   const hasNewSessions = totalSessions > cacheDoc.totalSessions;
-
+  console.log("Cache found:", !!cacheDoc);
   if (isExpired || hasNewSessions) {
     return true;
   }
-
+  console.log("Need new AI call:", isExpired || hasNewSessions);
   return false;
 };
 
@@ -355,9 +384,11 @@ router.get("/analytics/intelligence/call", isloggedIn, async (req, res) => {
     let response;
 
     if (decider == true) {
+      console.log("CALLING GROQ");
       response = await API_Call_Logic(req.user._id);
     }
     if (decider == false) {
+      console.log("USING CACHE");
       response = await cache.findOne({
         userId: req.user._id,
       });
@@ -372,3 +403,5 @@ router.get("/analytics/intelligence/call", isloggedIn, async (req, res) => {
     res.status(500).json(e.message);
   }
 });
+
+module.exports = router;

@@ -157,6 +157,11 @@ const api = {
   getMyBadges: () => {
     return apiClient.get("/badges/my");
   },
+
+  /* AI Calls */
+  getIntell: () => {
+    return apiClient.get("/analytics/intelligence/call");
+  },
 };
 
 export default api;
