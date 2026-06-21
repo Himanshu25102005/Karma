@@ -77,7 +77,7 @@ const AnalyticsPage = () => {
             <div className="h-screen w-screen bg-[#0a0a0a] flex flex-col relative overflow-hidden select-none">
 
                 {/* TOP MARGIN*/}
-                <div className=" h-[2rem] lg:h-[3.5rem] w-full border-b border-dashed border-neutral-700/60 flex items-center px-6">
+                <div className=" h-8 lg:h-14 w-full border-b border-dashed border-neutral-700/60 flex items-center px-6">
                     {/* <span className="text-xs font-mono text-neutral-500 tracking-widest uppercase">कΛRMΛ // System_v2</span> */}
                 </div>
 

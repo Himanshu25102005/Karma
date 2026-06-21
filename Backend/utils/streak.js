@@ -82,5 +82,4 @@ async function streak(userId) {
   }
 }
 
-// CRUCIAL: Export the function by its exact name
 module.exports = streak;
