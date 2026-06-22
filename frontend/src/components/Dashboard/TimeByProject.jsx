@@ -63,19 +63,19 @@ const TimeByProject = () => {
 
     return (
         <>
-            <div className='h-full w-full flex flex-col gap-2'>
+            <div className='h-full w-full min-w-0 flex flex-col gap-2'>
                 <div className='relative w-full flex justify-between items-center'>
-                    <span className="text-xl font-semibold tracking-wide text-neutral-200 font-mono">
+                    <span className="text-lg sm:text-xl font-semibold tracking-wide text-neutral-200 font-mono">
                         Time by Project
                     </span>
                 </div>
-                <div className='w-full flex flex-row  border border-neutral-800 rounded-xl'>
+                <div className='w-full min-w-0 flex flex-col md:flex-row border border-neutral-800 rounded-xl overflow-hidden'>
                     {/* Pie Chart */}
 
                     {
                         data?
                             <EvilPieChart
-                                className='w-[50%] h-50'
+                                className='w-full md:w-1/2 min-h-[12rem] md:min-h-[13rem] h-50 shrink-0'
                                 data={data}
                                 dataKey="totalMinutes"
                                 nameKey="id"
@@ -88,7 +88,7 @@ const TimeByProject = () => {
                             :
                             <EvilPieChart
                                 isLoading
-                                className='w-[50%] h-50'
+                                className='w-full md:w-1/2 min-h-[12rem] md:min-h-[13rem] h-50 shrink-0'
                                 data={data}
                                 dataKey="totalMinutes"
                                 nameKey="id"
@@ -101,8 +101,8 @@ const TimeByProject = () => {
 
 
                     {/* Data */}
-                    <div className='w-[50%] h-full flex justify-center items-center p-4 '>
-                        <div className='w-full h-full overflow-y-auto
+                    <div className='w-full md:w-1/2 min-w-0 flex justify-center items-center p-3 sm:p-4'>
+                        <div className='w-full min-w-0 max-h-[14rem] md:max-h-none md:h-full overflow-y-auto
                     [&::-webkit-scrollbar]:w-1.5
                     [&::-webkit-scrollbar-track]:bg-transparent
                     [&::-webkit-scrollbar-thumb]:bg-neutral-800
@@ -112,12 +112,12 @@ const TimeByProject = () => {
                             {/* Actual Data */}
 
                             {/* Parent container controls the global alignment grid */}
-                            <div className="w-full max-w-md grid grid-cols-4 gap-y-3 items-center font-mono text-sm text-neutral-200 select-none">
+                            <div className="w-full min-w-0 max-w-md grid grid-cols-[1fr_auto_auto] sm:grid-cols-4 gap-x-2 sm:gap-x-3 gap-y-3 items-center font-mono text-xs sm:text-sm text-neutral-200 select-none">
                                 {data.map((item) => (
                                     <React.Fragment key={item.projectName}>
 
                                         {/* Column 1 & 2: Project Name combined with the dynamic color dot */}
-                                        <div className="col-span-2 flex items-center gap-3 truncate pr-4">
+                                        <div className="col-span-1 sm:col-span-2 flex items-center gap-2 sm:gap-3 truncate min-w-0 pr-1 sm:pr-4">
                                             <div
                                                 className="w-3 h-3 rounded-full shrink-0 shadow-sm"
                                                 style={{ backgroundColor: item.color || "#525252" }} // ⚡ Dynamic inline color block mapping
@@ -128,12 +128,12 @@ const TimeByProject = () => {
                                         </div>
 
                                         {/* Column 3: Symmetrical Duration Track */}
-                                        <div className="col-span-1 text-left font-medium text-neutral-400">
+                                        <div className="col-span-1 text-left font-medium text-neutral-400 whitespace-nowrap">
                                             {item.totalMinutes}m
                                         </div>
 
                                         {/* Column 4: Symmetrical Category Tag */}
-                                        <div className="col-span-1 text-right text-xs bg-neutral-900/50 border border-neutral-800 text-neutral-400 py-1 px-2.5 rounded-md w-fit justify-self-end">
+                                        <div className="col-span-1 text-right text-[10px] sm:text-xs bg-neutral-900/50 border border-neutral-800 text-neutral-400 py-1 px-1.5 sm:px-2.5 rounded-md w-fit justify-self-end max-w-full truncate">
                                             {item.type || "General"}
                                         </div>
 

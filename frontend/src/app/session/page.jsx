@@ -6,6 +6,7 @@ import SmoothCursor from "../../components/Effects/Smooth-cursor"
 import { FloatingDock } from "../../components/Common/Floating-dock";
 import Navbar from "../../components/Session/Navbar";
 import Activity from "../../components/Session/Activity";
+import ActivityDrawer from "../../components/Session/ActivityDrawer";
 import ProjectSelector from "../../components/Session/ProjectSelector";
 import Personal_Stats from "../../components/Session/Personal_Stats";
 import Sprint from "../../components/Session/Sprint";
@@ -78,25 +79,17 @@ const SessionPage = () => {
     ];
 
   const setCurrentProjectId = useProjectStore((state) => state.setCurrentProjectId);
-
   const setCurrentUser = useUserStore((state) => state.setCurrentUser);
-
   const [projects, setProjects] = useState([]);
+  const [activityDrawerOpen, setActivityDrawerOpen] = useState(false);
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
-
         const res = await api.getAllProjects();
-        /* Priont the full recieved Object */
         console.log("Full response data:", res.data);
         setProjects(res.data.projects);
         setCurrentUser();
-        /* const currentProject = projects.find(p => p.isCurrent) || null;
-
-        setCurrentProjectId(currentProject?._id || null); */
-
-
       } catch (e) {
         console.log("error: ")
         console.log(e.message);
@@ -118,13 +111,29 @@ const SessionPage = () => {
       console.log("NO CURRENT PROJECT FOUND");
       setCurrentProjectId(null);
     }
-  }, [projects]);  // 🔥 THIS IS THE KEY
+  }, [projects]);
 
-  console.log("RENDER CHECK - Current Projects:", projects);
+  useEffect(() => {
+    const lockScroll = () => {
+      if (window.innerWidth >= 1024) {
+        document.documentElement.style.overflow = 'hidden';
+        document.body.style.overflow = 'hidden';
+      } else {
+        document.documentElement.style.overflow = '';
+        document.body.style.overflow = '';
+      }
+    };
+    lockScroll();
+    window.addEventListener('resize', lockScroll);
+    return () => {
+      window.removeEventListener('resize', lockScroll);
+      document.documentElement.style.overflow = '';
+      document.body.style.overflow = '';
+    };
+  }, []);
 
+  const [isDark] = useState(true);
 
-
-  const [isDark, setIsDark] = useState(true);
   return (
     <>
       <SmoothCursor
@@ -151,46 +160,80 @@ const SessionPage = () => {
         </svg>
       </div>
 
+      <div className='bg-black min-h-screen overflow-x-hidden lg:h-screen lg:overflow-hidden lg:min-h-0'>
 
-      
-      <div className='bg-black min-h-screen pt-16'>
+        {/* Mobile (<640px) */}
+        <div className="sm:hidden flex flex-col gap-4 px-3 pt-16 pb-28 max-w-[100vw]">
+          <section className="w-full min-w-0">
+            <Timer
+              mobileLayout
+              projectSelector={<ProjectSelector projects={projects} setProjects={setProjects} />}
+            />
+          </section>
+          <section className="w-full min-w-0">
+            <Sprint compact />
+          </section>
+          <section className="w-full min-w-0">
+            <Personal_Stats compact />
+          </section>
+          <section className="w-full min-w-0">
+            <ActivityDrawer
+              isOpen={activityDrawerOpen}
+              onOpen={() => setActivityDrawerOpen(true)}
+              onClose={() => setActivityDrawerOpen(false)}
+            />
+          </section>
+        </div>
 
-        {/* Main Outer Div */}
+        {/* Tablet (640px–1024px) */}
+        <div className="hidden sm:flex lg:hidden flex-col gap-5 px-4 pt-16 pb-28 max-w-[100vw]">
+          <section className="w-full min-w-0">
+            <ProjectSelector projects={projects} setProjects={setProjects} />
+            <Timer />
+          </section>
+          <section className="w-full min-w-0">
+            <Sprint compact />
+          </section>
+          <section className="w-full min-w-0">
+            <Activity />
+          </section>
+          <section className="w-full min-w-0">
+            <Personal_Stats />
+          </section>
+        </div>
 
-        <div className=' h-[94vh] overflow-hidden mt-2 border-white flex items-center p-3 gap-5'>
+        {/* Desktop / laptop (1024px+): 100vh locked, no page scroll */}
+        <div className='hidden lg:flex h-[calc(100vh-4rem)] mt-16 min-h-0 overflow-hidden px-3 gap-5 max-w-[100vw]'>
 
-          <div className="text-white rounded-xl px-6 py-4 w-1/4 h-[99vh] flex flex-col gap-6 overflow-hidden">
-
-            {/* Sprint (takes available space) */}
-            <div className="flex-1 min-h-0 mt-5 ">
-              <Sprint />
+          {/* LEFT: Sprint (flex-1, scrollable tasks) → Personal Stats (auto) */}
+          <div className="text-white rounded-xl px-6 py-4 w-1/4 h-full min-h-0 shrink-0 flex flex-col gap-4 overflow-hidden">
+            <div className="flex-1 min-h-0 overflow-hidden">
+              <Sprint fillHeight />
             </div>
-
-            {/* Personal Stats (fixed height) */}
-            <div className="h-[35%] ">
+            <div className="shrink-0">
               <Personal_Stats />
             </div>
-
           </div>
 
-          <div className='text-white w-1/2 h-full'>
+          {/* CENTER: vertically centered, no overflow */}
+          <div className='text-white w-1/2 h-full min-h-0 shrink-0 flex flex-col justify-center overflow-hidden'>
             <ProjectSelector projects={projects} setProjects={setProjects} />
             <Timer />
           </div>
 
-          <div className='text-white h-full  rounded-xl w-1/5 h-full p-2'>
-            <Activity />
+          {/* RIGHT: Activity column fills height */}
+          <div className='text-white rounded-xl w-1/5 h-full min-h-0 shrink-0 p-2 overflow-hidden'>
+            <Activity fillHeight />
           </div>
         </div>
 
         {/* Floating Dock */}
         <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 ">
           <FloatingDock
-            mobileClassName="translate-y-20 " // only for demo, remove for production
+            mobileClassName="translate-y-20 "
             items={links}
           />
         </div>
-
       </div>
     </>
   );

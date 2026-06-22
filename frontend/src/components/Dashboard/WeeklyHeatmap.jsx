@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import HeatMap from '@uiw/react-heat-map';
 import Tooltip from '@uiw/react-tooltip';
 import { motion } from "motion/react";
@@ -22,6 +22,24 @@ import api from '@/services/api';
 const WeeklyHeatmap = () => {
     // const currentStreak = useSessionStore((state) => state.currentStreak);
     const [value, setValue] = useState([]);
+    const containerRef = useRef(null);
+    const [heatmapWidth, setHeatmapWidth] = useState(600);
+
+    const updateHeatmapWidth = useCallback(() => {
+        if (containerRef.current) {
+            const availableWidth = containerRef.current.clientWidth - 16;
+            setHeatmapWidth(Math.max(280, availableWidth));
+        }
+    }, []);
+
+    useEffect(() => {
+        updateHeatmapWidth();
+        const observer = new ResizeObserver(updateHeatmapWidth);
+        if (containerRef.current) {
+            observer.observe(containerRef.current);
+        }
+        return () => observer.disconnect();
+    }, [updateHeatmapWidth]);
     useEffect(() => {
         let fetchData = async () => {
             try {
@@ -46,13 +64,13 @@ const WeeklyHeatmap = () => {
     const [selected, setSelected] = useState('')
     return (
         <>
-            <div className='h-[87%] w-full flex flex-col gap-2'>
-                <div className='h-10 relative w-full flex justify-between items-center'>
-                    <span className="text-xl font-semibold tracking-wide text-neutral-200 font-mono">
+            <div className='h-full w-full min-w-0 flex flex-col gap-2'>
+                <div className='min-h-10 relative w-full flex justify-between items-center'>
+                    <span className="text-lg sm:text-xl font-semibold tracking-wide text-neutral-200 font-mono">
                         Focus Time Over Time
                     </span>
                 </div>
-                <div className="w-full h-full border border-neutral-800 rounded-xl p-2 bg-neutral-900/10">
+                <div ref={containerRef} className="w-full min-w-0 flex-1 min-h-0 border border-neutral-800 rounded-xl p-2 bg-neutral-900/10 overflow-x-auto overflow-y-hidden">
                     <motion.div
                         initial={{ opacity: 0, y: 15 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -60,12 +78,12 @@ const WeeklyHeatmap = () => {
                             duration: 0.6,
                             ease: [0.16, 1, 0.3, 1]
                         }}
-                        className="w-full"
+                        className="w-full min-w-0"
                     >
                         <HeatMap
-                            className="w-full"
+                            className="w-full max-w-full"
                             value={value}
-                            width={600}
+                            width={heatmapWidth}
                             style={{ color: '#99a1af', '--rhm-rect-active': 'red' }}
                             startDate={new Date('2026/01/01')}
                             panelColors={['#212121', '#e4b293', '#d48462', '#c2533a', '#ad001d', '#6c0012']}

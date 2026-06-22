@@ -82,9 +82,8 @@ const ProjectSelector = ({ projects, setProjects }) => {
 
   return (
     <>
-      <div className=' relative  h-1/5 flex flex-col gap-1 items-center  '>
-        {/* Current Project */}
-        <div className="w-80 flex items-center rounded-2xl px-3 py-2 bg-white/[0.04] border border-white/10 backdrop-blur-sm hover:bg-white/[0.08] transition-all duration-200 cursor-pointer">
+      <div className='relative w-full max-w-sm sm:max-w-md mx-auto lg:max-w-none lg:mx-0 h-auto flex flex-col gap-1 items-center'>
+        <div className="w-full max-w-xs sm:w-80 flex items-center rounded-2xl px-3 py-2 bg-white/[0.04] border border-white/10 backdrop-blur-sm hover:bg-white/[0.08] transition-all duration-200 cursor-pointer">
           <div className='border-r border-white/10 w-1/4 flex justify-center items-center'>
             <IconBriefcaseFilled color="#DFDFDF" size={25} />
           </div>
@@ -116,7 +115,7 @@ const ProjectSelector = ({ projects, setProjects }) => {
               exit={{ opacity: 0, y: -10, scale: 0.98 }}
               transition={{ duration: 0.18, ease: "easeOut" }}
 
-              className="top-full mt-2 z-50 py-2 px-8 border-1 flex flex-col border-solid border-gray-600 max-h-[29rem] w-96 rounded-xl  bg-neutral-900 / bg-black/80 shadow-2xl border-white/10 "
+              className="top-full mt-2 z-50 py-2 px-4 sm:px-8 border-1 flex flex-col border-solid border-gray-600 max-h-[29rem] w-[calc(100vw-2rem)] max-w-sm sm:w-96 rounded-xl bg-neutral-900 shadow-2xl border-white/10 left-1/2 -translate-x-1/2 sm:left-auto sm:translate-x-0 absolute"
             >
               {/* Searchbar */}
               {/* <div className='w-full h-auto border-2 p-2 border-solid  flex gap-1 border-gray-700 rounded-md shrink-0 '>

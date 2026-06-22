@@ -3,7 +3,7 @@ import { motion } from 'framer-motion'
 import { IconBrandGithub } from "@tabler/icons-react";
 import api from '@/services/api';
 
-const QuickInsight = () => {
+const QuickInsight = ({ compact = false }) => {
 
   const [activeProject, setActiveProject] = useState(null);
 
@@ -23,7 +23,7 @@ const QuickInsight = () => {
 
   return (
     <>
-      <div className='h-[15rem] w-full  mt-2 border-1 border-solid border-neutral-800 bg-white/[0.02] rounded-xl p-2 flex flex-col'>
+      <div className={`${compact ? 'h-auto min-h-[10rem]' : 'h-[15rem]'} w-full mt-2 border-1 border-solid border-neutral-800 bg-white/[0.02] rounded-xl p-2 flex flex-col`}>
         {/* Heading */}
         <div className='h-[2.5rem] w-full flex justify-between items-center'>
           <motion.div

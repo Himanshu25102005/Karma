@@ -7,19 +7,12 @@ import { useUserStore } from "@/store/useUserStore";
 import api from "@/services/api";
 import useRefreshStore from "@/store/useRefreshStore";
 
-
-// Configuration constants
-// const COUNTDOWN_FROM = "2026-04-11T15:00:00";
 const SECOND = 1000;
 const MINUTE = SECOND * 60;
 const HOUR = MINUTE * 60;
 const DAY = HOUR * 24;
 
-
-
-
-export default function ShiftingCountdown() {
-
+export default function ShiftingStopwatch({ part = "full" }) {
   const triggerRefresh = useRefreshStore((state) => state.triggerRefresh);
   const currentProjectId = useProjectStore((state) => state.currentProjectId);
   const userId = useUserStore((state) => state.userId);
@@ -39,10 +32,10 @@ export default function ShiftingCountdown() {
 
   const endSession = async () => {
     const res = await api.endSession(userId);
-    console.log("Response from the end session API: ",res.data);
+    console.log("Response from the end session API: ", res.data);
     setReset();
     triggerRefresh();
-  }
+  };
 
   const setReset = () => {
     setElapsedTime(0);
@@ -61,102 +54,112 @@ export default function ShiftingCountdown() {
   const handleClck = async () => {
     if (isPause == true) {
       timerStart();
-    }
-    else {
+    } else {
       timerPause();
     }
   };
 
-  return (
-    <section className="bg-white text-black dark:bg-black dark:text-white transition-colors duration-500 p-4  ">
+  const display = (
+    <div className="flex w-full max-w-5xl items-stretch mx-auto">
+      <CountdownItem unit="Hour" isStart={isStart} startTime={startTime} elapsedTime={elapsedTime} />
+      <CountdownItem unit="Minute" isStart={isStart} startTime={startTime} elapsedTime={elapsedTime} />
+      <CountdownItem unit="Second" isStart={isStart} startTime={startTime} elapsedTime={elapsedTime} />
+    </div>
+  );
 
-
-      <div className="flex w-full max-w-5xl items-center mx-auto">
-        {/* <CountdownItem unit="Day" label="Days" isStart={isStart} startTime={startTime} elapsedTime={elapsedTime} /> */}
-        <CountdownItem unit="Hour" isStart={isStart} startTime={startTime} elapsedTime={elapsedTime} />
-        <CountdownItem unit="Minute" isStart={isStart} startTime={startTime} elapsedTime={elapsedTime} />
-        <CountdownItem unit="Second" isStart={isStart} startTime={startTime} elapsedTime={elapsedTime} />
-      </div>
-
-
-
-      <div className="p-3 w-full max-w-5xl mx-auto flex justify-center items-center gap-6 flex-wrap">
-
-        {/* START / PAUSE / RESUME */}
-        {isStart ? (
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            whileHover={{ scale: 1.04 }}
-            onClick={handleClck}
-            className={`px-6 py-3 text-2xl cursor-target font-semibold rounded-2xl transition-all duration-200
-            ${isPause
-                ? "border border-green-400/30 bg-green-400/10 hover:bg-green-400/20"
-                : "border border-yellow-400/30 bg-yellow-400/10 hover:bg-yellow-400/20"}
-            `}
-          >
-            {isPause ? "Resume Session" : "Pause Session"}
-          </motion.button>
-        ) : (
-          <motion.button
-            whileTap={{ scale: 0.95 }}
-            whileHover={{ scale: 1.04 }}
-            onClick={timerStart}
-            className="px-6 py-3 text-2xl cursor-target font-semibold rounded-2xl border border-green-400/30 bg-green-400/10 hover:bg-green-400/20 transition-all duration-200"
-          >
-            Start Session
-          </motion.button>
-        )}
-
-        {/* RESET */}
-        <motion.button
-          whileTap={{ scale: 0.9 }}
-          whileHover={{ scale: 1.05 }}
-          onClick={setReset}
-          className="p-3 rounded-xl border cursor-target border-white/20 bg-white/[0.04] hover:bg-white/[0.1] transition-all duration-200"
-        >
-          <IconRestore color="#DFDFDF" size={28} />
-        </motion.button>
-
-        {/* END SESSION */}
+  const controls = (
+    <div className="p-2 sm:p-3 lg:p-3 w-full max-w-5xl mx-auto flex justify-center items-center gap-3 sm:gap-6 flex-wrap">
+      {isStart ? (
         <motion.button
           whileTap={{ scale: 0.95 }}
           whileHover={{ scale: 1.04 }}
-          onClick={endSession}
-          className="px-6 py-3 text-2xl cursor-target font-semibold rounded-2xl border border-red-400/30 bg-red-400/10 hover:bg-red-400/20 transition-all duration-200"
+          onClick={handleClck}
+          className={`cursor-target font-medium rounded-xl lg:rounded-2xl transition-all duration-200
+            px-4 py-2 text-sm lg:px-6 lg:py-3 lg:text-2xl lg:font-semibold
+            ${isPause
+              ? "border border-green-400/30 bg-green-400/10 hover:bg-green-400/20"
+              : "border border-yellow-400/30 bg-yellow-400/10 hover:bg-yellow-400/20"}
+            `}
         >
-          End Session
+          {isPause ? "Resume Session" : "Pause Session"}
         </motion.button>
+      ) : (
+        <motion.button
+          whileTap={{ scale: 0.95 }}
+          whileHover={{ scale: 1.04 }}
+          onClick={timerStart}
+          className="px-4 py-2 text-sm lg:px-6 lg:py-3 lg:text-2xl lg:font-semibold cursor-target font-medium rounded-xl lg:rounded-2xl border border-green-400/25 bg-green-400/8 hover:bg-green-400/15 transition-all duration-200"
+        >
+          Start Session
+        </motion.button>
+      )}
 
-      </div>
+      <motion.button
+        whileTap={{ scale: 0.9 }}
+        whileHover={{ scale: 1.05 }}
+        onClick={setReset}
+        className="p-2 lg:p-3 rounded-lg lg:rounded-xl border cursor-target border-white/15 bg-white/[0.03] hover:bg-white/[0.08] transition-all duration-200"
+      >
+        <IconRestore color="#DFDFDF" size={22} className="lg:w-7 lg:h-7" />
+      </motion.button>
+
+      <motion.button
+        whileTap={{ scale: 0.95 }}
+        whileHover={{ scale: 1.04 }}
+        onClick={endSession}
+        className="px-4 py-2 text-sm lg:px-6 lg:py-3 lg:text-2xl lg:font-semibold cursor-target font-medium rounded-xl lg:rounded-2xl border border-red-400/25 bg-red-400/8 hover:bg-red-400/15 transition-all duration-200"
+      >
+        End Session
+      </motion.button>
+    </div>
+  );
+
+  if (part === "display") {
+    return (
+      <section className="bg-white text-black dark:bg-black dark:text-white transition-colors duration-500 px-1 py-4 sm:py-6 lg:p-4">
+        {display}
+      </section>
+    );
+  }
+
+  if (part === "controls") {
+    return (
+      <section className="bg-white text-black dark:bg-black dark:text-white transition-colors duration-500 px-1 pt-2 pb-1 lg:p-4">
+        {controls}
+      </section>
+    );
+  }
+
+  return (
+    <section className="bg-white text-black dark:bg-black dark:text-white transition-colors duration-500 p-2 sm:p-4 lg:p-4">
+      {display}
+      {controls}
     </section>
   );
 }
 
 const CountdownItem = ({ unit, label, isStart, startTime, elapsedTime }) => {
-  const { ref, time } = useTimer(unit, isStart, startTime, elapsedTime); // 3. Pass to useTime
+  const { ref, time } = useTimer(unit, isStart, startTime, elapsedTime);
 
-  // Pad seconds/minutes with a leading zero if they are single digits
   const display = (unit === "Second" || unit === "Minute" || unit === "Hour")
     ? String(time).padStart(2, '0')
     : time;
 
   return (
-    <>
-      <div className="flex flex-1 flex-col items-center justify-center gap-1 px-4 py-6 md:gap-2 ">
-        <div className="relative w-full overflow-hidden text-center">
-          <span
-            ref={ref}
-            className="block text-3xl font-mono font-semibold md:text-5xl lg:text-[10.5rem]"
-          >
-            {display}
-          </span>
-        </div>
-        <span className="text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400 md:text-sm">
-          {label}
+    <div className="flex flex-1 flex-col items-center justify-center gap-1 px-1 sm:px-4 py-4 sm:py-6 lg:py-6 md:gap-2">
+      <div className="relative w-full overflow-hidden text-center">
+        <span
+          ref={ref}
+          className="block text-[4.25rem] leading-none sm:text-6xl font-mono font-semibold md:text-5xl lg:text-[10.5rem]"
+        >
+          {display}
         </span>
-        <div className="h-px w-full bg-gray-200 dark:bg-gray-800 mt-2"></div>
       </div>
-    </>
+      <span className="text-[10px] sm:text-xs uppercase tracking-wider text-gray-500 dark:text-gray-400 md:text-sm">
+        {label}
+      </span>
+      <div className="h-px w-full bg-gray-200 dark:bg-gray-800 mt-1 sm:mt-2 lg:mt-2"></div>
+    </div>
   );
 };
 
@@ -170,25 +173,20 @@ const useTimer = (unit, isStart, startTime, elapsedTime) => {
     handleCountdown();
     intervalRef.current = setInterval(handleCountdown, 1000);
     return () => clearInterval(intervalRef.current);
-  }, [unit, isStart, startTime, elapsedTime]); // ✅ always 3 deps, null on first render is fine
+  }, [unit, isStart, startTime, elapsedTime]);
 
   const handleCountdown = async () => {
-    /* const distance = now - end; */
     const distance = (isStart && startTime)
       ? (Date.now() - startTime + elapsedTime)
       : elapsedTime;
 
-
     let newTime = 0;
-    // Calculate the time based on the unit type
     if (unit === "Day") newTime = Math.max(0, Math.floor(distance / DAY));
     else if (unit === "Hour") newTime = Math.max(0, Math.floor((distance % DAY) / HOUR));
     else if (unit === "Minute") newTime = Math.max(0, Math.floor((distance % HOUR) / MINUTE));
     else newTime = Math.max(0, Math.floor((distance % MINUTE) / SECOND));
 
-    // Only animate if the number actually changed
     if (newTime !== timeRef.current) {
-      // Exit Animation (Slide up and fade out)
       await animate(
         scope.current,
         { y: ["0%", "-50%"], opacity: [1, 0] },
@@ -198,7 +196,6 @@ const useTimer = (unit, isStart, startTime, elapsedTime) => {
       timeRef.current = newTime;
       setTime(newTime);
 
-      // Entry Animation (Slide in from bottom and fade in)
       await animate(
         scope.current,
         { y: ["50%", "0%"], opacity: [0, 1] },

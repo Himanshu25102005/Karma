@@ -2,12 +2,12 @@
 import React, { useState } from 'react'
 import { motion } from 'framer-motion'
 import { IconChevronRight, IconLivePhoto, IconClock, IconFileCheck } from "@tabler/icons-react";
-const LiveCoding = () => {
+const LiveCoding = ({ compact = false }) => {
 
     const [isEmpty, setIsEmpty] = useState(false)
     return (
         <>
-            <div className='min-h-[200px] max-h-[200px] w-full border-1 border-solid border-neutral-800 bg-white/[0.02] rounded-xl p-2 mt-4 flex flex-col '>
+            <div className={`${compact ? 'min-h-[160px] max-h-[180px] mt-2' : 'min-h-[200px] max-h-[200px] mt-4'} w-full border-1 border-solid border-neutral-800 bg-white/[0.02] rounded-xl p-2 flex flex-col`}>
                 {/* Heading */}
                 <div className='h-8 w-full flex justify-between items-center'>
                     <motion.div
@@ -42,7 +42,7 @@ const LiveCoding = () => {
                     </motion.button>
                 </div>
 
-                <div className=' flex-1 mt-4 flex flex-col gap-2 overflow-y-auto  '>
+                <div className={`flex-1 mt-4 flex flex-col gap-2 ${compact ? 'overflow-y-auto' : ''}`}>
                     {isEmpty ? (
                         <div className="flex-1 text-neutral-500 italic flex justify-center items-center p-4 ">
                             No history found. Start working to see sessions!

@@ -6,7 +6,7 @@ import React, { useState, useEffect, Fragment } from 'react'
 import { IconPlus, IconTrash, IconEdit } from "@tabler/icons-react";
 import useRefreshStore from "@/store/useRefreshStore";
 
-const Sprint = ({ }) => {
+const Sprint = ({ compact = false, fillHeight = false }) => {
     const triggerRefresh = useRefreshStore((state) => state.triggerRefresh);
     const currentProjectId = useProjectStore((state) => state.currentProjectId);
     const [newTask, setNewTasks] = useState('');
@@ -90,19 +90,19 @@ const Sprint = ({ }) => {
 
 
     return (
-        <div className='max-h-1/2'>
+        <div className={fillHeight ? 'h-full min-h-0 flex flex-col overflow-hidden' : ''}>
 
             {/* Heading */}
             <motion.div
                 initial={{ opacity: 0, y: -10 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.4, ease: "easeOut" }}
-                className="flex items-center justify-between px-4 py-3 mb-3"
+                className={`flex items-center justify-between shrink-0 ${compact ? 'px-2 py-3 mb-2' : 'px-4 py-3 mb-3'}`}
             >
 
                 {/* LEFT: Title */}
                 <div className="flex flex-col">
-                    <span className="text-3xl font-semibold tracking-tight text-white">
+                    <span className={`${compact ? 'text-xl' : 'text-3xl'} font-semibold tracking-tight text-white`}>
                         Today’s Sprint
                     </span>
 
@@ -116,12 +116,11 @@ const Sprint = ({ }) => {
             </motion.div>
 
             {/* Tasks Section */}
-            {/*  <div className="flex px-10 h-full py-13 rounded-2xl shadow-[inset_0_0_20px_rgba(255,255,255,0.03)]"> */}
-            <div className="flex px-10 h-[450px] py-10 bg-white/[0.01] w-[97%] rounded-2xl">
+            <div className={`flex bg-white/[0.01] rounded-2xl min-h-0 ${compact ? 'flex-row px-3 py-4 max-h-[280px] overflow-y-auto w-full' : fillHeight ? 'flex-1 flex-row px-10 py-6 w-[97%] overflow-hidden' : 'flex-row px-10 py-10 h-[450px] w-[97%] overflow-hidden'}`}>
 
 
                 {/* LEFT SIDE (continuous line system) */}
-                <div className="flex flex-col items-center mr-4 relative">
+                <div className={`flex flex-col items-center shrink-0 relative self-stretch ${compact ? 'w-6 mr-2' : 'mr-4'}`}>
 
                     {/* Vertical base line */}
                     <div className="absolute top-0 bottom-0 w-[2px] bg-white/10" />
@@ -180,14 +179,14 @@ const Sprint = ({ }) => {
                 </div>
 
                 {/* RIGHT SIDE (tasks with gap) */}
-                <div className="flex flex-col w-full h-full">
-                    <div className="flex-1 overflow-y-auto pr-2 space-y-5 relative 
-                    [&::-webkit-scrollbar]:w-1.5
-                    [&::-webkit-scrollbar-track]:bg-transparent
-                    [&::-webkit-scrollbar-thumb]:bg-neutral-800
-                    [&::-webkit-scrollbar-thumb]:rounded-full
-                    hover:[&::-webkit-scrollbar-thumb]:bg-neutral-700
-                    ">
+                <div className="flex flex-col min-w-0 flex-1">
+                    <div
+                        className={
+                            compact
+                                ? 'pr-2 space-y-5 relative'
+                                : 'flex-1 min-h-0 pr-2 space-y-5 relative overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-neutral-800 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-neutral-700'
+                        }
+                    >
                         {(Array.isArray(tasks) ? tasks : []).map((task, index) => (
 
                             <motion.div
@@ -201,7 +200,7 @@ const Sprint = ({ }) => {
                                     ease: "easeOut"
                                 }}
 
-                                className={`group border rounded-2xl p-3 flex gap-5 items-center transition-all duration-200
+                                className={`group border rounded-2xl p-3 flex gap-3 sm:gap-5 items-center transition-all duration-200
                                 ${task.isCompleted
                                         ? "border-white/10 bg-white/[0.03]"
                                         : "border-white/20 bg-white/[0.04] hover:bg-white/[0.07]"}
@@ -218,7 +217,7 @@ const Sprint = ({ }) => {
                                     }}
                                     transition={{ duration: 0.2 }}
 
-                                    className={`h-10 w-10 cursor-target flex items-center justify-center rounded-xl border-2 transition-all duration-200
+                                    className={`h-9 w-9 sm:h-10 sm:w-10 cursor-target flex items-center justify-center rounded-xl border-2 transition-all duration-200 shrink-0
                                     ${task.isCompleted
                                             ? "border-green-400 shadow-[0_0_8px_rgba(34,197,94,0.5)]"
                                             : "border-white/30 group-hover:border-white/50"}
@@ -237,7 +236,7 @@ const Sprint = ({ }) => {
                                 {/* TASK TEXT */}
                                 <motion.p
                                     layout
-                                    className={`text-xl transition-all duration-200
+                                    className={`${compact ? 'text-base' : 'text-xl'} transition-all duration-200 flex-1 min-w-0
                                      ${task.isCompleted
                                             ? "line-through opacity-25 text-gray-400"
                                             : "text-white"}
@@ -272,13 +271,13 @@ const Sprint = ({ }) => {
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2 }}
 
-                        className="mt-4 border border-white/20 rounded-2xl p-3 flex gap-5 items-center bg-white/[0.03] hover:bg-white/[0.06] transition-all duration-200"
+                        className="mt-4 border border-white/20 rounded-2xl p-3 flex gap-3 sm:gap-5 items-center bg-white/[0.03] hover:bg-white/[0.06] transition-all duration-200 shrink-0"
                     >
                         <button
                             type="submit"
-                            className="h-10 w-10 cursor-target flex justify-center items-center rounded-xl hover:bg-white/10 transition"
+                            className="h-9 w-9 sm:h-10 sm:w-10 cursor-target flex justify-center items-center rounded-xl hover:bg-white/10 transition shrink-0"
                         >
-                            <IconPlus size={26} />
+                            <IconPlus size={compact ? 22 : 26} />
                         </button>
 
                         <input
@@ -286,7 +285,7 @@ const Sprint = ({ }) => {
                             onChange={addTaskOnChange}
                             name="description"
                             value={newTask}
-                            className="text-xl bg-transparent outline-none placeholder:text-gray-500 w-full"
+                            className={`${compact ? 'text-base' : 'text-xl'} bg-transparent outline-none placeholder:text-gray-500 w-full min-w-0`}
                         />
                     </motion.form>
 

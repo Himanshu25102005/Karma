@@ -14,11 +14,24 @@ const Histogram = () => {
     const [monthdata, setMonthData] = useState(null);
     const [weekMode, setWeekMode] = useState(true)
     const [dropdown, setDropdown] = useState(false)
+    const [barSize, setBarSize] = useState(30)
+    const [chartMargin, setChartMargin] = useState({ top: 10, right: 10, left: 15, bottom: 30 })
     const username = useUserStore((state) => state.username)
     const setCurrentUser = useUserStore((state) => state.setCurrentUser);
     useEffect(() => {
         setCurrentUser();
         console.log("Current User's Username:", username);
+    }, []);
+
+    useEffect(() => {
+        const updateBarSize = () => {
+            const isLargeScreen = window.innerWidth >= 1024;
+            setBarSize(isLargeScreen ? 30 : 20);
+            setChartMargin({ top: 10, right: 10, left: isLargeScreen ? 15 : 5, bottom: 30 });
+        };
+        updateBarSize();
+        window.addEventListener('resize', updateBarSize);
+        return () => window.removeEventListener('resize', updateBarSize);
     }, []);
 
     useEffect(() => {
@@ -49,11 +62,11 @@ const Histogram = () => {
 
 
     return (
-        <div className='h-full w-full flex flex-col gap-2'>
+        <div className='h-full w-full min-w-0 flex flex-col gap-2'>
             {/* heading */}
-            <div className='h-10 relative w-full flex justify-between items-center'>
+            <div className='shrink-0 min-h-10 relative w-full flex flex-wrap justify-between items-center gap-2'>
 
-                <span className="text-xl font-semibold tracking-wide text-neutral-200 font-mono">
+                <span className="text-lg sm:text-xl font-semibold tracking-wide text-neutral-200 font-mono">
                     Focus Time Over Time
                 </span>
 
@@ -124,7 +137,7 @@ const Histogram = () => {
             </div>
 
             {/* Graph Section */}
-            <div className="w-full h-[250px] border border-neutral-800 rounded-xl p-2 bg-neutral-900/10">
+            <div className="w-full min-w-0 flex-1 min-h-[200px] border border-neutral-800 rounded-xl p-2 bg-neutral-900/10 overflow-visible">
                 {
                     (!weekdata)
                         ?
@@ -135,7 +148,7 @@ const Histogram = () => {
                         (weekMode == true)
                             ?
                             <ResponsiveContainer width="100%" height="100%">
-                                <BarChart data={weekdata} margin={{ top: 10, right: 10, left: 15, bottom: 30 }}>
+                                <BarChart data={weekdata} margin={chartMargin}>
                                     <CartesianGrid strokeDasharray="5 5" stroke="#262626" vertical={false} />
                                     <Tooltip />
                                     <XAxis
@@ -179,12 +192,12 @@ const Histogram = () => {
                                         }}
                                     />
 
-                                    <Bar dataKey="duration" fill="#F28C28" radius={[4, 4, 4, 4]} barSize={30} />
+                                    <Bar dataKey="duration" fill="#F28C28" radius={[4, 4, 4, 4]} barSize={barSize} />
                                 </BarChart>
                             </ResponsiveContainer>
                             :
                             <ResponsiveContainer width="100%" height="100%">
-                                <BarChart data={monthdata} margin={{ top: 10, right: 10, left: 15, bottom: 30 }}>
+                                <BarChart data={monthdata} margin={chartMargin}>
                                     <CartesianGrid strokeDasharray="5 5" stroke="#262626" vertical={false} />
                                     <Tooltip />
                                     <XAxis
@@ -228,7 +241,7 @@ const Histogram = () => {
                                         }}
                                     />
 
-                                    <Bar dataKey="duration" fill="#F28C28" radius={[4, 4, 4, 4]} barSize={30} />
+                                    <Bar dataKey="duration" fill="#F28C28" radius={[4, 4, 4, 4]} barSize={barSize} />
                                 </BarChart>
                             </ResponsiveContainer>
                 }

@@ -5,7 +5,7 @@ import api from '@/services/api';
 import useRefreshStore from '@/store/useRefreshStore';
 
 
-const SessionHistory = () => {
+const SessionHistory = ({ compact = false, fillHeight = false }) => {
 
     const refreshToggle = useRefreshStore((state) => state.refreshToggle);
     const [myActivity, setMyActivity] = useState(true);
@@ -34,9 +34,9 @@ const SessionHistory = () => {
 
     return (
         <>
-            <div className='min-h-[400px] max-h-[400px] w-full border-1 border-solid border-neutral-800 bg-white/[0.02] rounded-xl p-2 mt-4 flex flex-col'>
+            <div className={`w-full border-1 border-solid border-neutral-800 bg-white/[0.02] rounded-xl p-2 ${compact ? 'mt-2 min-h-0 max-h-[320px]' : fillHeight ? 'mt-4 flex-1 min-h-0 overflow-hidden' : 'mt-4 min-h-[400px]'} flex flex-col`}>
                 {/* Heading */}
-                <div className='h-8 w-full  flex justify-between items-center'>
+                <div className='shrink-0 h-8 w-full flex justify-between items-center'>
                     <motion.div
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -61,7 +61,7 @@ const SessionHistory = () => {
                 </div>
 
                 {/* Toggle (Me<->Friends) */}
-                <div className="relative h-12 w-60 bg-neutral-900 border border-neutral-800 rounded-xl mt-4 flex p-1 p-1">
+                <div className={`shrink-0 relative h-12 ${compact ? 'w-full max-w-xs' : 'w-60'} bg-neutral-900 border border-neutral-800 rounded-xl mt-4 flex p-1`}>
                     {/* The Animated "Pill" */}
                     <motion.div
                         className="absolute top-1 bottom-1 left-1 w-[calc(50%-4px)] bg-indigo-600/40 rounded-lg shadow-lg"
@@ -86,13 +86,8 @@ const SessionHistory = () => {
                     </button>
                 </div>
 
-                {/* History */}
-                <div className=' flex-1 mt-4 flex flex-col gap-2 overflow-y-auto py-1 pr-1
-                    [&::-webkit-scrollbar]:w-1.5
-                    [&::-webkit-scrollbar-track]:bg-transparent
-                    [&::-webkit-scrollbar-thumb]:bg-neutral-800
-                    [&::-webkit-scrollbar-thumb]:rounded-full
-                    hover:[&::-webkit-scrollbar-thumb]:bg-neutral-700  '>
+                {/* History — only allowed scroll region on desktop */}
+                <div className={`flex-1 min-h-0 mt-4 flex flex-col gap-2 py-1 pr-1 ${(fillHeight || compact) ? 'overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-neutral-800 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-neutral-700' : ''}`}>
                     {isEmpty ? (
                         <div className="flex-1 text-neutral-500 italic flex justify-center items-center p-4 ">
                             No history found. Start working to see sessions!
