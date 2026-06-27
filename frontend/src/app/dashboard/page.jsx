@@ -349,7 +349,7 @@ const AnalyticsPage = () => {
 
                             {/* Weekly Heatmap */}
                             <div className='col-span-1 sm:col-span-2 lg:col-span-2 lg:row-start-3 text-white min-h-[18rem] lg:min-h-[16.5rem] lg:h-[16.5rem] rounded-xl bg-[#141414] p-3 sm:p-4 min-w-0 flex flex-col'>
-                                <WeeklyHeatmap />
+                                <WeeklyHeatmap profileRender={false}/>
                             </div>
 
                             {/* Footer */}

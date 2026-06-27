@@ -2,7 +2,11 @@ import React from 'react'
 
 const Stats = () => {
   return (
-    <div>Stats</div>
+    <>
+        <div className='h-full w-full '>
+
+        </div>
+    </>
   )
 }
 

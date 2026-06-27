@@ -19,7 +19,7 @@ import api from '@/services/api';
 ]; */
 
 
-const WeeklyHeatmap = () => {
+const WeeklyHeatmap = ({profileRender}) => {
     // const currentStreak = useSessionStore((state) => state.currentStreak);
     const [value, setValue] = useState([]);
     const containerRef = useRef(null);
@@ -65,11 +65,16 @@ const WeeklyHeatmap = () => {
     return (
         <>
             <div className='h-full w-full min-w-0 flex flex-col gap-2'>
-                <div className='min-h-10 relative w-full flex justify-between items-center'>
-                    <span className="text-lg sm:text-xl font-semibold tracking-wide text-neutral-200 font-mono">
-                        Focus Time Over Time
-                    </span>
-                </div>
+                {profileRender
+                    ?
+                    <div className='min-h-0 '>
+                    </div>
+                    :
+                    <div className='min-h-10 relative w-full flex justify-between items-center'>
+                        <span className="text-lg sm:text-xl font-semibold tracking-wide text-neutral-200 font-mono">
+                            Focus Time Over Time
+                        </span>
+                    </div>}
                 <div ref={containerRef} className="w-full min-w-0 flex-1 min-h-0 border border-neutral-800 rounded-xl p-2 bg-neutral-900/10 overflow-x-auto overflow-y-hidden">
                     <motion.div
                         initial={{ opacity: 0, y: 15 }}

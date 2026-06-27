@@ -7,6 +7,8 @@ import { IconBrandGithub, IconBrandX, IconBrandLinkedin, IconUsersGroup, IconCal
 import api from '@/services/api';
 import { Rowdies } from 'next/font/google';
 import Image from 'next/image';
+import Stats from '@/components/Profile/Stats';
+import WeeklyHeatmap from '@/components/Dashboard/WeeklyHeatmap';
 
 
 const rowdies = Rowdies({
@@ -244,9 +246,9 @@ const page = () => {
                                     </div>
 
                                     {/* Follower and Following */}
-                                    <div className="flex border-t border-neutral-800">
+                                    <div className="flex md:flex-row sm:flex-col border-t border-neutral-800">
                                         <div className="flex-1 flex items-center gap-3 px-5 py-4 border-r border-neutral-800">
-                                            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/[0.04]">
+                                            <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/4">
                                                 <IconUsersGroup className="h-6 w-6 text-neutral-300" />
                                             </div>
 
@@ -317,8 +319,14 @@ const page = () => {
                         </div>
 
                         {/* About Section */}
-                        <div className='h-full md:h-full w-full md:w-1/2 rounded-xl border border-dashed border-neutral-400'>
-                                        
+                        <div className='h-full md:h-full w-full md:w-1/2 rounded-xl   flex flex-col justify-center items-center gap-2'>
+                            <div className='w-full min-h-[15%]  md:min-h-[13%] bg-neutral-900/50 rounded-lg'>
+                                <Stats />
+                            </div>
+                            <div className='w-full min-h-[50%] md:min-h-[65%] bg-neutral-900/50 rounded-lg'></div>
+                            <div className='w-full h-auto bg-neutral-900/50 rounded-lg p-1'>
+                                <WeeklyHeatmap profileRender={true}/>
+                            </div>
                         </div>
                     </div>
 
@@ -336,7 +344,7 @@ const page = () => {
             {/* Floating Dock */}
             < div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 " >
                 <FloatingDock
-                    mobileClassName="translate-y-20 " // only for demo, remove for production
+                    mobileClassName="translate-y-20 "
                     items={links}
                 />
             </div >
