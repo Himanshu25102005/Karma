@@ -74,18 +74,21 @@ const page = () => {
             id: 1,
             title: "GitHub",
             icon: IconBrandGithub,
+            color: "text-neutral-300",
             link: "https://github.com/himatwork",
         },
         {
             id: 2,
             title: "LinkedIn",
             icon: IconBrandLinkedin,
+            color: "text-sky-400/70",
             link: "https://linkedin.com/in/himanshu-dusane",
         },
         {
             id: 3,
             title: "Portfolio",
             icon: IconBrandDribbble,
+            color: "text-violet-400/70",
             link: "https://himanshu.dev",
         },
     ];
@@ -94,36 +97,42 @@ const page = () => {
             id: 1,
             title: "GitHub",
             icon: IconBrandGithub,
+            color: "text-neutral-300",
             link: "https://github.com/himatwork",
         },
         {
             id: 2,
             title: "LinkedIn",
             icon: IconBrandLinkedin,
+            color: "text-sky-400/70",
             link: "https://linkedin.com/in/himanshu-dusane",
         },
         {
             id: 3,
             title: "Portfolio",
             icon: IconBrandDribbble,
+            color: "text-violet-400/70",
             link: "https://himanshu.dev",
         },
         {
             id: 4,
-            title: "X (Twitter)",
+            title: "X",
             icon: IconBrandX,
+            color: "text-neutral-300",
             link: "https://x.com/himatwork",
         },
         {
             id: 5,
             title: "LeetCode",
             icon: IconBrandLeetcode,
+            color: "text-amber-400/70",
             link: "https://leetcode.com/u/himatwork",
         },
         {
             id: 6,
             title: "HackerRank",
             icon: IconBrandHackerrank,
+            color: "text-emerald-400/70",
             link: "https://www.hackerrank.com/profile/himatwork",
         },
     ];
@@ -151,7 +160,7 @@ const page = () => {
                     <div className='border h-full w-full flex flex-col md:flex-row justify-center items-center p-7  md:p-4 gap-5'>
 
                         {/* Profile Section */}
-                        <div className='h-[40%] md:h-full flex flex-col gap-5  w-full md:w-1/5 rounded-xl bg-neutral-900/50 p-7'>
+                        <div className='h-[40%] md:h-full flex flex-col gap-5  w-full md:w-1/5 rounded-xl bg-neutral-900/50 p-5'>
 
                             {/* Profile Icon and description */}
                             <div className='h-auto md:h-auto w-full md:flex md:flex-col md:gap-7'>
@@ -183,7 +192,7 @@ const page = () => {
                                         <span className={`${rowdies.className} text-2xl  text-neutral-300 flex justify-center items-center w-full `}>Himanshu Dusane</span>
                                         <span className='text-neutral-500 text-md flex justify-center items-center w-full'>himatwork01@gmail.com</span>
                                     </div>
-                                    <span className='text-neutral-500 text-md flex justify-center items-center'>Building in public. Ship, Learn & Repeat</span>
+                                    <span className='text-neutral-400 text-md flex justify-center items-center'>Building in public. Ship, Learn & Repeat</span>
                                 </div>
                             </div>
 
@@ -201,7 +210,7 @@ const page = () => {
                                                 className="group flex items-center gap-4 rounded-xl border border-transparent px-3 py-3 transition-all duration-200 hover:border-neutral-700 hover:bg-white/3"
                                             >
                                                 <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/4 group-hover:bg-white/[0.07] transition-colors">
-                                                    <Icon className="h-6 w-6 text-neutral-200" />
+                                                    <Icon className={`h-6 w-6 ${link.color}`} />
                                                 </div>
 
                                                 <div className="min-w-0 flex-1">
@@ -288,7 +297,7 @@ const page = () => {
                                                 >
                                                     {/* Icon */}
                                                     <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white/[0.04]">
-                                                        <Icon className="h-5 w-5 text-neutral-300" />
+                                                        <Icon className={`h-5 w-5 ${link.color}`} />
                                                     </div>
 
                                                     {/* Platform */}
@@ -308,7 +317,9 @@ const page = () => {
                         </div>
 
                         {/* About Section */}
-                        <div className='h-full md:h-full w-full md:w-1/2 rounded-xl border border-dashed border-neutral-400'></div>
+                        <div className='h-full md:h-full w-full md:w-1/2 rounded-xl border border-dashed border-neutral-400'>
+                                        
+                        </div>
                     </div>
 
                     {/* Right Margin Buffer */}
