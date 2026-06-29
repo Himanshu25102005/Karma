@@ -333,7 +333,7 @@ const page = () => {
                             <div className='w-full min-h-[15%]  md:min-h-[13%] bg-neutral-900/50 rounded-lg p-2 md:p-1'>
                                 <Stats />
                             </div>
-                            <div className='w-full min-h-[50%] md:min-h-[65%] bg-neutral-900/50 rounded-lg p-2 md:p-2'>
+                            <div className='w-full min-h-[50%] md:min-zdh-[65%] bg-neutral-900/50 rounded-lg p-2 md:p-2'>
                                 <AboutMD />
                             </div>
                             <div className='w-full h-auto bg-neutral-900/50 rounded-lg p-1'>
