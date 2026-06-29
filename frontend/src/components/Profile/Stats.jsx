@@ -1,6 +1,6 @@
 'use client'
 import React, { useEffect, useState } from 'react';
-import { IconAlarm, IconSparkles, IconCircleCheck, IconFlame } from "@tabler/icons-react";
+import { IconAlarm, IconSparkles, IconCircleCheck, IconFlame, IconSchool } from "@tabler/icons-react";
 import api from '@/services/api';
 import { Rowdies } from 'next/font/google';
 import { easeInOut, motion } from 'framer-motion';
@@ -54,7 +54,7 @@ const Stats = () => {
           {/* Content */}
           <div className='h-full w-full flex flex-col justify-between'>
             <div className='flex flex-col gap-1 '>
-              <span className='text-[7px] md:text-[12.5px] font-semibold text-neutral-400 font-mono'>Tasks Completed</span>
+              <span className='text-[7px] md:text-[12.5px] font-semibold text-neutral-400 font-mono'>Closed Tasks</span>
               <span className='font-bold md:text-2xl text-neutral-200 font-mono'>13</span>
             </div>
             <div className='flex flex-row justify-start items-center gap-1'>
@@ -75,7 +75,7 @@ const Stats = () => {
           {/* Icon */}
           <div className='h-[50%] w-[26%] md:h-full md:w-19 relative'>
             <div className='w-5 md:w-13 aspect-square rounded-full bg-yellow-900/60 absolute top-0 flex justify-center items-center'>
-              <IconCircleCheck className='h-3.5 w-3.5 md:h-9.5 md:w-9.5 text-yellow-500' />
+              <IconSchool className='h-3.5 w-3.5 md:h-9.5 md:w-9.5 text-yellow-500' />
             </div>
           </div>
           {/* Content */}
@@ -88,7 +88,7 @@ const Stats = () => {
               <div>
                 <IconSparkles className='h-3 w-3 text-yellow-500 md:h-4 md:w-4' />
               </div>
-              <span className='text-yellow-500 text-[7px] md:text-[10px] '>Personalized Score </span>
+              <span className='text-yellow-500 text-[7px] md:text-[10px] '>Tailored Score </span>
             </div>
           </div>
         </motion.div>
@@ -115,7 +115,7 @@ const Stats = () => {
               <div>
                 <IconSparkles className='h-3 w-3 text-pink-400/90 md:h-4 md:w-4' />
               </div>
-              <span className='text-pink-400/90 text-[7px] md:text-[10px] '>Max Streak: 13 </span>
+              <span className='text-pink-400/90 text-[7px] md:text-[10px] '>Max: 13 </span>
             </div>
           </div>
         </motion.div>

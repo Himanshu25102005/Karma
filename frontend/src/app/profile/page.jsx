@@ -10,6 +10,7 @@ import Image from 'next/image';
 import Stats from '@/components/Profile/Stats';
 import WeeklyHeatmap from '@/components/Dashboard/WeeklyHeatmap';
 import { easeInOut, motion } from 'framer-motion';
+import AboutMD from '@/components/Profile/AboutMD';
 
 
 const rowdies = Rowdies({
@@ -206,7 +207,7 @@ const page = () => {
                                     initial={{ opacity: 0, }}
                                     animate={{ opacity: [0.3, 0.5, 0.7, 1], }}
                                     transition={{ duration: 0.7, ease: easeInOut }}
-                                    className='hidden md:flex flex-col md:h-[70%] w-full border-2 border-neutral-600 rounded-lg divide-y divide-neutral-200 p-2'>
+                                    className='hidden md:flex flex-col md:h-[70%] w-full border-2 border-neutral-800 rounded-lg divide-y divide-neutral-200 p-2'>
 
                                     {/* Individual Link */}
                                     {userLinks.map((link) => {
@@ -242,7 +243,7 @@ const page = () => {
                                     initial={{ opacity: 0, }}
                                     animate={{ opacity: [0.3, 0.5, 0.7, 1], }}
                                     transition={{ duration: 1, ease: easeInOut }}
-                                    className='hidden md:flex flex-col md:flex-1 w-full border-2 border-neutral-600 rounded-lg py-3'>
+                                    className='hidden md:flex flex-col md:flex-1 w-full border-2 border-neutral-800 rounded-lg py-3'>
                                     {/* Date Joined */}
                                     <div className='flex flex-row justify-start items-start border-b border-neutral-700 gap-3 p-3 px-5'>
                                         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/4 hover:bg-white/[0.07] transition-colors">
@@ -327,12 +328,14 @@ const page = () => {
 
                         </div>
 
-                        {/* About Section */}
+                        {/* Stats + About + Heatmap Section */}
                         <div className='h-full md:h-full w-full md:w-1/2 rounded-xl   flex flex-col justify-center items-center gap-2'>
                             <div className='w-full min-h-[15%]  md:min-h-[13%] bg-neutral-900/50 rounded-lg p-2 md:p-1'>
                                 <Stats />
                             </div>
-                            <div className='w-full min-h-[50%] md:min-h-[65%] bg-neutral-900/50 rounded-lg'></div>
+                            <div className='w-full min-h-[50%] md:min-h-[65%] bg-neutral-900/50 rounded-lg p-2 md:p-2'>
+                                <AboutMD />
+                            </div>
                             <div className='w-full h-auto bg-neutral-900/50 rounded-lg p-1'>
                                 <WeeklyHeatmap profileRender={true} />
                             </div>
