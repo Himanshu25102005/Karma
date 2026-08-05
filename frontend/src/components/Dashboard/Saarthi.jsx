@@ -17,7 +17,7 @@ const INSIGHT_CARDS = [
         getMetric: (data) => data?.bestFocusWindow?.timeRange?.trim(),
         getSubMetric: () => 'Peak concentration period',
         getInsight: (data) => data?.bestFocusWindow?.insight,
-        getFooter: (data) => `${data?.bestFocusWindow?.confidence}% confidence`,
+        getFooter: (data) => `${data?.bestFocusWindow?.confidence}% confidence `,
         metricClass: 'text-[14.5px]',
     },
     {
