@@ -11,49 +11,38 @@ import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
 
 const AboutMD = () => {
   const about = `
-# Hi, I'm Himanshu 👋
+# Welcome to कARMA 👋
 
-Backend Engineer building AI-powered SaaS.
+I'm the Architect behind this platform, and this is your personal **README.md**.
 
-## 🚀 Currently Building
+Think of it as your workspace introduction—not a portfolio. Tell people what you're building, what you're learning, and what keeps you curious.
 
-- **कARMA** — Developer Productivity Platform
-- Legal AI workflows at Samanyay AI
+A few suggestions:
 
-## 🛠 Tech Stack
+- Keep it concise.
+- Use simple Markdown.
+- Focus on what matters today, not everything you've ever done.
 
-- Node.js
-- Express.js
-- MongoDB
-- Next.js
-- PostgreSQL
+> 🚧 This feature is still under development. Right now, basic Markdown is supported, and more capabilities will be added over time.
 
-## 📌 Goals
-
-- [x] Ship KARMA MVP
-- [x] Reach 500 active users
-- [ ] Learn Kubernetes
-
-## Favourite Snippet
-
-
-
-> "Small improvements every day compound into mastery."
+Now it's your turn, start writing your story.
 `;
   const [edit, SetEdit] = useState(false);
-  const [markdown, setMarkdown] = useState("");
+  const [markdown, setMarkdown] = useState(about);
   return (
     <>
       <div className="h-full w-full border border-neutral-700 rounded-lg flex flex-col gap-1 md:gap-2">
         {/* Headline */}
         <div className="h-11 md:h-15 w-full border-b border-neutral-500 flex flex-row justify-between items-center p-3 font-mono">
-          <span className="text-neutral-200 text-lg md:text-xl ">स्वरूप</span>
+          <span className="bg-gradient-to-r from-[#E9E9E9] via-[#868585] to-[#636060] bg-clip-text text-xl md:text-2xl font-semibold tracking-wide text-transparent">
+            स्वरूप
+          </span>
           <div className="flex flex-row justify-center items-center">
             <span className="text-neutral-400 text-md md:text-lg border-r border-neutral-400 px-2">
               About.md
             </span>
             <button
-              className="text-neutral-300 px-1"
+              className="text-neutral-300 px-1 cursor-pointer"
               onClick={() => SetEdit(!edit)}
             >
               <IconEdit className="h-5 w-5 md:h-6 md:w-6" />
@@ -61,7 +50,7 @@ Backend Engineer building AI-powered SaaS.
           </div>
         </div>
 
-        <div className="flex-1 border border-neutral-400 overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-neutral-800 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-neutral-700">
+        <div className="flex-1 p-1 px-2 relative border border-neutral-400 overflow-y-auto [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-neutral-800 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-neutral-700">
           {edit ? (
             <div className="h-full w-full border border-neutral-200">
               <textarea
@@ -81,8 +70,14 @@ const app = "KARMA";
 \`\`\`
 `}
                 spellCheck={false}
-                className="h-full w-full resize-none bg-transparent p-4 font-mono text-sm leading-7 text-neutral-200 outline-none placeholder:text-neutral-600"
+                className="h-full w-full resize-none bg-transparent p-4 font-mono text-sm leading-7 text-neutral-200 outline-none placeholder:text-neutral-600 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-neutral-800 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-neutral-700"
               />
+              <button
+                onClick={() => SetEdit(!edit)}
+                className="cursor-pointer absolute bottom-2 right-5 flex h-8 w-20 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-900/70 font-mono text-sm text-neutral-200 backdrop-blur-sm transition-all duration-200 hover:border-[#ce8a14]/70 hover:bg-[#ce8a14]/10 hover:text-[#f5c56b] active:scale-95"
+              >
+                {edit ? "Preview" : "Compose"}
+              </button>
             </div>
           ) : (
             <ReactMarkdown
@@ -95,7 +90,7 @@ const app = "KARMA";
                 ),
 
                 h2: ({ children }) => (
-                  <h2 className="mb-4 mt-6 text-2xl font-semibold text-neutral-100">
+                  <h2 className="mt-6 mb-4 text-2xl font-semibold text-neutral-100">
                     {children}
                   </h2>
                 ),
@@ -115,9 +110,20 @@ const app = "KARMA";
                     {children}
                   </blockquote>
                 ),
+
+                a: ({ href, children }) => (
+                  <a
+                    href={href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="font-medium text-[#8B5CF6] underline decoration-[#8B5CF6]/40 underline-offset-4 transition-all duration-200 hover:text-[#A78BFA] hover:decoration-[#A78BFA]"
+                  >
+                    {children}
+                  </a>
+                ),
               }}
             >
-              {about}
+              {markdown}
             </ReactMarkdown>
           )}
         </div>
