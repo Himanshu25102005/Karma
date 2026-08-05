@@ -6,8 +6,7 @@ import { easeInOut, motion } from "framer-motion";
 import { IconEdit } from "@tabler/icons-react";
 import ReactMarkdown from "react-markdown";
 import remarkGfm from "remark-gfm";
-import { Prism as SyntaxHighlighter } from "react-syntax-highlighter";
-import { oneDark } from "react-syntax-highlighter/dist/esm/styles/prism";
+import useUserStore from "@/store/useUserStore";
 
 const AboutMD = () => {
   const about = `
@@ -29,12 +28,25 @@ Now it's your turn, start writing your story.
 `;
   const [edit, SetEdit] = useState(false);
   const [markdown, setMarkdown] = useState(about);
+  const currAbout = useUserStore((state) => state.about);
+
+  const updateAbout = async () => {
+    try {
+      if (!markdown) throw e;
+      if (markdown != currAbout) {
+        const res = await api.updateProfile(markdown);
+        console.log(res.data);
+      } else throw e;
+    } catch (e) {
+      console.log("About section errored");
+    }
+  };
   return (
     <>
       <div className="h-full w-full border border-neutral-700 rounded-lg flex flex-col gap-1 md:gap-2">
         {/* Headline */}
         <div className="h-11 md:h-15 w-full border-b border-neutral-500 flex flex-row justify-between items-center p-3 font-mono">
-          <span className="bg-gradient-to-r from-[#E9E9E9] via-[#868585] to-[#636060] bg-clip-text text-xl md:text-2xl font-semibold tracking-wide text-transparent">
+          <span className="bg-linear-to-r from-[#E9E9E9] via-[#868585] to-[#636060] bg-clip-text text-xl md:text-2xl font-semibold tracking-wide text-transparent">
             स्वरूप
           </span>
           <div className="flex flex-row justify-center items-center">
@@ -73,7 +85,10 @@ const app = "KARMA";
                 className="h-full w-full resize-none bg-transparent p-4 font-mono text-sm leading-7 text-neutral-200 outline-none placeholder:text-neutral-600 [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-neutral-800 [&::-webkit-scrollbar-thumb]:rounded-full hover:[&::-webkit-scrollbar-thumb]:bg-neutral-700"
               />
               <button
-                onClick={() => SetEdit(!edit)}
+                onClick={() => {
+                  SetEdit(!edit);
+                  updateAbout();
+                }}
                 className="cursor-pointer absolute bottom-2 right-5 flex h-8 w-20 items-center justify-center rounded-lg border border-neutral-700 bg-neutral-900/70 font-mono text-sm text-neutral-200 backdrop-blur-sm transition-all duration-200 hover:border-[#ce8a14]/70 hover:bg-[#ce8a14]/10 hover:text-[#f5c56b] active:scale-95"
               >
                 {edit ? "Preview" : "Compose"}

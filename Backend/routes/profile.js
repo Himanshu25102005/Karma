@@ -1,4 +1,4 @@
-const express = require("express"); 
+const express = require("express");
 var router = express.Router();
 const userSchema = require("../models/users");
 const Session = require("../models/focSessions");
@@ -46,16 +46,23 @@ router.patch("/profile/me/update", isloggedIn, async (req, res) => {
       "bio",
       "website",
       "isPublic",
+      "about",
     ];
     const updates = {};
 
     for (let key of allowedFields) {
-      if (req.body[key]) {
+      if (typeof req.body[key] === "string") {
         updates[key] = req.body[key].trim();
+      } else {
+        updates[key] = req.body[key];
       }
     }
 
-    if (req.user.isPublic == true || req.user.isPublic == false) profile.isPublic = isPublic;
+    const user = req.user;
+
+    if (typeof req.body.isPublic === "boolean") {
+      updates.isPublic = req.body.isPublic;
+    }
 
     if (updates.username) {
       updates.username = updates.username.toLowerCase();
@@ -88,7 +95,7 @@ router.patch("/profile/me/update", isloggedIn, async (req, res) => {
     const updatedUser = await User.findByIdAndUpdate(req.user._id, updates, {
       new: true,
       runValidators: true,
-    }).select("username email github bio website createdAt isPublic");
+    }).select("username email github bio website createdAt isPublic about");
 
     res.status(200).json({
       success: true,
@@ -105,10 +112,12 @@ router.patch("/profile/me/update", isloggedIn, async (req, res) => {
 router.get("/profile/:username", isloggedIn, async (req, res) => {
   try {
     // 1. Fetch the User first to get their ID and Profile details
-    const user = await userSchema.findOne({ 
-      username: req.params.username,
-      isPublic: true 
-    }).select("username bio github website");
+    const user = await userSchema
+      .findOne({
+        username: req.params.username,
+        isPublic: true,
+      })
+      .select("username bio github website");
 
     if (!user) {
       return res.status(404).json({ error: "Profile not found or is private" });
@@ -132,7 +141,7 @@ router.get("/profile/:username", isloggedIn, async (req, res) => {
     ]);
 
     const totalPages = Math.ceil(totalSessionsCount / limit);
-    const currStreak = await streak(req.user._id)
+    const currStreak = await streak(req.user._id);
 
     // 4. Return everything in one response
     res.status(200).json({
@@ -144,18 +153,17 @@ router.get("/profile/:username", isloggedIn, async (req, res) => {
         github: user.github,
         website: user.website,
         // Stats
-        totalSessions: totalSessionsCount, 
+        totalSessions: totalSessionsCount,
         // Pagination & History
         pagination: {
           currentPage: page,
           totalPages,
-          limit
+          limit,
         },
-        streak : currStreak,
-        history: sessions
-      }
+        streak: currStreak,
+        history: sessions,
+      },
     });
-
   } catch (e) {
     console.log(e);
     res.status(500).json({ error: e.message });
@@ -163,8 +171,6 @@ router.get("/profile/:username", isloggedIn, async (req, res) => {
 });
 
 /* Get Online Members */
-router.get('/profile/isOnline', isloggedIn, async(req, res) => {
-  
-})
+router.get("/profile/isOnline", isloggedIn, async (req, res) => {});
 
 module.exports = router;

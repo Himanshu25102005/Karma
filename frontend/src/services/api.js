@@ -50,7 +50,7 @@ const api = {
     return apiClient.get("/profile/me");
   },
 
-  updateProfile: (username, email, github, bio, website, isPublic) => {
+  updateProfile: (username, email, github, bio, website, isPublic, about) => {
     const data = {
       username,
       email,
@@ -58,6 +58,7 @@ const api = {
       bio,
       website,
       isPublic,
+      about,
     };
 
     return apiClient.patch("/profile/me/update", data);

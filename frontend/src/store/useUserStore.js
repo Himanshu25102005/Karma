@@ -7,6 +7,7 @@ export const useUserStore = create((set, get) => ({
   username: null,
   profilePicture: null,
   email: null,
+  about: null,
 
   /* Actions */
   setCurrentUser: async () => {
@@ -18,6 +19,7 @@ export const useUserStore = create((set, get) => ({
         username: res.data.user.username,
         profilePicture: res.data.user.profilePicture,
         email: res.data.user.email,
+        about: res.data.user.about,
       });
 
       console.log("User name", res.data.user.username);

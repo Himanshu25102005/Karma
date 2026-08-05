@@ -9,6 +9,10 @@ const userSchema = mongoose.Schema({
     trim: true,
     unique: true,
   },
+  about:{
+    type: String, 
+    default: "",
+  },
   isOnline: String,
   avatar: String,
   isPublic: {
