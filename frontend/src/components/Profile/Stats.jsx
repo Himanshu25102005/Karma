@@ -83,7 +83,7 @@ const Stats = () => {
                 Focus Hours
               </span>
               <span className="font-bold md:text-2xl text-neutral-200 font-mono">
-                {summary.totalFocusTime / 60} mins
+                {Math.round(summary.totalFocusTime / 60)} mins
               </span>
             </div>
             <div className="flex flex-row justify-start items-center gap-1">
