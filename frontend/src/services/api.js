@@ -41,7 +41,7 @@ const api = {
   },
 
   getCurrentUser: () => {
-    return apiClient.get("/getInfo");
+    return apiClient.get("/getInfo"); /* If the user has not set the about section display the placeholder about */
   },
 
   /* Profile Routes */
@@ -50,17 +50,7 @@ const api = {
     return apiClient.get("/profile/me");
   },
 
-  updateProfile: (username, email, github, bio, website, isPublic, about) => {
-    const data = {
-      username,
-      email,
-      github,
-      bio,
-      website,
-      isPublic,
-      about,
-    };
-
+  updateProfile: (data) => {
     return apiClient.patch("/profile/me/update", data);
   },
 

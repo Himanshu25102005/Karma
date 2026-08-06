@@ -71,7 +71,7 @@ router.patch("/profile/me/update", isloggedIn, async (req, res) => {
     if (updates.email) {
       updates.email = updates.email.toLowerCase();
 
-      const existingEmail = await User.findOne({
+      const existingEmail = await userSchema.findOne({
         email: updates.email,
         _id: { $ne: req.user._id },
       });
@@ -82,7 +82,7 @@ router.patch("/profile/me/update", isloggedIn, async (req, res) => {
     }
 
     if (updates.username) {
-      const existingUsername = await User.findOne({
+      const existingUsername = await userSchema.findOne({
         username: updates.username,
         _id: { $ne: req.user._id },
       });
@@ -92,7 +92,7 @@ router.patch("/profile/me/update", isloggedIn, async (req, res) => {
       }
     }
 
-    const updatedUser = await User.findByIdAndUpdate(req.user._id, updates, {
+    const updatedUser = await userSchema.findByIdAndUpdate(req.user._id, updates, {
       new: true,
       runValidators: true,
     }).select("username email github bio website createdAt isPublic about");
@@ -103,6 +103,7 @@ router.patch("/profile/me/update", isloggedIn, async (req, res) => {
       message: "Profile updated successfully",
     });
   } catch (e) {
+    console.error(e);
     res.status(500).json({ error: e.message });
   }
 });

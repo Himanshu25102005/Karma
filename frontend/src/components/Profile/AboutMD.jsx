@@ -28,17 +28,20 @@ Now it's your turn, start writing your story.
 `;
   const [edit, SetEdit] = useState(false);
   const [markdown, setMarkdown] = useState(about);
-  const currAbout = useUserStore((state) => state.about);
 
   const updateAbout = async () => {
     try {
-      if (!markdown) throw e;
-      if (markdown != currAbout) {
-        const res = await api.updateProfile(markdown);
-        console.log(res.data);
-      } else throw e;
-    } catch (e) {
-      console.log("About section errored");
+      if (!markdown) {
+        throw new Error("Markdown cannot be empty");
+      }
+
+      const res = await api.updateProfile({
+        about: markdown,
+      });
+
+      console.log(res.data);
+    } catch (err) {
+      console.error(err);
     }
   };
   return (
