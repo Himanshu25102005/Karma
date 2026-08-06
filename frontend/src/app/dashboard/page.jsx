@@ -12,7 +12,7 @@ import {
   IconTerminal2,
   IconClockPlay,
   IconHomeStats,
-  IconDeviceLaptop,
+  IconUser,
   IconCircleCheck,
   IconTrendingUp,
   IconSchool,
@@ -45,11 +45,11 @@ const AnalyticsPage = () => {
       href: "#",
     },
     {
-      title: "Projects",
+      title: "Profile",
       icon: (
-        <IconDeviceLaptop className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+        <IconUser className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
-      href: "#",
+      href: "http://localhost:3000/profile",
     },
     {
       title: "Session",

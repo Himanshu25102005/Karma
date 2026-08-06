@@ -8,7 +8,6 @@ import {
   IconSchool,
 } from "@tabler/icons-react";
 import api from "@/services/api";
-import { Rowdies } from "next/font/google";
 import { easeInOut, motion } from "framer-motion";
 import useRefreshStore from "@/store/useRefreshStore";
 

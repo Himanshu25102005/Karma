@@ -9,8 +9,8 @@ const userSchema = mongoose.Schema({
     trim: true,
     unique: true,
   },
-  about:{
-    type: String, 
+  about: {
+    type: String,
     default: "",
   },
   isOnline: String,
@@ -40,6 +40,23 @@ const userSchema = mongoose.Schema({
   github: String,
   totalSessions: Number,
   bio: String,
+  links: {
+    type: [
+      {
+        platform: {
+          type: String,
+          required: true,
+          trim: true,
+        },
+        url: {
+          type: String,
+          required: true,
+          trim: true,
+        },
+      },
+    ],
+    default: [],
+  },
   website: {
     type: String,
     trim: true,
