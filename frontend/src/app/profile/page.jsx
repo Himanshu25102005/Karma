@@ -177,20 +177,20 @@ const ProfilePage = () => {
     <>
       <SmoothCursor />
 
-      <div className="h-screen lg:h-screen w-full max-w-[100vw] bg-[#0a0a0a] flex flex-col relative overflow-x-hidden lg:overflow-hidden select-none">
+      <div className="min-h-screen w-full max-w-[100vw] bg-[#0a0a0a] flex flex-col relative overflow-x-hidden select-none">
         {/* TOP MARGIN*/}
-        <div className=" h-8 lg:h-14 w-full border-b border-dashed border-neutral-700/60 flex items-center px-6">
+        <div className="shrink-0 h-8 lg:h-14 w-full border-b border-dashed border-neutral-700/60 flex items-center px-6">
           {/* <span className="text-xs font-mono text-neutral-500 tracking-widest uppercase">कΛRMΛ // System_v2</span> */}
         </div>
 
         {/* left and right vertical margins*/}
-        <div className="flex-1 flex flex-row w-full">
+        <div className="flex-1 flex flex-row w-full min-w-0 min-h-[calc(100vh-8rem)] lg:min-h-[calc(100vh-9.5rem)]">
           {/* Left Margin Buffer */}
-          <div className="hidden lg:block w-16 xl:w-24 min-[1440px]:w-32 border-r border-dashed border-neutral-700/60 h-full shrink-0" />
+          <div className="hidden lg:block w-16 xl:w-24 min-[1440px]:w-32 border-r border-dashed border-neutral-700/60 self-stretch shrink-0" />
 
           {/* MAIN WORKING AREA */}
 
-          <div className="border relative h-full w-full flex flex-col md:flex-row justify-center items-center p-7  md:p-4 gap-5">
+          <div className="border relative w-full min-w-0 flex flex-col md:flex-row flex-1 md:min-h-full justify-center items-stretch p-7 md:p-4 gap-5">
             {/* Edit Profile Form */}
             <motion.div
               initial={{ opacity: 0 }}
@@ -202,12 +202,12 @@ const ProfilePage = () => {
             </motion.div>
 
             {/* Profile Section */}
-            <div className="h-[40%] md:h-full flex flex-col gap-5  w-full md:w-1/5 rounded-xl bg-neutral-900/50 p-5">
+            <div className="shrink-0 md:shrink md:min-h-full flex flex-col gap-5 w-full md:w-1/5 min-w-0 rounded-xl bg-neutral-900/50 p-5">
               {/* Profile Icon and description */}
-              <div className="h-auto md:h-auto w-full md:flex md:flex-col md:gap-7">
-                <div className="w-full h-auto flex justify-between md:justify-center items-center ">
+              <div className="shrink-0 w-full min-w-0 md:flex md:flex-col md:gap-7">
+                <div className="w-full min-w-0 flex justify-between md:justify-center items-center gap-3">
                   {/* Profile Icon */}
-                  <div className="relative w-32 md:w-50 aspect-square">
+                  <div className="relative w-24 sm:w-32 md:w-50 aspect-square shrink-0">
                     <div className="relative h-full w-full overflow-hidden rounded-full border border-neutral-300">
                       <Image
                         src="https://i.pinimg.com/originals/64/06/67/6406670622da320f2ee737b8a719d01e.jpg"
@@ -231,45 +231,45 @@ const ProfilePage = () => {
                       </span>
                     </motion.button>
                   </div>
-                  <div className="md:hidden w-full h-auto flex flex-col justify-center items-center ">
+                  <div className="md:hidden min-w-0 flex-1 flex flex-col justify-center items-center text-center">
                     <span
-                      className={`${rowdies.className} text-2xl font-semibold text-neutral-300 `}
+                      className={`${rowdies.className} text-xl sm:text-2xl font-semibold text-neutral-300 break-words w-full`}
                     >
                       Himanshu Dusane
                     </span>
-                    <span className="text-lg text-neutral-500">
+                    <span className="text-sm sm:text-lg text-neutral-500 truncate max-w-full">
                       himatwork01@gmail.com
                     </span>
-                    <span className="text-lg text-neutral-400 mt-2">
+                    <span className="text-sm sm:text-lg text-neutral-400 mt-2 break-words w-full">
                       Building in public. Ship, Learn & Repeat
                     </span>
                   </div>
                 </div>
-                <div className="hidden sm:flex flex-col gap-7 w-full h-full">
-                  <div className="w-full ">
+                <div className="hidden sm:flex flex-col gap-7 w-full min-w-0">
+                  <div className="w-full min-w-0">
                     <span
-                      className={`${rowdies.className} text-2xl  text-neutral-300 flex justify-center items-center w-full `}
+                      className={`${rowdies.className} text-xl md:text-2xl text-neutral-300 flex justify-center items-center w-full break-words text-center`}
                     >
                       Himanshu Dusane
                     </span>
-                    <span className="text-neutral-500 text-md flex justify-center items-center w-full">
+                    <span className="text-neutral-500 text-md flex justify-center items-center w-full truncate">
                       himatwork01@gmail.com
                     </span>
                   </div>
-                  <span className="text-neutral-400 text-md flex justify-center items-center">
+                  <span className="text-neutral-400 text-md flex justify-center items-center text-center break-words">
                     Building in public. Ship, Learn & Repeat
                   </span>
                 </div>
               </div>
 
               {/* Links */}
-              <div className="h-full w-full p-3 flex justify-center items-center flex-col gap-2">
+              <div className="w-full min-w-0 p-3 flex flex-col gap-2 md:flex-1 md:min-h-0">
                 {/* Links Card */}
                 <motion.div
                   initial={{ opacity: 0 }}
                   animate={{ opacity: [0.3, 0.5, 0.7, 1] }}
                   transition={{ duration: 0.7, ease: easeInOut }}
-                  className="hidden md:flex flex-col md:h-[70%] w-full border-2 border-neutral-800 rounded-lg divide-y divide-neutral-200 p-2"
+                  className="hidden md:flex flex-col md:flex-1 md:min-h-0 w-full min-w-0 border-2 border-neutral-800 rounded-lg divide-y divide-neutral-200 p-2 overflow-hidden"
                 >
                   {/* Individual Link */}
                   {userLinks.map((link) => {
@@ -277,14 +277,14 @@ const ProfilePage = () => {
                     return (
                       <div
                         key={link.id}
-                        className="group flex items-center gap-4 rounded-xl border border-transparent px-3 py-3 transition-all duration-200 hover:border-neutral-700 hover:bg-white/3"
+                        className="group flex items-center gap-2 lg:gap-4 min-w-0 overflow-hidden rounded-xl border border-transparent px-2 lg:px-3 py-3 transition-all duration-200 hover:border-neutral-700 hover:bg-white/3"
                       >
                         <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/4 group-hover:bg-white/[0.07] transition-colors">
                           <Icon className={`h-6 w-6 ${link.color}`} />
                         </div>
 
-                        <div className="min-w-0 flex-1">
-                          <p className="text-sm font-medium text-neutral-200 font-mono">
+                        <div className="min-w-0 flex-1 overflow-hidden">
+                          <p className="text-sm font-medium text-neutral-200 font-mono truncate">
                             {link.title}
                           </p>
 
@@ -292,13 +292,13 @@ const ProfilePage = () => {
                             href={link.link}
                             target="_blank"
                             rel="noopener noreferrer"
-                            className="truncate text-xs text-neutral-500 hover:text-white"
+                            className="block truncate text-xs text-neutral-500 hover:text-white"
                           >
                             {link.link}
                           </a>
                         </div>
 
-                        <button className="rounded-lg p-2 text-neutral-500 transition-all duration-200 hover:bg-white/5 hover:text-white">
+                        <button className="shrink-0 rounded-lg p-2 text-neutral-500 transition-all duration-200 hover:bg-white/5 hover:text-white">
                           <IconLinkFilled className="h-5 w-5" />
                         </button>
                       </div>
@@ -309,7 +309,7 @@ const ProfilePage = () => {
                   initial={{ opacity: 0 }}
                   animate={{ opacity: [0.3, 0.5, 0.7, 1] }}
                   transition={{ duration: 1, ease: easeInOut }}
-                  className="hidden md:flex flex-col md:flex-1 w-full border-2 border-neutral-800 rounded-lg py-3"
+                  className="hidden md:flex flex-col shrink-0 w-full min-w-0 border-2 border-neutral-800 rounded-lg py-3"
                 >
                   {/* Date Joined */}
                   <div className="flex flex-row justify-start items-start border-b border-neutral-700 gap-3 p-3 px-5">
@@ -325,8 +325,8 @@ const ProfilePage = () => {
                   </div>
 
                   {/* Follower and Following */}
-                  <div className="flex md:flex-row sm:flex-col border-t border-neutral-800">
-                    <div className="flex-1 flex items-center gap-3 px-5 py-4 border-r border-neutral-800">
+                  <div className="flex flex-col sm:flex-row border-t border-neutral-800">
+                    <div className="flex-1 flex items-center gap-3 px-5 py-4 sm:border-r border-neutral-800 min-w-0">
                       <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/4">
                         <IconUsersGroup className="h-6 w-6 text-neutral-300" />
                       </div>
@@ -342,7 +342,7 @@ const ProfilePage = () => {
                       </div>
                     </div>
 
-                    <div className="flex-1 flex items-center gap-3 px-5 py-4">
+                    <div className="flex-1 flex items-center gap-3 px-5 py-4 min-w-0">
                       <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/[0.04]">
                         <IconUsersGroup className="h-6 w-6 text-neutral-300" />
                       </div>
@@ -396,25 +396,25 @@ const ProfilePage = () => {
             </div>
 
             {/* Stats + About + Heatmap Section */}
-            <div className="h-full md:h-full w-full md:w-1/2 rounded-xl   flex flex-col justify-center items-center gap-2">
-              <div className="w-full min-h-[15%]  md:min-h-[13%] bg-neutral-900/50 rounded-lg p-2 md:p-1">
+            <div className="w-full md:w-1/2 min-w-0 flex flex-col md:min-h-full gap-2 justify-start items-stretch">
+              <div className="w-full shrink-0 min-w-0 bg-neutral-900/50 rounded-lg p-2 md:p-1">
                 <Stats />
               </div>
-              <div className="w-full min-h-[50%] md:min-zdh-[65%] bg-neutral-900/50 rounded-lg p-2 md:p-2">
+              <div className="w-full min-h-[12rem] h-[38vh] sm:h-[42vh] md:h-auto md:flex-1 md:min-h-0 min-w-0 bg-neutral-900/50 rounded-lg p-2 md:p-2 overflow-hidden flex flex-col">
                 <AboutMD />
               </div>
-              <div className="w-full h-auto bg-neutral-900/50 rounded-lg p-1">
+              <div className="w-full shrink-0 min-w-0 bg-neutral-900/50 rounded-lg p-1">
                 <WeeklyHeatmap profileRender={true} />
               </div>
             </div>
           </div>
 
           {/* Right Margin Buffer */}
-          <div className="hidden lg:block w-16 xl:w-24 min-[1440px]:w-32 border-l border-dashed border-neutral-700/60 h-full shrink-0" />
+          <div className="hidden lg:block w-16 xl:w-24 min-[1440px]:w-32 border-l border-dashed border-neutral-700/60 self-stretch shrink-0" />
         </div>
 
         {/*  BOTTOM MARGIN  */}
-        <div className="h-12 w-full border-t border-dashed border-neutral-700/60 flex items-center justify-between px-6 text-[10px] font-mono text-neutral-600"></div>
+        <div className="shrink-0 h-12 w-full border-t border-dashed border-neutral-700/60 flex items-center justify-between px-6 text-[10px] font-mono text-neutral-600"></div>
       </div>
 
       {/* Floating Dock */}

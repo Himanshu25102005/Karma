@@ -61,35 +61,35 @@ const Stats = () => {
 
   return (
     <>
-      <div className="h-full w-full flex flex-row justify-center items-center gap-2">
+      <div className="h-full w-full min-w-0 flex flex-row justify-center items-stretch gap-1 sm:gap-2 overflow-hidden">
         {/* Total Focus Hour Box */}
         <motion.div
           initial={{ opacity: 0, y: -10 }}
           animate={{ opacity: [0.3, 0.5, 0.7, 1], y: 0 }}
           transition={{ duration: 0.3, ease: easeInOut }}
-          className="w-1/4 h-full rounded-lg bg-neutral-800/70 p-2 md:p-4 flex flex-row  justify-start items-start gap-2 md:gap-3"
+          className="w-1/4 min-w-0 h-full rounded-lg bg-neutral-800/70 p-2 md:p-4 flex flex-row justify-start items-start gap-1 sm:gap-2 md:gap-3 overflow-hidden"
         >
           {/* Icon */}
-          <div className="h-[50%] w-[26%] md:h-full md:w-19 relative">
+          <div className="shrink-0 h-[50%] w-[26%] md:h-full md:w-19 relative">
             <div className="w-5 md:w-13 aspect-square rounded-full bg-[#328414]/60 absolute top-0 flex justify-center items-center">
               <IconAlarm className="h-3.5 w-3.5 md:h-9.5 md:w-9.5 text-[#51ce23]" />
             </div>
           </div>
           {/* Content */}
-          <div className="h-full w-full flex flex-col justify-between">
-            <div className="flex flex-col gap-1 ">
-              <span className="text-[7px] md:text-[12.5px] font-semibold text-neutral-400 font-mono">
+          <div className="min-w-0 flex-1 h-full flex flex-col justify-between overflow-hidden">
+            <div className="flex flex-col gap-1 min-w-0">
+              <span className="text-[7px] md:text-[12.5px] font-semibold text-neutral-400 font-mono truncate">
                 Focus Hours
               </span>
-              <span className="font-bold md:text-2xl text-neutral-200 font-mono">
+              <span className="font-bold text-sm md:text-2xl text-neutral-200 font-mono truncate">
                 {Math.round(summary.totalFocusTime / 60)} mins
               </span>
             </div>
-            <div className="flex flex-row justify-start items-center gap-1">
-              <div>
+            <div className="flex flex-row justify-start items-center gap-1 min-w-0">
+              <div className="shrink-0">
                 <IconSparkles className="h-3 w-3 text-green-600 md:h-4 md:w-4" />
               </div>
-              <span className="text-green-400 text-[7px] md:text-[10px] ">
+              <span className="text-green-400 text-[7px] md:text-[10px] truncate">
                 {summary?.summary?.[0]?.totalSessions} Sessions
               </span>
             </div>
@@ -101,29 +101,29 @@ const Stats = () => {
           initial={{ opacity: 0, y: -15 }}
           animate={{ opacity: [0.3, 0.5, 0.7, 1], y: 0 }}
           transition={{ duration: 0.5, ease: easeInOut }}
-          className="w-1/4 h-full rounded-lg bg-neutral-800/70 p-2 md:p-4 flex flex-row  justify-start items-start gap-2 md:gap-3"
+          className="w-1/4 min-w-0 h-full rounded-lg bg-neutral-800/70 p-2 md:p-4 flex flex-row justify-start items-start gap-1 sm:gap-2 md:gap-3 overflow-hidden"
         >
           {/* Icon */}
-          <div className="h-[50%] w-[26%] md:h-full md:w-19 relative">
+          <div className="shrink-0 h-[50%] w-[26%] md:h-full md:w-19 relative">
             <div className="w-5 md:w-13 aspect-square rounded-full bg-blue-900/60 absolute top-0 flex justify-center items-center">
               <IconCircleCheck className="h-3.5 w-3.5 md:h-9.5 md:w-9.5 text-blue-500" />
             </div>
           </div>
           {/* Content */}
-          <div className="h-full w-full flex flex-col justify-between">
-            <div className="flex flex-col gap-1 ">
-              <span className="text-[7px] md:text-[12.5px] font-semibold text-neutral-400 font-mono">
+          <div className="min-w-0 flex-1 h-full flex flex-col justify-between overflow-hidden">
+            <div className="flex flex-col gap-1 min-w-0">
+              <span className="text-[7px] md:text-[12.5px] font-semibold text-neutral-400 font-mono truncate">
                 Closed Tasks
               </span>
-              <span className="font-bold md:text-2xl text-neutral-200 font-mono">
+              <span className="font-bold text-sm md:text-2xl text-neutral-200 font-mono truncate">
                 {summary.totalCompletedTasks}
               </span>
             </div>
-            <div className="flex flex-row justify-start items-center gap-1">
-              <div>
+            <div className="flex flex-row justify-start items-center gap-1 min-w-0">
+              <div className="shrink-0">
                 <IconSparkles className="h-3 w-3 text-blue-500 md:h-4 md:w-4" />
               </div>
-              <span className="text-blue-500 text-[7px] md:text-[10px] ">
+              <span className="text-blue-500 text-[7px] md:text-[10px] truncate">
                 Out of {summary.totalTasks}
               </span>
             </div>
@@ -135,29 +135,29 @@ const Stats = () => {
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: [0.3, 0.5, 0.7, 1], y: 0 }}
           transition={{ duration: 0.7, ease: easeInOut }}
-          className="w-1/4 h-full rounded-lg bg-neutral-800/70 p-2 md:p-4 flex flex-row  justify-start items-start gap-2 md:gap-3"
+          className="w-1/4 min-w-0 h-full rounded-lg bg-neutral-800/70 p-2 md:p-4 flex flex-row justify-start items-start gap-1 sm:gap-2 md:gap-3 overflow-hidden"
         >
           {/* Icon */}
-          <div className="h-[50%] w-[26%] md:h-full md:w-19 relative">
+          <div className="shrink-0 h-[50%] w-[26%] md:h-full md:w-19 relative">
             <div className="w-5 md:w-13 aspect-square rounded-full bg-yellow-900/60 absolute top-0 flex justify-center items-center">
               <IconSchool className="h-3.5 w-3.5 md:h-9.5 md:w-9.5 text-yellow-500" />
             </div>
           </div>
           {/* Content */}
-          <div className="h-full w-full flex flex-col justify-between">
-            <div className="flex flex-col gap-1 ">
-              <span className="text-[7px] md:text-[12.5px] font-semibold text-neutral-400 font-mono">
+          <div className="min-w-0 flex-1 h-full flex flex-col justify-between overflow-hidden">
+            <div className="flex flex-col gap-1 min-w-0">
+              <span className="text-[7px] md:text-[12.5px] font-semibold text-neutral-400 font-mono truncate">
                 Karma Score
               </span>
-              <span className="font-bold md:text-2xl text-neutral-200 font-mono">
+              <span className="font-bold text-sm md:text-2xl text-neutral-200 font-mono truncate">
                 {karmaScore}/100
               </span>
             </div>
-            <div className="flex flex-row justify-start items-center gap-1">
-              <div>
+            <div className="flex flex-row justify-start items-center gap-1 min-w-0">
+              <div className="shrink-0">
                 <IconSparkles className="h-3 w-3 text-yellow-500 md:h-4 md:w-4" />
               </div>
-              <span className="text-yellow-500 text-[7px] md:text-[10px] ">
+              <span className="text-yellow-500 text-[7px] md:text-[10px] truncate">
                 Tailored Score{" "}
               </span>
             </div>
@@ -169,29 +169,29 @@ const Stats = () => {
           initial={{ opacity: 0, y: -25 }}
           animate={{ opacity: [0.3, 0.5, 0.7, 1], y: 0 }}
           transition={{ duration: 0.9, ease: easeInOut }}
-          className="w-1/4 h-full rounded-lg bg-neutral-800/70 p-2 md:p-4 flex flex-row  justify-start items-start gap-2 md:gap-3"
+          className="w-1/4 min-w-0 h-full rounded-lg bg-neutral-800/70 p-2 md:p-4 flex flex-row justify-start items-start gap-1 sm:gap-2 md:gap-3 overflow-hidden"
         >
           {/* Icon */}
-          <div className="h-[50%] w-[26%] md:h-full md:w-19 relative">
+          <div className="shrink-0 h-[50%] w-[26%] md:h-full md:w-19 relative">
             <div className="w-5 md:w-13 aspect-square rounded-full bg-pink-900/60 absolute top-0 flex justify-center items-center">
               <IconFlame className="h-3.5 w-3.5 md:h-9.5 md:w-9.5 text-pink-400/90" />
             </div>
           </div>
           {/* Content */}
-          <div className="h-full w-full flex flex-col justify-between">
-            <div className="flex flex-col gap-1 ">
-              <span className="text-[7px] md:text-[12.5px] font-semibold text-neutral-400 font-mono">
+          <div className="min-w-0 flex-1 h-full flex flex-col justify-between overflow-hidden">
+            <div className="flex flex-col gap-1 min-w-0">
+              <span className="text-[7px] md:text-[12.5px] font-semibold text-neutral-400 font-mono truncate">
                 Streak
               </span>
-              <span className="font-bold md:text-2xl text-neutral-200 font-mono">
+              <span className="font-bold text-sm md:text-2xl text-neutral-200 font-mono truncate">
                 {streakData.currentStreak}
               </span>
             </div>
-            <div className="flex flex-row justify-start items-center gap-1">
-              <div>
+            <div className="flex flex-row justify-start items-center gap-1 min-w-0">
+              <div className="shrink-0">
                 <IconSparkles className="h-3 w-3 text-pink-400/90 md:h-4 md:w-4" />
               </div>
-              <span className="text-pink-400/90 text-[7px] md:text-[10px] ">
+              <span className="text-pink-400/90 text-[7px] md:text-[10px] truncate">
                 Max: {streakData.longestStreak}
               </span>
             </div>
