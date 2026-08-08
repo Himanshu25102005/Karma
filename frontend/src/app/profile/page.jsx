@@ -233,7 +233,7 @@ const ProfilePage = () => {
                   </div>
                   <div className="md:hidden min-w-0 flex-1 flex flex-col justify-center items-center text-center">
                     <span
-                      className={`${rowdies.className} text-xl sm:text-2xl font-semibold text-neutral-300 break-words w-full`}
+                      className={`${rowdies.className} text-xl sm:text-2xl font-semibold text-neutral-300 wrap-break-word w-full`}
                     >
                       Himanshu Dusane
                     </span>
@@ -256,7 +256,7 @@ const ProfilePage = () => {
                       himatwork01@gmail.com
                     </span>
                   </div>
-                  <span className="text-neutral-400 text-md flex justify-center items-center text-center break-words">
+                  <span className="text-neutral-400 text-md flex justify-center items-center text-center wrap-break-word">
                     Building in public. Ship, Learn & Repeat
                   </span>
                 </div>
@@ -267,39 +267,46 @@ const ProfilePage = () => {
                 {/* Links Card */}
                 <motion.div
                   initial={{ opacity: 0 }}
-                  animate={{ opacity: [0.3, 0.5, 0.7, 1] }}
-                  transition={{ duration: 0.7, ease: easeInOut }}
+                  animate={{ opacity: 1 }}
+                  transition={{
+                    duration: 0.7,
+                    ease: "easeInOut",
+                  }}
                   className="hidden md:flex flex-col md:flex-1 md:min-h-0 w-full min-w-0 border-2 border-neutral-800 rounded-lg divide-y divide-neutral-200 p-2 overflow-hidden"
                 >
-                  {/* Individual Link */}
                   {userLinks.map((link) => {
                     const Icon = link.icon;
+
                     return (
                       <div
                         key={link.id}
-                        className="group flex items-center gap-2 lg:gap-4 min-w-0 overflow-hidden rounded-xl border border-transparent px-2 lg:px-3 py-3 transition-all duration-200 hover:border-neutral-700 hover:bg-white/3"
+                        onClick={() => window.open(link.link, "_blank")}
+                        className="group flex cursor-pointer items-center gap-4 rounded-xl border border-transparent px-3 py-3 transition-all duration-200 hover:border-neutral-700 hover:bg-white/3"
                       >
-                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/4 group-hover:bg-white/[0.07] transition-colors">
-                          <Icon className={`h-6 w-6 ${link.color}`} />
+                        <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/4 transition-colors group-hover:bg-white/[0.07]">
+                          <Icon
+                            className={`h-6 w-6 ${link.color} transition-transform duration-200 group-hover:scale-110`}
+                          />
                         </div>
 
                         <div className="min-w-0 flex-1 overflow-hidden">
-                          <p className="text-sm font-medium text-neutral-200 font-mono truncate">
+                          <p className="truncate font-mono text-sm font-medium text-neutral-200">
                             {link.title}
                           </p>
 
-                          <a
-                            href={link.link}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="block truncate text-xs text-neutral-500 hover:text-white"
-                          >
+                          <p className="block truncate text-xs text-neutral-500 transition-colors duration-200 group-hover:text-neutral-300">
                             {link.link}
-                          </a>
+                          </p>
                         </div>
 
-                        <button className="shrink-0 rounded-lg p-2 text-neutral-500 transition-all duration-200 hover:bg-white/5 hover:text-white">
-                          <IconLinkFilled className="h-5 w-5" />
+                        <button
+                          onClick={(e) => {
+                            e.stopPropagation();
+                            window.open(link.link, "_blank");
+                          }}
+                          className="shrink-0 rounded-lg p-2 text-neutral-500 transition-all duration-200 hover:bg-white/5 hover:text-white"
+                        >
+                          <IconLinkFilled className="h-5 w-5 transition-transform duration-200 group-hover:scale-110" />
                         </button>
                       </div>
                     );
@@ -362,7 +369,7 @@ const ProfilePage = () => {
 
                 {/* Mobile Links Section */}
                 <div className="md:hidden mt-5 w-full">
-                  <div className="w-full overflow-hidden rounded-xl border border-white/5 bg-white/[0.02]">
+                  <div className="w-full overflow-hidden rounded-xl border border-white/5 bg-white/2">
                     {MobUserLinks.map((link, index) => {
                       const Icon = link.icon;
 
