@@ -114,7 +114,9 @@ const app = "KARMA";
                 ),
 
                 p: ({ children }) => (
-                  <p className="mb-4 leading-7 text-neutral-300 break-words">{children}</p>
+                  <p className="mb-4 leading-7 text-neutral-300 break-words">
+                    {children}
+                  </p>
                 ),
 
                 ul: ({ children }) => (
