@@ -196,9 +196,9 @@ const ProfilePage = () => {
               initial={{ opacity: 0 }}
               animate={{ opacity: edit ? 1 : 0 }}
               transition={{ duration: 0.5 }}
-              className="absolute inset-0 z-10 bg-gray-700/30 backdrop-blur-md flex justify-center items-center "
+              className={`absolute inset-0 z-10 flex items-stretch justify-center bg-[#0a0a0a]/95 p-0 backdrop-blur-md lg:items-center lg:bg-gray-700/30 lg:p-4 ${edit ? "pointer-events-auto" : "pointer-events-none"}`}
             >
-              <EditForm />
+              {edit && <EditForm onClose={() => setEdit(false)} />}
             </motion.div>
 
             {/* Profile Section */}
