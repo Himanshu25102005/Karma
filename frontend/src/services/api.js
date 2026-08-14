@@ -41,7 +41,9 @@ const api = {
   },
 
   getCurrentUser: () => {
-    return apiClient.get("/getInfo"); /* If the user has not set the about section display the placeholder about */
+    return apiClient.get(
+      "/getInfo",
+    ); /* If the user has not set the about section display the placeholder about */
   },
 
   /* Profile Routes */
@@ -56,6 +58,10 @@ const api = {
 
   getPublicProfile: (username) => {
     return apiClient.get(`/profile/${username}`);
+  },
+
+  changeAvatar: (formData) => {
+    return apiClient.post("/profile/avatar", formData);
   },
 
   /* Session Routes */

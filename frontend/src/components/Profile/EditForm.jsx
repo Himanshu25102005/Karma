@@ -3,6 +3,7 @@
 import React, { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
+import FormData from "form-data";
 import {
   IconX,
   IconEdit,
@@ -20,6 +21,7 @@ import {
   IconBrandX,
   IconWorld,
 } from "@tabler/icons-react";
+import api from "@/services/api";
 
 const ABOUT_MAX = 160;
 
@@ -71,10 +73,24 @@ const EditForm = ({ onClose }) => {
   const handliFileInput = () => {
     fileref.current.click();
   };
+  const handleFileChange = async (e) => {
+    const file = e.target.files[0];
+
+    if (!file) return;
+    const formData = new FormData();
+    formData.append("file", file);
+
+    const res = await api.changeAvatar(formData);
+    setAvatar(res.data.imageUrl);
+    console.log("data from the avatar API", res.data.imageUrl);
+  };
   const [name, setName] = useState("Himanshu Dusane");
   const [username, setUsername] = useState("himanshu2005");
   const [about, setAbout] = useState(
     "Building in public. Solving problems. Learning every day.",
+  );
+  const [avatar, setAvatar] = useState(
+    "https://i.pinimg.com/originals/64/06/67/6406670622da320f2ee737b8a719d01e.jpg",
   );
   const [email, setEmail] = useState("himanshu@example.com");
   const [links, setLinks] = useState(DEFAULT_LINKS);
@@ -319,7 +335,7 @@ const EditForm = ({ onClose }) => {
                 <div className="relative h-32 w-32 shrink-0 lg:h-36 lg:w-36">
                   <div className="relative h-full w-full overflow-hidden rounded-full border border-neutral-600">
                     <Image
-                      src="https://i.pinimg.com/originals/64/06/67/6406670622da320f2ee737b8a719d01e.jpg"
+                      src={avatar}
                       alt="Profile"
                       fill
                       className="object-cover"
@@ -349,8 +365,10 @@ const EditForm = ({ onClose }) => {
                 <input
                   ref={fileref}
                   type="file"
+                  accept="image/*"
                   name="file"
-                  style={{ display: "none" }}
+                  className="hidden"
+                  onChange={handleFileChange}
                 />
               </div>
             </div>

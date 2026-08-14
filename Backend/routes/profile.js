@@ -1,3 +1,4 @@
+require("dotenv").config();
 const express = require("express");
 var router = express.Router();
 const userSchema = require("../models/users");
@@ -7,7 +8,8 @@ const Project = require("../models/projects");
 const passport = require("passport");
 const projects = require("../models/projects");
 const upload = require("../utils/multer");
-
+const axios = require("axios");
+const FormData = require("form-data");
 /* Middleware to check if the user is logged in  */
 const isloggedIn = (req, res, next) => {
   if (req.isAuthenticated()) return next();
@@ -176,18 +178,51 @@ router.get("/profile/:username", isloggedIn, async (req, res) => {
 });
 
 /* Change profile image */
-router.get(
-  "/profile/changePfp",
+router.post(
+  "/profile/avatar",
   isloggedIn,
   upload.single("file"),
-  (req, res) => {
+  async (req, res) => {
     try {
       if (!req.file) {
-        return res.status(400).json({ error: "no files uploaded" });
+        return res.status(400).json({
+          error: "No file uploaded",
+        });
       }
-      return res.status(200).json({ success: true });
+
+      const form = new FormData();
+
+      form.append("key", process.env.IMGTOURL_KEY);
+      form.append("image", req.file.buffer, req.file.originalname);
+
+      const response = await axios.post(
+        "https://api.imgbb.com/1/upload",
+        form,
+        {
+          headers: form.getHeaders(),
+        },
+      );
+
+      const imageUrl = response.data.data.url;
+
+      await userSchema.findByIdAndUpdate(req.user._id, {
+        avatar: imageUrl,
+      });
+      console.log(imageUrl);
+      res.json({
+        success: true,
+        imageUrl: imageUrl,
+      });
     } catch (e) {
-      res.status(500).json(e.message);
+      console.error("🔥 AVATAR UPLOAD ERROR");
+      console.error("message:", e.message);
+      console.error("response:", e.response?.data);
+      console.error("stack:", e.stack);
+
+      return res.status(500).json({
+        success: false,
+        error: e.message,
+      });
     }
   },
 );
