@@ -141,7 +141,7 @@ const EditForm = ({ onClose }) => {
           className="flex h-9 w-9 shrink-0 items-center justify-center rounded-lg border border-neutral-800 text-neutral-400 transition-colors hover:bg-white/5 hover:text-white"
           aria-label="Close"
         >
-          <Ic onX className="h-5 w-5" />
+          <IconX className="h-5 w-5" />
         </button>
       </div>
 
