@@ -29,13 +29,17 @@ import WeeklyHeatmap from "@/components/Dashboard/WeeklyHeatmap";
 import { easeInOut, motion } from "framer-motion";
 import AboutMD from "@/components/Profile/AboutMD";
 import EditForm from "@/components/Profile/EditForm";
-
+import useUserStore from "@/store/useUserStore";
+import useRefreshStore from "@/store/useRefreshStore";
 const rowdies = Rowdies({
   subsets: ["latin"],
   weight: ["300", "400", "700"],
 });
 
 const ProfilePage = () => {
+  const refreshToggle = useRefreshStore((state) => state.refreshToggle);
+  const avatar = useUserStore((state) => state.avatar);
+  const setCurrentUser = useUserStore((state) => state.setCurrentUser);
   const [edit, setEdit] = useState(false);
 
   const links = [
@@ -158,6 +162,14 @@ const ProfilePage = () => {
     },
   ];
 
+  const pfp =
+    avatar ||
+    "https://i.pinimg.com/originals/64/06/67/6406670622da320f2ee737b8a719d01e.jpg";
+
+  useEffect(() => {
+    setCurrentUser();
+  }, [refreshToggle, setCurrentUser]);
+
   useEffect(() => {
     if (!edit) return;
 
@@ -210,9 +222,10 @@ const ProfilePage = () => {
                   <div className="relative w-24 sm:w-32 md:w-50 aspect-square shrink-0">
                     <div className="relative h-full w-full overflow-hidden rounded-full border border-neutral-300">
                       <Image
-                        src="https://i.pinimg.com/originals/64/06/67/6406670622da320f2ee737b8a719d01e.jpg"
+                        src={pfp}
                         alt="Profile"
                         fill
+                        sizes="(max-width: 1024px) 128px, 144px"
                         className="object-cover"
                       />
                     </div>
