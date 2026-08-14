@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useRef, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import FormData from "form-data";
@@ -22,6 +22,8 @@ import {
   IconWorld,
 } from "@tabler/icons-react";
 import api from "@/services/api";
+import useUserStore from "@/store/useUserStore";
+import useRefreshStore from "@/store/useRefreshStore";
 
 const ABOUT_MAX = 160;
 
@@ -56,19 +58,148 @@ const DEFAULT_LINKS = [
   },
 ];
 
+const getLinkDetails = (platform, fallbackUrl = "") => {
+  const p = (platform || "").toLowerCase();
+  if (p === "github") {
+    return { title: "GitHub", icon: IconBrandGithub, color: "text-neutral-300", url: fallbackUrl };
+  }
+  if (p === "portfolio" || p === "website") {
+    return { title: "Portfolio", icon: IconWorld, color: "text-violet-400/70", url: fallbackUrl };
+  }
+  if (p === "linkedin") {
+    return { title: "LinkedIn", icon: IconBrandLinkedin, color: "text-sky-400/70", url: fallbackUrl };
+  }
+  if (p === "x" || p === "twitter") {
+    return { title: "X", icon: IconBrandX, color: "text-neutral-300", url: fallbackUrl };
+  }
+  return { title: platform ? (platform.charAt(0).toUpperCase() + platform.slice(1)) : "Link", icon: IconLink, color: "text-neutral-400", url: fallbackUrl };
+};
+
 const inputClass =
   "w-full min-w-0 rounded-lg border border-neutral-700/80 bg-neutral-900/80 px-3 py-2.5 text-sm text-neutral-200 outline-none transition-colors placeholder:text-neutral-600 focus:border-neutral-500";
 
 const labelClass = "mb-1.5 block text-xs font-medium text-neutral-500";
 
 const EditForm = ({ onClose }) => {
-  /* const data = {
-    name, 
-    username, 
-    about,
-    email,
-    links,
-  } */
+  const [name, setName] = useState("Himanshu Dusane");
+  const [username, setUsername] = useState("himanshu2005");
+  const [bio, setBio] = useState(
+    "Building in public. Solving problems. Learning every day.",
+  );
+  const [avatar, setAvatar] = useState(
+    "https://i.pinimg.com/originals/64/06/67/6406670622da320f2ee737b8a719d01e.jpg",
+  );
+
+  const [email, setEmail] = useState("himanshu@example.com");
+  const [isPublic, setIsPublic] = useState(true);
+  const [links, setLinks] = useState(DEFAULT_LINKS);
+  const [error, setError] = useState("");
+  const [submitting, setSubmitting] = useState(false);
+
+  useEffect(() => {
+    let isMounted = true;
+    const fetchUserData = async () => {
+      try {
+        const res = await api.getProfile();
+        if (isMounted && res.data?.success && res.data?.data) {
+          const user = res.data.data;
+          if (user.name !== undefined && user.name !== null) setName(user.name);
+          if (user.username !== undefined && user.username !== null) setUsername(user.username);
+          if (user.email !== undefined && user.email !== null) setEmail(user.email);
+          if (user.bio !== undefined && user.bio !== null) setBio(user.bio);
+          if (user.avatar) setAvatar(user.avatar);
+          if (typeof user.isPublic === "boolean") setIsPublic(user.isPublic);
+
+          if (Array.isArray(user.links) && user.links.length > 0) {
+            const loadedLinks = user.links.map((item, idx) => {
+              const details = getLinkDetails(item.platform, item.url);
+              return {
+                id: idx + 1,
+                ...details,
+                url: item.url || "",
+              };
+            });
+            setLinks(loadedLinks);
+          } else {
+            setLinks((prevLinks) =>
+              prevLinks.map((link) => {
+                if (link.title?.toLowerCase() === "github" && user.github) {
+                  return { ...link, url: user.github };
+                }
+                if (
+                  (link.title?.toLowerCase() === "portfolio" ||
+                    link.title?.toLowerCase() === "website") &&
+                  user.website
+                ) {
+                  return { ...link, url: user.website };
+                }
+                return link;
+              })
+            );
+          }
+        }
+      } catch (err) {
+        console.error("Error fetching profile in EditForm:", err);
+      }
+    };
+    fetchUserData();
+    return () => {
+      isMounted = false;
+    };
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e?.preventDefault();
+    if (submitting) return;
+
+    setError("");
+    setSubmitting(true);
+
+    try {
+      const formattedLinks = links
+        .map((l) => ({
+          platform: (l.title || "link").trim().toLowerCase(),
+          url: l.url ? l.url.trim() : "",
+        }))
+        .filter((l) => l.url.length > 0);
+
+      const githubLink = formattedLinks.find((l) => l.platform === "github");
+      const websiteLink = formattedLinks.find(
+        (l) => l.platform === "portfolio" || l.platform === "website"
+      );
+
+      const payload = {
+        name: name ? name.trim() : "",
+        username: username ? username.trim() : "",
+        email: email ? email.trim() : "",
+        bio: bio ? bio.trim() : "",
+        website: websiteLink ? websiteLink.url : "",
+        github: githubLink ? githubLink.url : "",
+        isPublic: Boolean(isPublic),
+        links: formattedLinks,
+      };
+
+      const res = await api.updateProfile(payload);
+
+      if (res.data?.success) {
+        useUserStore.getState().setCurrentUser();
+        useRefreshStore.getState().triggerRefresh();
+        onClose?.();
+      } else {
+        setError(res.data?.error || "Failed to update profile");
+      }
+    } catch (err) {
+      console.error("Error updating profile:", err);
+      const errMsg =
+        err.response?.data?.error ||
+        err.message ||
+        "Failed to update profile";
+      setError(errMsg);
+    } finally {
+      setSubmitting(false);
+    }
+  };
+
   const fileref = useRef(null);
   const handliFileInput = () => {
     fileref.current.click();
@@ -84,17 +215,6 @@ const EditForm = ({ onClose }) => {
     setAvatar(res.data.imageUrl);
     console.log("data from the avatar API", res.data.imageUrl);
   };
-  const [name, setName] = useState("Himanshu Dusane");
-  const [username, setUsername] = useState("himanshu2005");
-  const [about, setAbout] = useState(
-    "Building in public. Solving problems. Learning every day.",
-  );
-  const [avatar, setAvatar] = useState(
-    "https://i.pinimg.com/originals/64/06/67/6406670622da320f2ee737b8a719d01e.jpg",
-  );
-  const [email, setEmail] = useState("himanshu@example.com");
-  const [links, setLinks] = useState(DEFAULT_LINKS);
-
   const handleClose = () => {
     onClose?.();
   };
@@ -172,14 +292,17 @@ const EditForm = ({ onClose }) => {
         </button>
       </div>
 
-      {/* Scrollable body */}
       <form
         method="post"
-        encType="multipart/form-data"
         className="flex min-h-0 flex-1 flex-col overflow-hidden"
-        onSubmit={(e) => e.preventDefault()}
+        onSubmit={handleSubmit}
       >
         <div className="min-h-0 flex-1 overflow-y-auto overflow-x-hidden [&::-webkit-scrollbar]:w-1.5 [&::-webkit-scrollbar-track]:bg-transparent [&::-webkit-scrollbar-thumb]:bg-neutral-800 [&::-webkit-scrollbar-thumb]:rounded-full">
+          {error && (
+            <div className="mx-4 mt-4 rounded-lg border border-red-800 bg-red-900/30 p-3 text-xs font-medium text-red-300 lg:mx-6">
+              {error}
+            </div>
+          )}
           {/* Mobile: avatar + sections */}
           <div className="lg:hidden">
             <div className="flex flex-col items-center px-4 pb-6 pt-5">
@@ -253,14 +376,14 @@ const EditForm = ({ onClose }) => {
               <div className="relative overflow-hidden rounded-xl border border-neutral-800 bg-neutral-900/40 p-4">
                 <p className="mb-2 text-[11px] text-neutral-500">Bio</p>
                 <textarea
-                  value={about}
-                  onChange={(e) => setAbout(e.target.value.slice(0, ABOUT_MAX))}
+                  value={bio}
+                  onChange={(e) => setBio(e.target.value.slice(0, ABOUT_MAX))}
                   rows={4}
                   className="w-full min-w-0 resize-none bg-transparent text-sm leading-relaxed text-neutral-200 outline-none placeholder:text-neutral-600"
                   placeholder="Tell us about yourself..."
                 />
                 <span className="absolute bottom-3 right-4 text-[11px] text-neutral-500">
-                  {about.length}/{ABOUT_MAX}
+                  {bio.length}/{ABOUT_MAX}
                 </span>
               </div>
             </section>
@@ -408,16 +531,16 @@ const EditForm = ({ onClose }) => {
                 <label className={labelClass}>About</label>
                 <div className="relative">
                   <textarea
-                    value={about}
+                    value={bio}
                     onChange={(e) =>
-                      setAbout(e.target.value.slice(0, ABOUT_MAX))
+                      setBio(e.target.value.slice(0, ABOUT_MAX))
                     }
                     rows={3}
                     className={`${inputClass} min-h-[88px] resize-none pb-7`}
                     placeholder="Tell us about yourself..."
                   />
                   <span className="absolute bottom-2.5 right-3 text-[11px] text-neutral-600">
-                    {about.length} / {ABOUT_MAX}
+                    {bio.length} / {ABOUT_MAX}
                   </span>
                 </div>
               </div>
@@ -497,9 +620,10 @@ const EditForm = ({ onClose }) => {
             </button>
             <button
               type="submit"
-              className="flex-1 rounded-lg bg-orange-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-orange-500 lg:flex-none lg:px-6"
+              disabled={submitting}
+              className="flex-1 rounded-lg bg-orange-600 px-4 py-2.5 text-sm font-semibold text-white transition-colors hover:bg-orange-500 disabled:opacity-50 lg:flex-none lg:px-6"
             >
-              Save Changes
+              {submitting ? "Saving..." : "Save Changes"}
             </button>
           </div>
         </div>

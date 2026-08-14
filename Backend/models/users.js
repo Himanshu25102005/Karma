@@ -63,6 +63,7 @@ const userSchema = mongoose.Schema({
     lowercase: true,
     validate: {
       validator: function (v) {
+        if (!v) return true;
         // This regex checks for http/https and basic domain structure
         return /^(https?:\/\/)?([\da-z.-]+)\.([a-z.]{2,6})([\/\w .-]*)*\/?$/.test(
           v,

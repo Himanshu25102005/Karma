@@ -43,13 +43,13 @@ router.get("/profile/me", isloggedIn, async (req, res) => {
 router.patch("/profile/me/update", isloggedIn, async (req, res) => {
   try {
     const allowedFields = [
+      "name",
       "username",
       "email",
       "github",
       "bio",
       "website",
       "isPublic",
-      "about",
     ];
     const updates = {};
 
@@ -62,10 +62,27 @@ router.patch("/profile/me/update", isloggedIn, async (req, res) => {
       }
     }
 
-    const user = req.user;
-
     if (typeof req.body.isPublic === "boolean") {
       updates.isPublic = req.body.isPublic;
+    }
+
+    if (Array.isArray(req.body.links)) {
+      const validLinks = [];
+      for (let item of req.body.links) {
+        if (
+          item &&
+          typeof item === "object" &&
+          typeof item.platform === "string" &&
+          typeof item.url === "string"
+        ) {
+          const platform = item.platform.trim();
+          const url = item.url.trim();
+          if (platform && url) {
+            validLinks.push({ platform, url });
+          }
+        }
+      }
+      updates.links = validLinks;
     }
 
     if (updates.username) {
@@ -101,7 +118,7 @@ router.patch("/profile/me/update", isloggedIn, async (req, res) => {
         new: true,
         runValidators: true,
       })
-      .select("username email github bio website createdAt isPublic about");
+      .select("name username email github bio website createdAt isPublic links");
 
     res.status(200).json({
       success: true,
@@ -214,11 +231,7 @@ router.post(
         imageUrl: imageUrl,
       });
     } catch (e) {
-      console.error("🔥 AVATAR UPLOAD ERROR");
       console.error("message:", e.message);
-      console.error("response:", e.response?.data);
-      console.error("stack:", e.stack);
-
       return res.status(500).json({
         success: false,
         error: e.message,

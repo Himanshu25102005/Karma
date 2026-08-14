@@ -37,11 +37,6 @@ const rowdies = Rowdies({
 });
 
 const ProfilePage = () => {
-  const refreshToggle = useRefreshStore((state) => state.refreshToggle);
-  const avatar = useUserStore((state) => state.avatar);
-  const setCurrentUser = useUserStore((state) => state.setCurrentUser);
-  const [edit, setEdit] = useState(false);
-
   const links = [
     {
       title: "Home",
@@ -162,6 +157,58 @@ const ProfilePage = () => {
     },
   ];
 
+  const refreshToggle = useRefreshStore((state) => state.refreshToggle);
+  const avatar = useUserStore((state) => state.avatar);
+  const name = useUserStore((state) => state.name);
+  const email = useUserStore((state) => state.email);
+  const bio = useUserStore((state) => state.bio);
+  const dbLinks = useUserStore((state) => state.links);
+  const setCurrentUser = useUserStore((state) => state.setCurrentUser);
+  const [edit, setEdit] = useState(false);
+
+  const displayUserLinks = (dbLinks && dbLinks.length > 0)
+    ? dbLinks.map((l, index) => {
+        const platform = (l.platform || "").toLowerCase();
+        let icon = IconLinkFilled;
+        let color = "text-neutral-300";
+        let title = l.platform ? (l.platform.charAt(0).toUpperCase() + l.platform.slice(1)) : "Link";
+
+        if (platform === "github") {
+          icon = IconBrandGithub;
+          color = "text-neutral-300";
+          title = "GitHub";
+        } else if (platform === "linkedin") {
+          icon = IconBrandLinkedin;
+          color = "text-sky-400/70";
+          title = "LinkedIn";
+        } else if (platform === "portfolio" || platform === "website" || platform === "dribbble") {
+          icon = IconBrandDribbble;
+          color = "text-violet-400/70";
+          title = "Portfolio";
+        } else if (platform === "x" || platform === "twitter") {
+          icon = IconBrandX;
+          color = "text-neutral-300";
+          title = "X";
+        } else if (platform === "leetcode") {
+          icon = IconBrandLeetcode;
+          color = "text-amber-400/70";
+          title = "LeetCode";
+        } else if (platform === "hackerrank") {
+          icon = IconBrandHackerrank;
+          color = "text-emerald-400/70";
+          title = "HackerRank";
+        }
+
+        return {
+          id: index + 1,
+          title,
+          icon,
+          color,
+          link: l.url.startsWith("http") ? l.url : `https://${l.url}`,
+        };
+      })
+    : userLinks;
+
   const pfp =
     avatar ||
     "https://i.pinimg.com/originals/64/06/67/6406670622da320f2ee737b8a719d01e.jpg";
@@ -248,13 +295,13 @@ const ProfilePage = () => {
                     <span
                       className={`${rowdies.className} text-xl sm:text-2xl font-semibold text-neutral-300 wrap-break-word w-full`}
                     >
-                      Himanshu Dusane
+                      {name || "Himanshu Dusane"}
                     </span>
                     <span className="text-sm sm:text-lg text-neutral-500 truncate max-w-full">
-                      himatwork01@gmail.com
+                      {email || "himatwork01@gmail.com"}
                     </span>
                     <span className="text-sm sm:text-lg text-neutral-400 mt-2 break-words w-full">
-                      Building in public. Ship, Learn & Repeat
+                      {bio || "Building in public. Ship, Learn & Repeat"}
                     </span>
                   </div>
                 </div>
@@ -263,14 +310,14 @@ const ProfilePage = () => {
                     <span
                       className={`${rowdies.className} text-xl md:text-2xl text-neutral-300 flex justify-center items-center w-full break-words text-center`}
                     >
-                      Himanshu Dusane
+                      {name || "Himanshu Dusane"}
                     </span>
                     <span className="text-neutral-500 text-md flex justify-center items-center w-full truncate">
-                      himatwork01@gmail.com
+                      {email || "himatwork01@gmail.com"}
                     </span>
                   </div>
                   <span className="text-neutral-400 text-md flex justify-center items-center text-center wrap-break-word">
-                    Building in public. Ship, Learn & Repeat
+                    {bio || "Building in public. Ship, Learn & Repeat"}
                   </span>
                 </div>
               </div>
@@ -287,7 +334,7 @@ const ProfilePage = () => {
                   }}
                   className="hidden md:flex flex-col md:flex-1 md:min-h-0 w-full min-w-0 border-2 border-neutral-800 rounded-lg divide-y divide-neutral-200 p-2 overflow-hidden"
                 >
-                  {userLinks.map((link) => {
+                  {displayUserLinks.map((link) => {
                     const Icon = link.icon;
 
                     return (
@@ -383,7 +430,7 @@ const ProfilePage = () => {
                 {/* Mobile Links Section */}
                 <div className="md:hidden mt-5 w-full">
                   <div className="w-full overflow-hidden rounded-xl border border-white/5 bg-white/2">
-                    {MobUserLinks.map((link, index) => {
+                    {displayUserLinks.map((link, index) => {
                       const Icon = link.icon;
 
                       return (
@@ -393,7 +440,7 @@ const ProfilePage = () => {
                           target="_blank"
                           rel="noopener noreferrer"
                           className={`group flex w-full items-center gap-3 px-3 py-3 transition-colors hover:bg-white/[0.04]
-                                                    ${index !== userLinks.length - 1 ? "border-b border-white/5" : ""}`}
+                                                    ${index !== displayUserLinks.length - 1 ? "border-b border-white/5" : ""}`}
                         >
                           {/* Icon */}
                           <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-lg bg-white/[0.04]">
