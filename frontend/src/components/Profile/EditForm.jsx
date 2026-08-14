@@ -33,7 +33,7 @@ const DEFAULT_LINKS = [
     title: "GitHub",
     icon: IconBrandGithub,
     color: "text-neutral-300",
-    url: "github.com/himatwork",
+    url: "github.com/Himanshu25102005",
   },
   {
     id: 2,
@@ -47,7 +47,7 @@ const DEFAULT_LINKS = [
     title: "LinkedIn",
     icon: IconBrandLinkedin,
     color: "text-sky-400/70",
-    url: "linkedin.com/in/himanshu-dusane",
+    url: "linkedin.com/in/himanshudusane",
   },
   {
     id: 4,

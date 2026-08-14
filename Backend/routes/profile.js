@@ -50,6 +50,7 @@ router.patch("/profile/me/update", isloggedIn, async (req, res) => {
       "bio",
       "website",
       "isPublic",
+      "about",
     ];
     const updates = {};
 
@@ -118,7 +119,7 @@ router.patch("/profile/me/update", isloggedIn, async (req, res) => {
         new: true,
         runValidators: true,
       })
-      .select("name username email github bio website createdAt isPublic links");
+      .select("name username email github bio website createdAt isPublic links about");
 
     res.status(200).json({
       success: true,
