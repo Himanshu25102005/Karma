@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import { motion } from "framer-motion";
 import Image from "next/image";
 import {
@@ -60,6 +60,17 @@ const inputClass =
 const labelClass = "mb-1.5 block text-xs font-medium text-neutral-500";
 
 const EditForm = ({ onClose }) => {
+  /* const data = {
+    name, 
+    username, 
+    about,
+    email,
+    links,
+  } */
+  const fileref = useRef(null);
+  const handliFileInput = () => {
+    fileref.current.click();
+  };
   const [name, setName] = useState("Himanshu Dusane");
   const [username, setUsername] = useState("himanshu2005");
   const [about, setAbout] = useState(
@@ -147,6 +158,8 @@ const EditForm = ({ onClose }) => {
 
       {/* Scrollable body */}
       <form
+        method="post"
+        encType="multipart/form-data"
         className="flex min-h-0 flex-1 flex-col overflow-hidden"
         onSubmit={(e) => e.preventDefault()}
       >
@@ -225,9 +238,7 @@ const EditForm = ({ onClose }) => {
                 <p className="mb-2 text-[11px] text-neutral-500">Bio</p>
                 <textarea
                   value={about}
-                  onChange={(e) =>
-                    setAbout(e.target.value.slice(0, ABOUT_MAX))
-                  }
+                  onChange={(e) => setAbout(e.target.value.slice(0, ABOUT_MAX))}
                   rows={4}
                   className="w-full min-w-0 resize-none bg-transparent text-sm leading-relaxed text-neutral-200 outline-none placeholder:text-neutral-600"
                   placeholder="Tell us about yourself..."
@@ -329,11 +340,18 @@ const EditForm = ({ onClose }) => {
                 </p>
                 <button
                   type="button"
+                  onClick={handliFileInput}
                   className="mt-3 flex w-full items-center justify-center gap-2 rounded-lg border border-neutral-700 bg-neutral-900/80 px-3 py-2 text-xs font-medium text-neutral-300 transition-colors hover:border-neutral-600 hover:bg-neutral-800"
                 >
                   <IconUpload className="h-4 w-4" />
                   Change Avatar
                 </button>
+                <input
+                  ref={fileref}
+                  type="file"
+                  name="file"
+                  style={{ display: "none" }}
+                />
               </div>
             </div>
 

@@ -6,6 +6,7 @@ const streak = require("../utils/streak");
 const Project = require("../models/projects");
 const passport = require("passport");
 const projects = require("../models/projects");
+const upload = require("../utils/multer");
 
 /* Middleware to check if the user is logged in  */
 const isloggedIn = (req, res, next) => {
@@ -51,10 +52,11 @@ router.patch("/profile/me/update", isloggedIn, async (req, res) => {
     const updates = {};
 
     for (let key of allowedFields) {
-      if (typeof req.body[key] === "string") {
-        updates[key] = req.body[key].trim();
-      } else {
-        updates[key] = req.body[key];
+      if (req.body[key] !== undefined) {
+        updates[key] =
+          typeof req.body[key] === "string"
+            ? req.body[key].trim()
+            : req.body[key];
       }
     }
 
@@ -92,10 +94,12 @@ router.patch("/profile/me/update", isloggedIn, async (req, res) => {
       }
     }
 
-    const updatedUser = await userSchema.findByIdAndUpdate(req.user._id, updates, {
-      new: true,
-      runValidators: true,
-    }).select("username email github bio website createdAt isPublic about");
+    const updatedUser = await userSchema
+      .findByIdAndUpdate(req.user._id, updates, {
+        new: true,
+        runValidators: true,
+      })
+      .select("username email github bio website createdAt isPublic about");
 
     res.status(200).json({
       success: true,
@@ -171,6 +175,22 @@ router.get("/profile/:username", isloggedIn, async (req, res) => {
   }
 });
 
+/* Change profile image */
+router.get(
+  "/profile/changePfp",
+  isloggedIn,
+  upload.single("file"),
+  (req, res) => {
+    try {
+      if (!req.file) {
+        return res.status(400).json({ error: "no files uploaded" });
+      }
+      return res.status(200).json({ success: true });
+    } catch (e) {
+      res.status(500).json(e.message);
+    }
+  },
+);
 /* Get Online Members */
 router.get("/profile/isOnline", isloggedIn, async (req, res) => {});
 
