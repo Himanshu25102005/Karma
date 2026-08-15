@@ -61,18 +61,45 @@ const DEFAULT_LINKS = [
 const getLinkDetails = (platform, fallbackUrl = "") => {
   const p = (platform || "").toLowerCase();
   if (p === "github") {
-    return { title: "GitHub", icon: IconBrandGithub, color: "text-neutral-300", url: fallbackUrl };
+    return {
+      title: "GitHub",
+      icon: IconBrandGithub,
+      color: "text-neutral-300",
+      url: fallbackUrl,
+    };
   }
   if (p === "portfolio" || p === "website") {
-    return { title: "Portfolio", icon: IconWorld, color: "text-violet-400/70", url: fallbackUrl };
+    return {
+      title: "Portfolio",
+      icon: IconWorld,
+      color: "text-violet-400/70",
+      url: fallbackUrl,
+    };
   }
   if (p === "linkedin") {
-    return { title: "LinkedIn", icon: IconBrandLinkedin, color: "text-sky-400/70", url: fallbackUrl };
+    return {
+      title: "LinkedIn",
+      icon: IconBrandLinkedin,
+      color: "text-sky-400/70",
+      url: fallbackUrl,
+    };
   }
   if (p === "x" || p === "twitter") {
-    return { title: "X", icon: IconBrandX, color: "text-neutral-300", url: fallbackUrl };
+    return {
+      title: "X",
+      icon: IconBrandX,
+      color: "text-neutral-300",
+      url: fallbackUrl,
+    };
   }
-  return { title: platform ? (platform.charAt(0).toUpperCase() + platform.slice(1)) : "Link", icon: IconLink, color: "text-neutral-400", url: fallbackUrl };
+  return {
+    title: platform
+      ? platform.charAt(0).toUpperCase() + platform.slice(1)
+      : "Link",
+    icon: IconLink,
+    color: "text-neutral-400",
+    url: fallbackUrl,
+  };
 };
 
 const inputClass =
@@ -104,8 +131,10 @@ const EditForm = ({ onClose }) => {
         if (isMounted && res.data?.success && res.data?.data) {
           const user = res.data.data;
           if (user.name !== undefined && user.name !== null) setName(user.name);
-          if (user.username !== undefined && user.username !== null) setUsername(user.username);
-          if (user.email !== undefined && user.email !== null) setEmail(user.email);
+          if (user.username !== undefined && user.username !== null)
+            setUsername(user.username);
+          if (user.email !== undefined && user.email !== null)
+            setEmail(user.email);
           if (user.bio !== undefined && user.bio !== null) setBio(user.bio);
           if (user.avatar) setAvatar(user.avatar);
           if (typeof user.isPublic === "boolean") setIsPublic(user.isPublic);
@@ -134,7 +163,7 @@ const EditForm = ({ onClose }) => {
                   return { ...link, url: user.website };
                 }
                 return link;
-              })
+              }),
             );
           }
         }
@@ -165,7 +194,7 @@ const EditForm = ({ onClose }) => {
 
       const githubLink = formattedLinks.find((l) => l.platform === "github");
       const websiteLink = formattedLinks.find(
-        (l) => l.platform === "portfolio" || l.platform === "website"
+        (l) => l.platform === "portfolio" || l.platform === "website",
       );
 
       const payload = {
@@ -191,9 +220,7 @@ const EditForm = ({ onClose }) => {
     } catch (err) {
       console.error("Error updating profile:", err);
       const errMsg =
-        err.response?.data?.error ||
-        err.message ||
-        "Failed to update profile";
+        err.response?.data?.error || err.message || "Failed to update profile";
       setError(errMsg);
     } finally {
       setSubmitting(false);
@@ -309,7 +336,7 @@ const EditForm = ({ onClose }) => {
               <div className="relative h-28 w-28 shrink-0 sm:h-32 sm:w-32">
                 <div className="relative h-full w-full overflow-hidden rounded-full border border-neutral-600">
                   <Image
-                    src="https://i.pinimg.com/originals/64/06/67/6406670622da320f2ee737b8a719d01e.jpg"
+                    src={avatar}
                     alt="Profile"
                     fill
                     className="object-cover"
@@ -325,10 +352,19 @@ const EditForm = ({ onClose }) => {
               </div>
               <button
                 type="button"
+                onClick={handliFileInput}
                 className="mt-3 text-sm font-medium text-orange-600 transition-colors hover:text-orange-500"
               >
                 Change Photo
               </button>
+              <input
+                ref={fileref}
+                type="file"
+                accept="image/*"
+                name="file"
+                className="hidden"
+                onChange={handleFileChange}
+              />
             </div>
 
             {/* BASIC INFO */}
@@ -532,9 +568,7 @@ const EditForm = ({ onClose }) => {
                 <div className="relative">
                   <textarea
                     value={bio}
-                    onChange={(e) =>
-                      setBio(e.target.value.slice(0, ABOUT_MAX))
-                    }
+                    onChange={(e) => setBio(e.target.value.slice(0, ABOUT_MAX))}
                     rows={3}
                     className={`${inputClass} min-h-[88px] resize-none pb-7`}
                     placeholder="Tell us about yourself..."

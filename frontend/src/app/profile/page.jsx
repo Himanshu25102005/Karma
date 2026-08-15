@@ -22,7 +22,7 @@ import {
   IconUser,
 } from "@tabler/icons-react";
 import api from "@/services/api";
-import { Rowdies } from "next/font/google";
+import { Crete_Round, Rowdies } from "next/font/google";
 import Image from "next/image";
 import Stats from "@/components/Profile/Stats";
 import WeeklyHeatmap from "@/components/Dashboard/WeeklyHeatmap";
@@ -164,50 +164,67 @@ const ProfilePage = () => {
   const bio = useUserStore((state) => state.bio);
   const dbLinks = useUserStore((state) => state.links);
   const setCurrentUser = useUserStore((state) => state.setCurrentUser);
+  const createdAt = useUserStore((state) => state.createdAt);
   const [edit, setEdit] = useState(false);
 
-  const displayUserLinks = (dbLinks && dbLinks.length > 0)
-    ? dbLinks.map((l, index) => {
-        const platform = (l.platform || "").toLowerCase();
-        let icon = IconLinkFilled;
-        let color = "text-neutral-300";
-        let title = l.platform ? (l.platform.charAt(0).toUpperCase() + l.platform.slice(1)) : "Link";
-
-        if (platform === "github") {
-          icon = IconBrandGithub;
-          color = "text-neutral-300";
-          title = "GitHub";
-        } else if (platform === "linkedin") {
-          icon = IconBrandLinkedin;
-          color = "text-sky-400/70";
-          title = "LinkedIn";
-        } else if (platform === "portfolio" || platform === "website" || platform === "dribbble") {
-          icon = IconBrandDribbble;
-          color = "text-violet-400/70";
-          title = "Portfolio";
-        } else if (platform === "x" || platform === "twitter") {
-          icon = IconBrandX;
-          color = "text-neutral-300";
-          title = "X";
-        } else if (platform === "leetcode") {
-          icon = IconBrandLeetcode;
-          color = "text-amber-400/70";
-          title = "LeetCode";
-        } else if (platform === "hackerrank") {
-          icon = IconBrandHackerrank;
-          color = "text-emerald-400/70";
-          title = "HackerRank";
-        }
-
-        return {
-          id: index + 1,
-          title,
-          icon,
-          color,
-          link: l.url.startsWith("http") ? l.url : `https://${l.url}`,
-        };
+  const formatDate = (date) => {
+    return new Date(date)
+      .toLocaleDateString("en-GB", {
+        day: "numeric",
+        month: "long",
+        year: "numeric",
       })
-    : userLinks;
+      .toLowerCase();
+  };
+  const displayUserLinks =
+    dbLinks && dbLinks.length > 0
+      ? dbLinks.map((l, index) => {
+          const platform = (l.platform || "").toLowerCase();
+          let icon = IconLinkFilled;
+          let color = "text-neutral-300";
+          let title = l.platform
+            ? l.platform.charAt(0).toUpperCase() + l.platform.slice(1)
+            : "Link";
+
+          if (platform === "github") {
+            icon = IconBrandGithub;
+            color = "text-neutral-300";
+            title = "GitHub";
+          } else if (platform === "linkedin") {
+            icon = IconBrandLinkedin;
+            color = "text-sky-400/70";
+            title = "LinkedIn";
+          } else if (
+            platform === "portfolio" ||
+            platform === "website" ||
+            platform === "dribbble"
+          ) {
+            icon = IconBrandDribbble;
+            color = "text-violet-400/70";
+            title = "Portfolio";
+          } else if (platform === "x" || platform === "twitter") {
+            icon = IconBrandX;
+            color = "text-neutral-300";
+            title = "X";
+          } else if (platform === "leetcode") {
+            icon = IconBrandLeetcode;
+            color = "text-amber-400/70";
+            title = "LeetCode";
+          } else if (platform === "hackerrank") {
+            icon = IconBrandHackerrank;
+            color = "text-emerald-400/70";
+            title = "HackerRank";
+          }
+
+          return {
+            id: index + 1,
+            title,
+            icon,
+            color,
+            link: l.url.startsWith("http") ? l.url : `https://${l.url}`,
+          };
+        })
+      : userLinks;
 
   const pfp =
     avatar ||
@@ -386,7 +403,7 @@ const ProfilePage = () => {
                     <div className="flex flex-col gap-1">
                       <span className="text-md text-neutral-600">Joined</span>
                       <span className="text-sm text-neutral-300">
-                        23 Sept 2025
+                        {formatDate(createdAt)}
                       </span>
                     </div>
                   </div>
@@ -404,7 +421,7 @@ const ProfilePage = () => {
                         </p>
 
                         <p className="text-xl font-semibold text-neutral-200">
-                          148
+                          ---
                         </p>
                       </div>
                     </div>
@@ -420,7 +437,7 @@ const ProfilePage = () => {
                         </p>
 
                         <p className="text-xl font-semibold text-neutral-200">
-                          72
+                          ---
                         </p>
                       </div>
                     </div>

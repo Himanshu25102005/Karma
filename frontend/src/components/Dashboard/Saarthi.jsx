@@ -184,7 +184,7 @@ const Saarthi = () => {
             />
           </div>
           <span className="text-lg sm:text-xl font-semibold tracking-wide text-neutral-200 font-mono">
-            कSaarthi:
+            कSaarthi AI:
           </span>
         </div>
 

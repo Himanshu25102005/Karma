@@ -15,6 +15,7 @@ export const useUserStore = create((set, get) => ({
   website: null,
   isPublic: null,
   links: [],
+  createdAt: null,
 
   /* Actions */
   setCurrentUser: async () => {
@@ -35,6 +36,7 @@ export const useUserStore = create((set, get) => ({
         website: res.data.user.website,
         isPublic: res.data.user.isPublic,
         links: res.data.user.links || [],
+        createdAt: res.data.user.createdAt,
       });
     } catch (e) {
       console.log("Failed to fetch user:", e);
