@@ -74,7 +74,7 @@ const LiveCoding = ({ compact = false }) => {
 
                                 {/* Right side status block */}
                                 <div className='flex-1 rounded-md flex justify-center items-center'>
-                                    <div className=' h-8 w-8 flex justify-center items-center bg-green-900/40 rounded-full '>
+                                    <div className=' h-8 w-8 flex justify-center items-center  rounded-full '>
                                         <IconClock className='text-green-500 h-5 w-5 ' />
                                     </div>
 

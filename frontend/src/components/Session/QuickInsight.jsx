@@ -45,7 +45,7 @@ const QuickInsight = ({ compact = false }) => {
         <div className=' flex-1  p-2 flex gap-1'>
           {/* Icon Div */}
           <div className='h-full w-[20%]  relative'>
-            <div className='absolute h-17 w-17 flex justify-center items-center  rounded-xl top-2  bg-green-900/20'>
+            <div className='absolute h-17 w-17 flex justify-center items-center  rounded-xl top-2  '>
               <IconBrandGithub className='h-13 w-13 text-green-500' />
             </div>
           </div>

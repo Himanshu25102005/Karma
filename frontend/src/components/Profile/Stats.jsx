@@ -71,7 +71,7 @@ const Stats = () => {
         >
           {/* Icon */}
           <div className="shrink-0 h-[50%] w-[26%] md:h-full md:w-19 relative">
-            <div className="w-5 md:w-13 aspect-square rounded-full bg-[#328414]/60 absolute top-0 flex justify-center items-center">
+            <div className="w-5 md:w-13 aspect-square rounded-full absolute top-0 flex justify-center items-center">
               <IconAlarm className="h-3.5 w-3.5 md:h-9.5 md:w-9.5 text-[#51ce23]" />
             </div>
           </div>
@@ -105,7 +105,7 @@ const Stats = () => {
         >
           {/* Icon */}
           <div className="shrink-0 h-[50%] w-[26%] md:h-full md:w-19 relative">
-            <div className="w-5 md:w-13 aspect-square rounded-full bg-blue-900/60 absolute top-0 flex justify-center items-center">
+            <div className="w-5 md:w-13 aspect-square rounded-full  absolute top-0 flex justify-center items-center">
               <IconCircleCheck className="h-3.5 w-3.5 md:h-9.5 md:w-9.5 text-blue-500" />
             </div>
           </div>
@@ -139,7 +139,7 @@ const Stats = () => {
         >
           {/* Icon */}
           <div className="shrink-0 h-[50%] w-[26%] md:h-full md:w-19 relative">
-            <div className="w-5 md:w-13 aspect-square rounded-full bg-yellow-900/60 absolute top-0 flex justify-center items-center">
+            <div className="w-5 md:w-13 aspect-square rounded-full  absolute top-0 flex justify-center items-center">
               <IconSchool className="h-3.5 w-3.5 md:h-9.5 md:w-9.5 text-yellow-500" />
             </div>
           </div>
@@ -173,7 +173,7 @@ const Stats = () => {
         >
           {/* Icon */}
           <div className="shrink-0 h-[50%] w-[26%] md:h-full md:w-19 relative">
-            <div className="w-5 md:w-13 aspect-square rounded-full bg-pink-900/60 absolute top-0 flex justify-center items-center">
+            <div className="w-5 md:w-13 aspect-square rounded-full  absolute top-0 flex justify-center items-center">
               <IconFlame className="h-3.5 w-3.5 md:h-9.5 md:w-9.5 text-pink-400/90" />
             </div>
           </div>

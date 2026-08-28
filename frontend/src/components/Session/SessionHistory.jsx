@@ -103,11 +103,11 @@ const SessionHistory = ({ compact = false, fillHeight = false }) => {
                                     transition={{ duration: 0.4, ease: "easeOut" }}
                                     className='h-[4rem] w-full bg-[#1A1A1A] border border-neutral-800 rounded-lg flex-shrink-0 p-1 flex gap-1'>
                                     <div className='h-full w-[58%] flex gap-3 border-r-2 border-neutral-600'>
-                                        <div className='h-full w-[20%] flex justify-center items-center bg-green-600/20 rounded-xl'
+                                        <div className='h-full w-[20%] flex justify-center items-center  rounded-xl'
                                             style={{
-                                                backgroundColor: session.projectId?.color ? `${session.projectId.color}33` : '#16a34a33'
+                                                // backgroundColor: session.projectId?.color ? `${session.projectId.color}33` : '#16a34a33'
                                             }}>
-                                            <IconClockCode className='text-green-500 h-8 w-8' />
+                                            <IconClockCode className='text-green-500 h-8 w-8'/>
                                         </div>
 
                                         <div className='flex-1 flex flex-col justify-center items-start leading-tight'>
@@ -134,7 +134,7 @@ const SessionHistory = ({ compact = false, fillHeight = false }) => {
                                         </div>
 
                                         <div className='flex-1 flex justify-center items-center'>
-                                            <IconFileCheck className='text-green-500 h-6 w-6' />
+                                            <IconFileCheck className='text-[#10aaf1] h-6 w-6' />
                                         </div>
                                     </div>
                                 </motion.div>

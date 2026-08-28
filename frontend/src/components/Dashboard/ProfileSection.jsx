@@ -137,7 +137,7 @@ const AchievementSection = ({ badgeData }) => {
                             {/* Icon */}
                             <div className='w-9 h-9 min-w-[2.25rem] aspect-square rounded-full overflow-hidden border border-[#04f30c] flex justify-center items-center shrink-0'
                                 style={{
-                                    '--badge-theme-color': badge.badge?.color || '#525252',
+                                    // '--badge-theme-color': badge.badge?.color || '#525252',
                                     backgroundColor: 'color-mix(in srgb, var(--badge-theme-color) 30%, transparent)',
                                     borderColor: badge.badge?.color || '#525252'
                                 }}
