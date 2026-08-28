@@ -147,7 +147,7 @@ const Histogram = () => {
                         :
                         (weekMode == true)
                             ?
-                            <ResponsiveContainer width="100%" height="100%">
+                            <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={180}>
                                 <BarChart data={weekdata} margin={chartMargin}>
                                     <CartesianGrid strokeDasharray="5 5" stroke="#262626" vertical={false} />
                                     <Tooltip />
@@ -196,7 +196,7 @@ const Histogram = () => {
                                 </BarChart>
                             </ResponsiveContainer>
                             :
-                            <ResponsiveContainer width="100%" height="100%">
+                            <ResponsiveContainer width="100%" height="100%" minWidth={0} minHeight={180}>
                                 <BarChart data={monthdata} margin={chartMargin}>
                                     <CartesianGrid strokeDasharray="5 5" stroke="#262626" vertical={false} />
                                     <Tooltip />

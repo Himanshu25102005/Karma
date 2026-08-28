@@ -75,7 +75,7 @@ const WeeklyHeatmap = ({profileRender}) => {
                             Focus Time Over Time
                         </span>
                     </div>}
-                <div ref={containerRef} className="w-full min-w-0 flex-1 min-h-0 border border-neutral-800 rounded-xl p-2 bg-neutral-900/10 overflow-x-auto overflow-y-hidden">
+                <div ref={containerRef} className="w-full min-w-0 flex-1 border border-neutral-800 rounded-xl p-2 sm:p-3 bg-neutral-900/10 overflow-x-auto overflow-y-hidden flex items-center">
                     <motion.div
                         initial={{ opacity: 0, y: 15 }}
                         animate={{ opacity: 1, y: 0 }}

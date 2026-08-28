@@ -132,25 +132,25 @@ const AnalyticsPage = () => {
     <>
       <SmoothCursor />
 
-      <div className="min-h-screen lg:h-screen w-full max-w-[100vw] bg-[#0a0a0a] flex flex-col relative overflow-x-hidden lg:overflow-hidden select-none">
+      <div className="min-h-screen w-full max-w-[100vw] bg-[#0a0a0a] flex flex-col relative overflow-x-hidden select-none">
         {/* TOP MARGIN*/}
-        <div className=" h-8 lg:h-14 w-full border-b border-dashed border-neutral-700/60 flex items-center px-6">
+        <div className="h-8 lg:h-14 w-full border-b border-dashed border-neutral-700/60 flex items-center px-6 shrink-0">
           {/* <span className="text-xs font-mono text-neutral-500 tracking-widest uppercase">कΛRMΛ // System_v2</span> */}
         </div>
 
         {/* left and right vertical margins*/}
-        <div className="flex-1 flex flex-row w-full">
+        <div className="flex-1 flex flex-row w-full min-h-0">
           {/* Left Margin Buffer */}
-          <div className="hidden lg:block w-16 xl:w-24 min-[1440px]:w-32 border-r border-dashed border-neutral-700/60 h-full shrink-0" />
+          <div className="hidden lg:block w-12 xl:w-20 min-[1440px]:w-28 border-r border-dashed border-neutral-700/60 shrink-0 self-stretch" />
 
           {/* MAIN WORKING AREA */}
-          <div className="flex-1 h-full min-w-0 p-2 sm:p-3 overflow-y-auto overflow-x-hidden custom-scrollbar">
+          <div className="flex-1 min-w-0 p-2 sm:p-3 lg:p-4 xl:p-5 pb-32 sm:pb-36 lg:pb-40">
             <div className="min-h-16 sm:h-20 flex flex-col p-2">
               <motion.span
                 initial={{ opacity: 0 }}
                 animate={{ opacity: [0, 0.5, 1] }}
                 transition={{ duration: 0.8 }}
-                className="font-semibold text-2xl sm:text-3xl text-neutral-100"
+                className="font-semibold text-2xl sm:text-3xl text-neutral-100 truncate max-w-full"
               >
                 Good Morning {username}
               </motion.span>{" "}
@@ -161,9 +161,9 @@ const AnalyticsPage = () => {
             </div>
 
             {/* Main Grid */}
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 lg:grid-rows-[auto_23rem_16.5rem] w-full min-w-0 p-2 gap-3 lg:items-stretch">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-12 w-full min-w-0 p-1 sm:p-2 gap-3 xl:gap-4 items-stretch">
               {/* Brief Stats Section */}
-              <div className="col-span-1 sm:col-span-2 lg:col-span-5 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-2 min-w-0">
+              <div className="col-span-1 md:col-span-2 lg:col-span-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-2 xl:grid-cols-4 gap-2.5 sm:gap-3 min-w-0">
                 <div className="min-w-0 w-full min-h-[7.5rem] lg:min-h-[7.5rem] p-1 rounded-xl bg-[#141414] flex flex-row gap-2 sm:gap-3">
                   {/* Icon */}
                   <div className="shrink-0 relative flex justify-center">
@@ -601,15 +601,18 @@ const AnalyticsPage = () => {
                     <span className="text-neutral-400 text-sm sm:text-md font-semibold truncate">
                       Peak Session
                     </span>
-                    <span className="text-neutral-200 text-2xl sm:text-3xl font-semibold">
-                      {summary?.summary?.[0]?.longestSession / 60} mins
+                    <span className="text-neutral-200 text-2xl sm:text-3xl font-semibold truncate">
+                      {summary?.summary?.[0]?.longestSession != null
+                        ? Math.round(summary.summary[0].longestSession / 60)
+                        : 0}{" "}
+                      mins
                     </span>
                     <div className="flex flex-row items-center gap-1">
                       <IconSparkles className="h-3 w-3 text-yellow-500 shrink-0" />
                       <span className="text-[9px] text-neutral-400 truncate">
                         Average Session Duration:{" "}
                         {Math.round(
-                          summary?.summary?.[0]?.averageSessionDuration / 60,
+                          (summary?.summary?.[0]?.averageSessionDuration || 0) / 60,
                         )}
                         m
                       </span>
@@ -1019,29 +1022,36 @@ const AnalyticsPage = () => {
                   </div>
                 </div>
               </div>
-              {/* Profile and Achievments Section */}{" "}
-              {/* REMOVE THIS HEIGHT AND DEFINE ITS HEIGHT IN THE COMPONENT ITSELF */}
-              <div className="col-span-1 sm:col-span-2 lg:col-span-1 lg:row-span-2 lg:row-start-2 text-white min-h-[32rem] lg:min-h-0 lg:h-full rounded-xl bg-[#141414] p-3 sm:p-4 min-w-0 flex flex-col">
+              {/* Profile and Achievments Section */}
+              <div className="col-span-1 md:col-span-2 lg:col-span-4 xl:col-span-3 text-white rounded-xl bg-[#141414] p-3 sm:p-4 min-w-0 flex flex-col h-full self-stretch min-h-[28rem]">
                 <ProfileSection />
               </div>
-              {/* Histogram */}
-              <div className="col-span-1 sm:col-span-2 lg:col-span-2 lg:row-start-2 text-white min-h-[20rem] lg:min-h-[23rem] lg:h-[23rem] rounded-xl bg-[#141414] p-3 sm:p-4 min-w-0 flex flex-col">
-                <Histogram />
+
+              {/* Center Column: Histogram + Time by Project */}
+              <div className="col-span-1 md:col-span-2 lg:col-span-4 xl:col-span-4 flex flex-col gap-3 xl:gap-4 min-w-0 h-full self-stretch">
+                {/* Histogram */}
+                <div className="text-white rounded-xl bg-[#141414] p-3 sm:p-4 min-w-0 flex flex-col flex-1 min-h-[17rem]">
+                  <Histogram />
+                </div>
+                {/* Pie Chart */}
+                <div className="text-white rounded-xl bg-[#141414] p-3 sm:p-4 min-w-0 flex flex-col flex-1 min-h-[14rem]">
+                  <TimeByProject />
+                </div>
               </div>
-              {/* Calender */}
-              <div className="col-span-1 sm:col-span-2 lg:col-span-2 lg:row-start-2 text-white min-h-[24rem] sm:min-h-[22rem] lg:min-h-[23rem] lg:h-[23rem] rounded-xl bg-[#141414] p-3 sm:p-4 min-w-0 flex flex-col">
-                <Saarthi />
-              </div>
-              {/* Pie Chart */}
-              <div className="col-span-1 sm:col-span-2 lg:col-span-2 lg:row-start-3 text-white min-h-[18rem] lg:min-h-[16.5rem] lg:h-[16.5rem] rounded-xl bg-[#141414] p-3 sm:p-4 min-w-0 flex flex-col">
-                <TimeByProject />
-              </div>
-              {/* Weekly Heatmap */}
-              <div className="col-span-1 sm:col-span-2 lg:col-span-2 lg:row-start-3 text-white min-h-[18rem] lg:min-h-[16.5rem] lg:h-[16.5rem] rounded-xl bg-[#141414] p-3 sm:p-4 min-w-0 flex flex-col">
-                <WeeklyHeatmap profileRender={false} />
+
+              {/* Right Column: Saarthi AI + Weekly Heatmap */}
+              <div className="col-span-1 md:col-span-2 lg:col-span-4 xl:col-span-5 flex flex-col gap-3 xl:gap-4 min-w-0 h-full self-stretch">
+                {/* Saarthi AI */}
+                <div className="text-white rounded-xl bg-[#141414] p-3 sm:p-4 min-w-0 flex flex-col shrink-0">
+                  <Saarthi />
+                </div>
+                {/* Weekly Heatmap */}
+                <div className="text-white rounded-xl bg-[#141414] p-3 sm:p-4 min-w-0 flex flex-col flex-1 min-h-[13rem]">
+                  <WeeklyHeatmap profileRender={false} />
+                </div>
               </div>
               {/* Footer */}
-              <div className="col-span-1 sm:col-span-2 lg:col-span-5 min-h-[10rem] sm:min-h-[14rem] lg:h-[18rem] rounded-xl relative overflow-hidden">
+              <div className="col-span-1 md:col-span-2 lg:col-span-12 min-h-[8rem] sm:min-h-[12rem] lg:h-[14rem] rounded-xl relative overflow-hidden">
                 <motion.div
                   initial={{
                     opacity: 0,
@@ -1066,20 +1076,20 @@ const AnalyticsPage = () => {
           </div>
 
           {/* Right Margin Buffer */}
-          <div className="hidden lg:block w-16 xl:w-24 min-[1440px]:w-32 border-l border-dashed border-neutral-700/60 h-full shrink-0" />
+          <div className="hidden lg:block w-12 xl:w-20 min-[1440px]:w-28 border-l border-dashed border-neutral-700/60 shrink-0 self-stretch" />
         </div>
 
         {/*  BOTTOM MARGIN  */}
-        <div className="h-12 w-full border-t border-dashed border-neutral-700/60 flex items-center justify-between px-6 text-[10px] font-mono text-neutral-600">
+        <div className="h-12 w-full border-t border-dashed border-neutral-700/60 flex items-center justify-between px-6 text-[10px] font-mono text-neutral-600 shrink-0">
           {/* <span>LATENCY: 14MS</span>
                         <span>STATUS: ACTIVE</span> */}
         </div>
       </div>
 
       {/* Floating Dock */}
-      <div className="fixed bottom-8 left-1/2 -translate-x-1/2 z-50 ">
+      <div className="fixed bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 z-50">
         <FloatingDock
-          mobileClassName="translate-y-20 " // only for demo, remove for production
+          mobileClassName=""
           items={links}
         />
       </div>

@@ -47,9 +47,9 @@ const ProfileSection = () => {
                     {/* Profile Section */}
                     <div className='w-full shrink-0 flex flex-col pb-2 gap-2'>
                         {/* Profile picture and User Details */}
-                        <div className='w-full flex flex-col sm:flex-row px-4 sm:px-10 justify-center items-center gap-3 sm:gap-2'>
+                        <div className='w-full flex flex-col sm:flex-row px-4 sm:px-10 lg:px-2 xl:px-3 justify-center items-center gap-3 sm:gap-2'>
                             {/* PFP */}
-                            <div className='w-24 sm:w-[40%] max-w-[160px] aspect-square rounded-full overflow-hidden relative shrink-0'>
+                            <div className='w-24 sm:w-[40%] lg:w-16 lg:h-16 xl:w-20 xl:h-20 max-w-[160px] aspect-square rounded-full overflow-hidden relative shrink-0 ring-1 ring-neutral-800'>
                                 <Image
                                     src={profilePicture || "https://i.pinimg.com/736x/b2/ea/a0/b2eaa0d4918d54021f9c7aa3fc3d3cf3.jpg"}
                                     alt="User Profile Avatar Picture"
@@ -59,40 +59,31 @@ const ProfileSection = () => {
                                 />
                             </div>
                             {/* User Details */}
-                            <div className='w-full min-w-0 flex flex-col justify-center items-center sm:items-start px-2 sm:px-5 gap-1 text-center sm:text-left'>
+                            <div className='w-full min-w-0 flex flex-col justify-center items-center sm:items-start px-2 sm:px-5 lg:px-1 xl:px-2 gap-0.5 text-center sm:text-left'>
                                 <span className='font-bold text-lg sm:text-xl text-neutral-300 truncate max-w-full'>{username}</span>
-                                <span className='font-semibold text-sm sm:text-md text-neutral-400'>Building in Public</span>
-                                <span className='font-semibold text-xs sm:text-sm text-neutral-600 truncate max-w-full'>{email}</span>
+                                <span className='font-semibold text-xs sm:text-sm text-neutral-400 truncate max-w-full'>Building in Public</span>
+                                <span className='font-semibold text-xs text-neutral-600 truncate max-w-full'>{email}</span>
                             </div>
                         </div>
 
-                        <div className='flex flex-wrap flex-row justify-center items-center gap-2 sm:gap-5 px-2'>
+                        <div className='flex flex-wrap flex-row justify-center items-center gap-2 sm:gap-4 lg:gap-2 px-2'>
                             <motion.div
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
-                                transition={{ duration: 0.5 }}
-                                whileHover={{ scale: 1.01 }}
-                                className='flex flex-row justify-center gap-2 items-center border p-1.5 rounded-xl border-[#be3807] bg-orange-600/20 shrink-0'>
-                                <IconFlameFilled width={17} height={17} className='text-[#f3a30e]' />
-                                <span className='font-semibold text-neutral-200 text-sm sm:text-base whitespace-nowrap'>{streakData?.currentStreak || 0} Day Streak</span>
+                                transition={{ duration: 0.3 }}
+                                whileHover={{ scale: 1.03 }}
+                                className='flex flex-row justify-center gap-1.5 items-center border p-1.5 rounded-xl border-[#be3807] hover:bg-orange-600/20 shrink-0'>
+                                <IconFlameFilled width={16} height={16} className='text-[#f3a30e]' />
+                                <span className='font-semibold text-neutral-200 text-xs sm:text-sm whitespace-nowrap'>{streakData?.currentStreak || 0} Day Streak</span>
                             </motion.div>
                             <motion.div
                                 initial={{ opacity: 0 }}
                                 animate={{ opacity: 1 }}
-                                transition={{ duration: 0.5 }}
-                                whileHover={{ scale: 1.01 }}
-                                className='flex flex-row justify-center gap-2 items-center border p-1.5 rounded-xl border-[#6e9b07] bg-[#1b580b71] shrink-0'>
-                                <IconSparklesFilled width={17} height={17} className='text-[#4ff30e]' />
-                                <span className='font-semibold text-neutral-200 text-sm sm:text-base whitespace-nowrap'>Best: {streakData?.longestStreak || 0} Days </span>
-                            </motion.div>
-                            <motion.div
-                                initial={{ opacity: 0 }}
-                                animate={{ opacity: 1 }}
-                                transition={{ duration: 0.5 }}
-                                whileHover={{ scale: 1.02 }}
-                                className='flex flex-row justify-center gap-2 items-center border p-1.5 rounded-xl border-[#423f3e] bg-[#111110] shrink-0'>
-                                <IconAlarm width={17} height={17} className='text-[#807779e8]' />
-                                <span className='font-semibold text-neutral-200 text-sm sm:text-base whitespace-nowrap'>Lv. 2</span>
+                                transition={{ duration: 0.3 }}
+                                whileHover={{ scale: 1.03 }}
+                                className='flex flex-row justify-center gap-1.5 items-center border p-1.5 rounded-xl border-[#6e9b07] hover:bg-[#1b580b71] shrink-0'>
+                                <IconSparklesFilled width={16} height={16} className='text-[#4ff30e]' />
+                                <span className='font-semibold text-neutral-200 text-xs sm:text-sm whitespace-nowrap'>Best: {streakData?.longestStreak || 0} Days </span>
                             </motion.div>
                         </div>
                     </div>
@@ -141,10 +132,10 @@ const AchievementSection = ({ badgeData }) => {
                             transition={{ duration: 0.8 }}
                             whileHover={{ scale: 1.02 }}
                             key={badge.badge?._id || badge.earnedAt}
-                            className='w-full min-w-0 rounded-lg py-2 px-1 flex flex-row justify-center items-center gap-2 bg-[#171717] border border-neutral-700 
-                     '>
+                            className='w-full min-w-0 rounded-lg py-2 px-2 flex flex-row justify-center items-center gap-2 bg-[#171717] border border-neutral-700 hover:border-neutral-600 transition-colors'
+                     >
                             {/* Icon */}
-                            <div className='w-10 sm:w-[15%] min-w-[2.5rem] aspect-square rounded-full overflow-hidden border border-[#04f30c] flex justify-center items-center shrink-0'
+                            <div className='w-9 h-9 min-w-[2.25rem] aspect-square rounded-full overflow-hidden border border-[#04f30c] flex justify-center items-center shrink-0'
                                 style={{
                                     '--badge-theme-color': badge.badge?.color || '#525252',
                                     backgroundColor: 'color-mix(in srgb, var(--badge-theme-color) 30%, transparent)',
@@ -155,23 +146,23 @@ const AchievementSection = ({ badgeData }) => {
                                 {badge.badge?.icon}
                             </div>
                             {/* Content */}
-                            <div className='flex-1 min-w-0 h-full flex flex-col justify-center items-start shrink'>
-                                <span className='text-sm sm:text-md text-neutral-200 font-semibold truncate w-full'>{badge.badge.name}</span>
-                                <span className='text-xs sm:text-sm text-neutral-400 line-clamp-2'>{badge.badge.description}</span>
-                                <div className='text-md flex flex-row px-1 justify-center items-center border rounded-md bg-neutral-900 text-green-600'>
+                            <div className='flex-1 min-w-0 h-full flex flex-col justify-center items-start shrink gap-0.5'>
+                                <span className='text-xs sm:text-sm text-neutral-200 font-semibold truncate w-full'>{badge.badge.name}</span>
+                                <span className='text-[11px] text-neutral-400 line-clamp-2 leading-tight'>{badge.badge.description}</span>
+                                <div className='text-md flex flex-row px-1 justify-center items-center border rounded-md bg-neutral-900 text-green-600 mt-0.5'>
                                     <IconCircleCheck width={11} height={11} />
                                     <span className='text-[10px]'> Completed</span>
 
                                 </div>
                             </div>
                             {/* Information */}
-                            <div className='w-16 sm:w-[25%] shrink-0 h-[80%] rounded-xl overflow-hidden border border-neutral-700 flex flex-col justify-center items-center bg-neutral-800/40 gap-2 px-1'>
-                                <span className='text-md  font-semibold '
+                            <div className='shrink-0 h-[80%] rounded-xl overflow-hidden border border-neutral-700/80 flex flex-col justify-center items-center bg-neutral-800/40 gap-1 px-2 py-1 min-w-[50px] max-w-[70px] text-right'>
+                                <span className='text-xs font-semibold truncate'
                                     style={{
                                         color: badge.badge?.color || '#ffffff'
                                     }}
                                 >{badge.badge.rarity}</span>
-                                <span className='text-[7px] text-neutral-400'>{new Date(badge.earnedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</span>
+                                <span className='text-[7.5px] text-neutral-400 whitespace-nowrap'>{new Date(badge.earnedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' })}</span>
                             </div>
                         </motion.div>
                     ))}
@@ -193,26 +184,26 @@ const QuickActions = () => {
                     </span>
                     <span className='font-thin text-xs sm:text-sm text-neutral-500/90'>Instant triggers to spin up sessions or map out tasks.</span>
                 </div>
-                <div className='flex flex-col sm:flex-row justify-center sm:justify-between items-stretch sm:items-center gap-2 px-2 sm:px-6' >
+                <div className='grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-1 xl:grid-cols-2 gap-2 w-full pt-1' >
                     <motion.a
                         href='/session'
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.5 }}
-                        whileHover={{ scale: 1.05 }}
-                        className='flex flex-row justify-center gap-2 items-center border cursor-pointer p-1.5 px-2 rounded-xl border-[#143609] bg-[#0c08253b]/30 w-full sm:w-auto'>
-                        <IconPlayerPlay width={20} height={20} className='text-[#36c20b]' stroke={2.3} />
-                        <span className='font-semibold text-neutral-300 text-base sm:text-lg'>Start Session</span>
+                        whileHover={{ scale: 1.02 }}
+                        className='flex flex-row justify-center items-center gap-1.5 border cursor-pointer p-2 rounded-xl border-[#143609] bg-[#0c08253b]/30 w-full min-w-0'>
+                        <IconPlayerPlay width={16} height={16} className='text-[#36c20b] shrink-0' stroke={2.3} />
+                        <span className='font-semibold text-neutral-300 text-xs sm:text-sm truncate'>Start Session</span>
                     </motion.a>
                     <motion.a
                         href='/session'
                         initial={{ opacity: 0 }}
                         animate={{ opacity: 1 }}
                         transition={{ duration: 0.5 }}
-                        whileHover={{ scale: 1.05 }}
-                        className='cursor-pointer flex flex-row justify-center gap-2 items-center border p-1.5 px-2 rounded-xl border-[#5e410c] bg-[#0c08253b]/30 w-full sm:w-auto'>
-                        <IconCirclePlus width={20} height={20} className='text-[#e9a018]' stroke={2.1} />
-                        <span className='font-semibold text-neutral-300 text-base sm:text-lg'>Add Task</span>
+                        whileHover={{ scale: 1.02 }}
+                        className='cursor-pointer flex flex-row justify-center items-center gap-1.5 border p-2 rounded-xl border-[#5e410c] bg-[#0c08253b]/30 w-full min-w-0'>
+                        <IconCirclePlus width={16} height={16} className='text-[#e9a018] shrink-0' stroke={2.1} />
+                        <span className='font-semibold text-neutral-300 text-xs sm:text-sm truncate'>Add Task</span>
                     </motion.a>
                 </div>
             </div>

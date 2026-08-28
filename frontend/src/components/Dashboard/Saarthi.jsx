@@ -24,7 +24,7 @@ const INSIGHT_CARDS = [
     footerGradient:
       "bg-gradient-to-b from-[#7a5eec]/10 via-transparent to-transparent",
     footerBorder: "border-[#8b7bcc]",
-    footerTextClass: "text-[#816cd3]",
+    footerTextClass: "text-[#816cd3] font-mono",
     getMetric: (data) => data?.bestFocusWindow?.timeRange?.trim(),
     getSubMetric: () => "Peak concentration period",
     getInsight: (data) => data?.bestFocusWindow?.insight,
@@ -41,7 +41,7 @@ const INSIGHT_CARDS = [
     footerGradient:
       "bg-gradient-to-b from-[#5CE65C]/10 via-transparent to-transparent",
     footerBorder: "border-[#5CE65C]",
-    footerTextClass: "text-[#5CE65C]",
+    footerTextClass: "text-[#5CE65C] font-mono",
     getMetric: (data) => data?.mostProductiveProject?.project,
     getSubMetric: (data) => data?.mostProductiveProject?.metric,
     getInsight: (data) => data?.mostProductiveProject?.insight,
@@ -58,9 +58,9 @@ const INSIGHT_CARDS = [
     footerGradient:
       "bg-gradient-to-b from-[#d61512]/10 via-transparent to-transparent",
     footerBorder: "border-[#d61512]",
-    footerTextClass: "text-[#d61512]",
+    footerTextClass: "text-[#d61512] font-mono",
     getMetric: (data) => data?.focusLeak?.title,
-    getSubMetric: () => "Try More Distraction Free Blocks",
+    getSubMetric: () => "Try Distraction-Free Blocks",
     getInsight: (data) => data?.focusLeak?.insight,
     getFooter: () => "Needs Attention",
     metricClass: "text-[15px]",
@@ -75,9 +75,10 @@ const INSIGHT_CARDS = [
     footerGradient:
       "bg-linear-to-b from-[#305CDE]/10 via-transparent to-transparent",
     footerBorder: "border-[#305CDE]",
-    footerTextClass: "text-[#305CDE]",
+    footerTextClass: "text-[#305CDE] font-mono",
     getMetric: (data) => data?.recommendation?.title,
-    getSubMetric: () => null,
+    getSubMetric: () => "कSaarthi",
+
     getInsight: (data) => data?.recommendation?.insight,
     getFooter: () => "Saarthi\u2019s Suggestion",
     metricClass: "text-[15px]",
@@ -85,8 +86,8 @@ const INSIGHT_CARDS = [
 ];
 
 const cardBaseClass =
-  "min-h-[12rem] px-3 sm:px-4 py-2 sm:py-1.5 flex flex-col justify-between rounded-xl";
-const desktopCardClass = `${cardBaseClass} w-1/4 min-w-0 h-full shrink-0 border-r-2 border-neutral-800 last:border-r-2`;
+  "min-h-[11rem] px-3 sm:px-3.5 py-2 sm:py-2.5 flex flex-col justify-between rounded-xl min-w-0";
+const desktopCardClass = `${cardBaseClass} w-1/4 min-w-0 h-full shrink-0 border-r-2 border-neutral-800 last:border-r-0`;
 
 const InsightCard = ({ card, data, className, index = 0 }) => {
   const Icon = card.icon;
@@ -100,39 +101,39 @@ const InsightCard = ({ card, data, className, index = 0 }) => {
       className={`${className} ${card.gradient}`}
     >
       {/* Header */}
-      <div className="flex items-center gap-3 flex-col items-start">
-        <div className="h-10 w-10 rounded-xl flex items-center justify-center">
-          <Icon height={30} width={30} className={card.iconClass} />
+      <div className="flex items-center gap-2.5 flex-col items-start">
+        <div className="h-9 w-9 sm:h-10 sm:w-10 rounded-xl flex items-center justify-center">
+          <Icon height={28} width={28} className={card.iconClass} />
         </div>
-        <div className="flex flex-col">
-          <span className="text-[11px] uppercase tracking-wider text-neutral-500 font-medium">
+        <div className="flex flex-col min-w-0">
+          <span className="text-[10px] sm:text-[11px] uppercase tracking-wider text-neutral-500 font-medium truncate">
             {card.label}
           </span>
         </div>
       </div>
 
       {/* Main Metric */}
-      <div className="mt-4 flex flex-col gap-1">
+      <div className="mt-3 sm:mt-4 flex flex-col gap-0.5 min-w-0">
         <span
-          className={`${card.metricClass} font-bold text-white leading-none`}
+          className={`${card.metricClass} font-bold text-[#ffffff] leading-tight font-mono break-words`}
         >
           {card.getMetric(data)}
         </span>
         {subMetric && (
-          <span className="text-xs text-neutral-500">{subMetric}</span>
+          <span className="text-xs text-neutral-500 truncate">{subMetric}</span>
         )}
       </div>
 
       {/* Insight */}
-      <div className="mt-3">
-        <p className="text-sm/5 text-neutral-300">{card.getInsight(data)}</p>
+      <div className="mt-2 sm:mt-3 min-w-0 flex-1">
+        <p className="text-xs sm:text-[13px] text-neutral-300 italic leading-relaxed break-words">{card.getInsight(data)}</p>
       </div>
 
       {/* Footer */}
       <div
-        className={`flex items-center justify-between mt-1 border w-fit p-0.5 px-1 rounded-md ${card.footerGradient} ${card.footerBorder}`}
+        className={`flex items-center justify-between mt-2 border w-fit p-0.5 px-1.5 rounded-md shrink-0 ${card.footerGradient} ${card.footerBorder}`}
       >
-        <span className={`text-xs ${card.footerTextClass}`}>
+        <span className={`text-[11px] sm:text-xs ${card.footerTextClass}`}>
           {card.getFooter(data)}
         </span>
       </div>
@@ -188,7 +189,7 @@ const Saarthi = () => {
           </span>
         </div>
 
-        {/* Mobile: single card carousel with navigation */}
+        {/* Mobile: single card carousel with navigation - UNCHANGED */}
         <div className="sm:hidden w-full flex-1 min-h-0 flex flex-col border border-neutral-800 rounded-xl p-2 bg-neutral-900/10">
           <div className="flex-1 min-h-0 overflow-hidden">
             <AnimatePresence mode="wait">
@@ -226,21 +227,21 @@ const Saarthi = () => {
           </div>
         </div>
 
-        {/* Tablet: 2x2 grid */}
-        <div className="hidden sm:grid lg:hidden w-full flex-1 min-h-0 grid-cols-2 gap-2 border border-neutral-800 rounded-xl p-2 sm:p-2.5 bg-neutral-900/10">
+        {/* Tablet & Standard Desktop: 2x2 grid */}
+        <div className="hidden sm:grid min-[1700px]:hidden w-full flex-1 min-h-0 grid-cols-2 gap-2 sm:gap-2.5 border border-neutral-800 rounded-xl p-2 sm:p-2.5 bg-neutral-900/10">
           {INSIGHT_CARDS.map((card, index) => (
             <InsightCard
               key={card.id}
               card={card}
               data={data}
-              className={`${cardBaseClass} w-full h-full min-h-[11rem]`}
+              className={`${cardBaseClass} w-full h-full min-h-[10.5rem] border border-neutral-800/40`}
               index={index}
             />
           ))}
         </div>
 
-        {/* Laptop & desktop: 4 cards in a single row */}
-        <div className="hidden lg:flex w-full flex-1 min-h-0 flex-row flex-nowrap items-stretch border border-neutral-800 rounded-xl p-2 sm:p-2.5 bg-neutral-900/10 overflow-visible">
+        {/* Ultra-wide desktop: 4 cards in a single row */}
+        {/* <div className="hidden min-[1700px]:flex w-full flex-1 min-h-0 flex-row flex-nowrap items-stretch border border-neutral-800 rounded-xl p-2 sm:p-2.5 bg-neutral-900/10 overflow-visible">
           {INSIGHT_CARDS.map((card, index) => (
             <InsightCard
               key={card.id}
@@ -250,7 +251,7 @@ const Saarthi = () => {
               index={index}
             />
           ))}
-        </div>
+        </div> */}
       </div>
     </>
   );

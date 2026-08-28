@@ -69,13 +69,13 @@ const TimeByProject = () => {
                         Time by Project
                     </span>
                 </div>
-                <div className='w-full min-w-0 flex flex-col md:flex-row border border-neutral-800 rounded-xl overflow-hidden'>
+                <div className='w-full min-w-0 flex-1 flex flex-col md:flex-row items-center border border-neutral-800 rounded-xl p-2 sm:p-2.5 bg-neutral-900/10 overflow-hidden'>
                     {/* Pie Chart */}
 
                     {
                         data?
                             <EvilPieChart
-                                className='w-full md:w-1/2 min-h-[12rem] md:min-h-[13rem] h-50 shrink-0'
+                                className='w-full md:w-1/2 min-h-[10rem] md:min-h-[11rem] h-full flex items-center justify-center shrink-0'
                                 data={data}
                                 dataKey="totalMinutes"
                                 nameKey="id"
@@ -88,7 +88,7 @@ const TimeByProject = () => {
                             :
                             <EvilPieChart
                                 isLoading
-                                className='w-full md:w-1/2 min-h-[12rem] md:min-h-[13rem] h-50 shrink-0'
+                                className='w-full md:w-1/2 min-h-[10rem] md:min-h-[11rem] h-full flex items-center justify-center shrink-0'
                                 data={data}
                                 dataKey="totalMinutes"
                                 nameKey="id"
@@ -101,8 +101,8 @@ const TimeByProject = () => {
 
 
                     {/* Data */}
-                    <div className='w-full md:w-1/2 min-w-0 flex justify-center items-center p-3 sm:p-4'>
-                        <div className='w-full min-w-0 max-h-[14rem] md:max-h-none md:h-full overflow-y-auto
+                    <div className='w-full md:w-1/2 min-w-0 flex justify-center items-center p-2 sm:p-3'>
+                        <div className='w-full min-w-0 max-h-[11rem] md:max-h-[12rem] overflow-y-auto
                     [&::-webkit-scrollbar]:w-1.5
                     [&::-webkit-scrollbar-track]:bg-transparent
                     [&::-webkit-scrollbar-thumb]:bg-neutral-800
