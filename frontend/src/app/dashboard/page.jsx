@@ -167,7 +167,7 @@ const AnalyticsPage = () => {
                 <div className="min-w-0 w-full min-h-[7.5rem] lg:min-h-[7.5rem] p-1 rounded-xl bg-[#141414] flex flex-row gap-2 sm:gap-3">
                   {/* Icon */}
                   <div className="shrink-0 relative flex justify-center">
-                    <div className="h-12 w-12 sm:h-14 sm:w-14 flex justify-center items-center rounded-xl top-2 bg-green-900/20">
+                    <div className="h-12 w-12 sm:h-14 sm:w-14 flex justify-center items-center rounded-xl top-2 ">
                       <IconClock className="h-8 w-8 sm:h-10 sm:w-10 text-green-500" />
                     </div>
                   </div>
@@ -380,7 +380,7 @@ const AnalyticsPage = () => {
                 <div className="min-w-0 w-full min-h-[7.5rem] lg:min-h-[7.5rem] p-1 rounded-xl bg-[#141414] flex flex-row gap-2 sm:gap-3">
                   {/* Icon */}
                   <div className="shrink-0 relative flex justify-center">
-                    <div className="h-12 w-12 sm:h-14 sm:w-14 flex justify-center items-center rounded-xl top-2 bg-blue-900/60">
+                    <div className="h-12 w-12 sm:h-14 sm:w-14 flex justify-center items-center rounded-xl top-2 ">
                       <IconCircleCheck className="h-8 w-8 sm:h-10 sm:w-10 text-blue-500" />
                     </div>
                   </div>
@@ -592,7 +592,7 @@ const AnalyticsPage = () => {
                 <div className="min-w-0 w-full min-h-[7.5rem] lg:min-h-[7.5rem] p-1 rounded-xl bg-[#141414] flex flex-row gap-2 sm:gap-3">
                   {/* Icon */}
                   <div className="shrink-0 relative flex justify-center">
-                    <div className="h-12 w-12 sm:h-14 sm:w-14 flex justify-center items-center rounded-xl top-2 bg-yellow-900/60">
+                    <div className="h-12 w-12 sm:h-14 sm:w-14 flex justify-center items-center rounded-xl top-2 ">
                       <IconTrendingUp className="h-8 w-8 sm:h-10 sm:w-10 text-yellow-500" />
                     </div>
                   </div>
@@ -811,7 +811,7 @@ const AnalyticsPage = () => {
                 <div className="min-w-0 w-full min-h-[7.5rem] lg:min-h-[7.5rem] p-1 rounded-xl bg-[#141414] flex flex-row gap-2 sm:gap-3">
                   {/* Icon */}
                   <div className="shrink-0 relative flex justify-center">
-                    <div className="h-12 w-12 sm:h-14 sm:w-14 flex justify-center items-center rounded-xl top-2 bg-pink-900/60">
+                    <div className="h-12 w-12 sm:h-14 sm:w-14 flex justify-center items-center rounded-xl top-2 ">
                       <IconSchool className="h-8 w-8 sm:h-10 sm:w-10 text-pink-400/90" />
                     </div>
                   </div>
