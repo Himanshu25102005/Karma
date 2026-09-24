@@ -6,11 +6,25 @@ import { motion } from "framer-motion";
 import api from "@/services/api";
 import useRefreshStore from "@/store/useRefreshStore";
 import TopoField from "@/components/landing/TopoField";
+import Navbar from "@/components/landing/Navbar";
 
 export default function Home() {
   return (
-    <div className="h-screen w-full flex items-center justify-center">
-      <TopoField/>
-    </div>
+    <main className="relative min-h-screen w-full">
+      {/* Background */}
+      <div className="absolute inset-0 z-0">
+        <TopoField />
+      </div>
+
+      {/* Content */}
+      <div className="relative z-10">
+        <nav className="sticky top-0 z-50 w-[calc(100%-2rem)]">
+          <Navbar />
+        </nav>
+
+        {/* Hero */}
+        <section>{/* Your hero content here */}</section>
+      </div>
+    </main>
   );
 }
