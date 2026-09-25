@@ -17,8 +17,20 @@ const playwrite_BE_WAL = Playwrite_BE_WAL({
 
 const Navbar = () => {
   const [isOpen, setOpen] = useState(false);
+  const [isScrolled, setIsScrolled] = useState(false);
 
-  // Prevent background scrolling when mobile menu is open
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 10);
+    };
+
+    window.addEventListener("scroll", handleScroll);
+
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+    };
+  }, []);
+
   useEffect(() => {
     document.body.style.overflow = isOpen ? "hidden" : "";
 
@@ -27,28 +39,53 @@ const Navbar = () => {
     };
   }, [isOpen]);
 
-  const menuItems = [
-    "Features",
-    "How it Works",
-    "Compare",
-    "FAQ",
-  ];
+  const menuItems = ["Features", "How it Works", "Compare", "FAQ"];
 
   return (
     <>
       {/* ================= NAVBAR ================= */}
-      <div className="relative z-50 w-full mt-5 h-18 px-5 py-2 md:p-2 flex justify-between md:justify-evenly items-center gap-2">
-        
+      <div
+        className={`
+    relative z-50
+    flex w-full
+    min-h-20
+    items-center
+    justify-between
+    gap-2
+    px-5
+    py-3
+    md:min-h-[88px]
+    md:px-6
+    md:py-4
+    md:justify-evenly
+    transition-all duration-300
+    ${
+      isScrolled
+        ? "border-b border-white/10 bg-[#030304]/70 backdrop-blur-md"
+        : "border-b border-transparent bg-transparent"
+    }
+  `}
+      >
         {/* LOGO */}
         <div
-          className={`w-40 h-full text-white text-2xl flex justify-center items-center md:text-4xl ${playwrite_BE_WAL.className}`}
+          className={`
+          flex
+          w-40
+          items-center
+          justify-center
+          text-white 
+          text-2xl
+          leading-none
+          md:w-44
+          md:text-4xl
+          ${playwrite_BE_WAL.className}
+        `}
         >
           कARMA:
         </div>
 
         {/* ================= DESKTOP NAV ================= */}
         <div className="hidden md:flex h-full justify-evenly gap-2 items-center">
-          
           <button
             className={`w-40 h-full text-[#c4c1bc] text-xl cursor-pointer transition-colors hover:bg-white/5 hover:text-white rounded-xl ${inter.className}`}
           >
@@ -59,6 +96,12 @@ const Navbar = () => {
             className={`w-40 h-full text-[#c4c1bc] text-xl cursor-pointer transition-colors hover:bg-white/5 hover:text-white rounded-xl ${inter.className}`}
           >
             How it Works
+          </button>
+
+          <button
+            className={`w-40 h-full text-[#c4c1bc] text-xl cursor-pointer transition-colors hover:bg-white/5 hover:text-white rounded-xl ${inter.className}`}
+          >
+            Compare
           </button>
 
           <button
@@ -119,9 +162,8 @@ const Navbar = () => {
           >
             {/* MENU CONTENT */}
             <div className="h-full w-full px-5 pt-28 pb-8 flex flex-col">
-              
               {/* NAVIGATION */}
-              <div className="flex flex-col">
+              <div className="flex flex-col ">
                 {menuItems.map((item, index) => (
                   <motion.button
                     key={item}
