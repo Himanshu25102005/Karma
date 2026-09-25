@@ -18,9 +18,17 @@ export default function Home() {
 
       {/* Content */}
       <div className="relative z-10">
-        <nav className="sticky top-0 z-50 w-[calc(100%-2rem)]">
+        <motion.nav
+          initial={{ y: -50, opacity: 0 }}
+          animate={{ y: 0, opacity: 1 }}
+          transition={{
+            duration: 1.3,
+            ease: [0.22, 1, 0.36, 1],
+          }}
+          className="sticky top-0 z-50 w-[calc(100%-2rem)]"
+        >
           <Navbar />
-        </nav>
+        </motion.nav>
 
         {/* Hero */}
         <section>{/* Your hero content here */}</section>
