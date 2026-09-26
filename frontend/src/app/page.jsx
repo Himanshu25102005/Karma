@@ -10,6 +10,8 @@ import Navbar from "@/components/landing/Navbar";
 import Hero from "@/components/landing/Hero";
 import Hero2 from "@/components/landing/Hero2";
 import Demo from "@/components/landing/Demo";
+import GradText from "@/components/landing/GradText";
+import { Component as Features } from "@/components/landing/Features";
 
 export default function Home() {
   return (
@@ -35,6 +37,8 @@ export default function Home() {
 
         <Hero2 />
         <Demo />
+        <GradText/>
+        <Features/>
       </div>
     </main>
   );
