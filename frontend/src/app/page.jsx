@@ -20,9 +20,9 @@ export default function Home() {
   return (
     <main className="relative min-h-screen w-full bg-[#0C0C0B]">
       {/* Background */}
-      {/*  <div className="absolute inset-0 z-0">
+       <div className="absolute inset-0 z-0">
         <TopoField />
-      </div> */}
+      </div>
 
       {/* Content */}
       <div className="relative z-10 " id="top">
