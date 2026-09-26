@@ -1,7 +1,12 @@
 "use client";
 
-import React from "react";
-import { motion, useScroll, useSpring, useTransform } from "framer-motion";
+import React, { useRef } from "react";
+import {
+  motion,
+  useScroll,
+  useSpring,
+  useTransform,
+} from "framer-motion";
 import { Poppins } from "next/font/google";
 
 const poppins = Poppins({
@@ -15,14 +20,12 @@ const text = [
   { word: "need" },
   { word: "more" },
   { word: "tools." },
-
   { word: "You" },
   { word: "need" },
   { word: "to" },
   { word: "see", highlight: true },
   { word: "the", highlight: true },
   { word: "work.", highlight: true },
-
   { word: "कARMA" },
   { word: "turns" },
   { word: "your" },
@@ -32,9 +35,19 @@ const text = [
   { word: "trace.", highlight: true },
 ];
 
-const Word = ({ word, index, total, progress, highlight }) => {
+const Word = ({
+  word,
+  index,
+  total,
+  progress,
+  highlight,
+}) => {
+  /*
+   * Give the words slightly more room at the beginning
+   * and make sure the FINAL word reaches 100%.
+   */
   const start = index / total;
-  const end = (index + 1.4) / total;
+  const end = Math.min((index + 1.15) / total, 1);
 
   const opacity = useTransform(
     progress,
@@ -71,11 +84,24 @@ const Word = ({ word, index, total, progress, highlight }) => {
 };
 
 const GradText = () => {
-  const { scrollYProgress } = useScroll();
+  const sectionRef = useRef(null);
 
   /*
-   * Smooth the raw browser scroll position.
-   * This prevents the words from snapping into place.
+   * Track ONLY this section's scroll progress.
+   *
+   * start start:
+   * section reaches the top of viewport → progress = 0
+   *
+   * end end:
+   * bottom of section reaches bottom of viewport → progress = 1
+   */
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start start", "end end"],
+  });
+
+  /*
+   * Smooth the animation so the words don't snap.
    */
   const smoothProgress = useSpring(scrollYProgress, {
     stiffness: 70,
@@ -85,9 +111,10 @@ const GradText = () => {
 
   return (
     <section
+      ref={sectionRef}
       className="
         relative
-        h-[180vh]
+        h-[200vh]
         w-full
       "
     >

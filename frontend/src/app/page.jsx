@@ -12,6 +12,9 @@ import Hero2 from "@/components/landing/Hero2";
 import Demo from "@/components/landing/Demo";
 import GradText from "@/components/landing/GradText";
 import { Component as Features } from "@/components/landing/Features";
+import ComparisonBlock from "@/components/landing/ComparisonBlock";
+import KarmaFAQ from "@/components/landing/KarmaFAQ";
+import FooterWithSuite from "@/components/landing/FooterWithSuite";
 
 export default function Home() {
   return (
@@ -22,7 +25,7 @@ export default function Home() {
       </div> */}
 
       {/* Content */}
-      <div className="relative z-10">
+      <div className="relative z-10 " id="top">
         <motion.nav
           initial={{ y: -50, opacity: 0 }}
           animate={{ y: 0, opacity: 1 }}
@@ -36,9 +39,26 @@ export default function Home() {
         </motion.nav>
 
         <Hero2 />
-        <Demo />
-        <GradText/>
-        <Features/>
+
+        <section id="how-it-works">
+          <Demo />
+        </section>
+
+        <GradText />
+
+        <section id="features">
+          <Features />
+        </section>
+
+        <section id="compare">
+          <ComparisonBlock />
+        </section>
+
+        <section id="faq">
+          <KarmaFAQ />
+        </section>
+
+        <FooterWithSuite />
       </div>
     </main>
   );

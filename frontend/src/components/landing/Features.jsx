@@ -8,6 +8,13 @@ import {
   Shield,
   Zap,
   ArrowRight,
+  LineChart,
+  TimerReset,
+  BrainCircuit,
+  LayoutDashboard,
+  Trophy,
+  UsersRound,
+  Flame,
 } from "lucide-react";
 
 // Lenis smooth scroll initialization (simulated for single file)
@@ -121,22 +128,40 @@ export function Component() {
 
   const cards = [
     {
-      title: "Visionary UI",
+      title: "Focus Engine",
       description:
-        "Breaking the mold with interfaces that don't just function, but inspire. We prioritize emotional connection through design.",
-      Icon: Layout,
+        "Turn focused work into measurable progress with structured sessions, tasks, projects, and real-time productivity signals.",
+      Icon: TimerReset,
     },
     {
-      title: "Fortified Core",
+      title: "KARMA Intelligence",
       description:
-        "Architecture built for the future. We deploy military-grade encryption wrapped in a user-friendly shell.",
-      Icon: Shield,
+        "Understand how you work through contextual AI insights that reveal patterns, detect focus leaks, and guide better decisions.",
+      Icon: BrainCircuit,
     },
     {
-      title: "Neural Speed",
+      title: "Command Center",
       description:
-        "Engineered for instantaneous response times. Our stack is fine-tuned for high-concurrency and ultra-low latency.",
-      Icon: Zap,
+        "See your entire development journey in one place — performance, projects, achievements, trends, and productivity insights.",
+      Icon: LayoutDashboard,
+    },
+    {
+      title: "Achievement System",
+      description:
+        "Turn consistency into recognition with milestones, streaks, badges, and progression that reward meaningful developer habits.",
+      Icon: Trophy,
+    },
+    {
+      title: "Developer Network",
+      description:
+        "Build your professional circle, follow developers, discover activity, and stay connected through shared progress.",
+      Icon: UsersRound,
+    },
+    {
+      title: "Momentum Tracking",
+      description:
+        "Track streaks, consistency, and long-term progress to make sustained development habits visible and measurable.",
+      Icon: Flame,
     },
   ];
 
@@ -179,12 +204,11 @@ export function Component() {
                 Next Gen Experiences
               </span>
             </div> */}
-            <h1 className="text-4xl sm:text-6xl md:text-8xl font-black tracking-tighter mb-6 md:mb-8 bg-clip-text text-transparent bg-linear-to-b from-white to-gray-500">
-              The Standard.
+            <h1 className="text-4xl sm:text-6xl md:text-8xl font-black tracking-tighter mb-6 md:mb-8 bg-clip-text text-transparent bg-linear-to-b from-white to-gray-500 pb-5">
+              The System
             </h1>
             <p className="text-base md:text-xl text-gray-400 font-light leading-relaxed px-4">
-              We do not follow trends; we set the benchmark for digital
-              craftsmanship and fluidity.
+              Built to capture your work, decode your habits, and showcase your growth.
             </p>
           </motion.div>
         </header>
