@@ -2,10 +2,7 @@
 
 import React from "react";
 import { motion } from "framer-motion";
-import {
-  Tiro_Devanagari_Sanskrit,
-  Poppins,
-} from "next/font/google";
+import { Tiro_Devanagari_Sanskrit, Poppins } from "next/font/google";
 
 const tiro = Tiro_Devanagari_Sanskrit({
   weight: "400",
@@ -167,9 +164,8 @@ const Hero = () => {
               >
                 Your work leaves a trace.
                 <br />
-                Track focused sessions, completed tasks,
-                consistency, and progress — then use the data
-                to understand how you actually work.
+                Track focused sessions, completed tasks, consistency, and
+                progress, then use the data to understand how you actually work.
               </p>
             </motion.div>
 
@@ -188,41 +184,35 @@ const Hero = () => {
               className="mt-8"
             >
               <motion.button
-                whileHover={{
-                  y: -2,
-                  borderColor: "rgba(255,255,255,0.55)",
-                  backgroundColor: "rgba(255,255,255,0.04)",
-                }}
-                whileTap={{
-                  scale: 0.98,
-                }}
-                transition={{
-                  type: "spring",
-                  stiffness: 400,
-                  damping: 25,
-                }}
+                whileHover={{ y: -2 }}
+                whileTap={{ scale: 0.98 }}
+                transition={{ type: "spring", stiffness: 400, damping: 25 }}
                 className={`
-                  ${poppins.className}
-                  group
-                  flex
-                  h-14
-                  items-center
-                  justify-center
-                  gap-3
-                  rounded-[12px]
-                  border
-                  border-white/25
-                  px-6
-                  text-sm
-                  font-medium
-                  text-white
-                  transition-colors
-                  sm:w-auto
-                `}
+                ${poppins.className}
+                group relative isolate overflow-hidden
+                flex h-14 items-center justify-center gap-3
+                rounded-[12px] border border-white/25
+                px-6 md:ml-5 text-sm font-medium
+                sm:w-auto
+                 `}
               >
-                Start Tracking
+                {/* diagonal fill layer */}
+                <span
+                  aria-hidden
+                  className="
+                pointer-events-none absolute -bottom-[75%] -left-[75%]
+                h-[250%] w-[250%] rotate-45 scale-0
+            bg-white
+                transition-transform duration-500
+                ease-[cubic-bezier(0.65,0,0.35,1)]
+                group-hover:scale-100
+                "
+                />
 
-                <span className="text-lg text-white/60 transition-transform duration-300 group-hover:translate-x-1">
+                <span className="relative z-10 text-white transition-colors duration-300 group-hover:text-black">
+                  Start Tracking
+                </span>
+                <span className="relative z-10 text-lg text-white/60 transition-all duration-300 group-hover:translate-x-1 group-hover:text-black/70">
                   →
                 </span>
               </motion.button>
@@ -242,77 +232,118 @@ const Hero = () => {
               ease: [0.22, 1, 0.36, 1],
             }}
             className="
-              flex
-              min-h-[420px]
-              items-center
-              justify-center
-              rounded-[16px]
-              border-white/30
-              p-3
-              sm:min-h-[500px]
-              sm:p-5
-              md:p-6
-              lg:min-h-full
-              lg:p-7
-              xl:p-8
-            "
+    flex
+    min-h-[420px]
+    items-center
+    justify-center
+    p-3
+    sm:min-h-[500px]
+    sm:p-5
+    md:p-6
+    lg:min-h-full
+    lg:p-7
+    xl:p-8
+  "
           >
-            {/* Product preview */}
+            {/* MAC / APP WINDOW */}
             <div
               className="
-                relative
-                flex
-                aspect-video
-                w-full
-                items-center
-                justify-center
-                overflow-hidden
-                rounded-[14px]
-                border
-                border-white/25
-                bg-[#0d0d0f]
-              "
+      relative
+      flex
+      w-full
+      overflow-hidden
+      rounded-[14px]
+      border
+      border-white/15
+      bg-[#0c0c0f]
+      shadow-[0_25px_80px_rgba(0,0,0,0.45)]
+    "
             >
-              {/* subtle inner glow */}
-              <div
-                className="
-                  pointer-events-none
-                  absolute
-                  inset-0
-                  bg-[radial-gradient(circle_at_50%_45%,rgba(217,169,40,0.06),transparent_55%)]
-                "
-              />
+              {/* ================= WINDOW HEADER ================= */}
+              <div className="absolute inset-x-0 top-0 z-20 h-11 border-b border-white/10 bg-[#111114]/95 backdrop-blur-md sm:h-12">
+                <div className="flex h-full items-center px-3 sm:px-4">
+                  {/* Traffic lights */}
+                  <div className="flex items-center gap-1.5 sm:gap-2">
+                    <span className="h-2.5 w-2.5 rounded-full bg-[#ff5f57] sm:h-3 sm:w-3" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-[#febc2e] sm:h-3 sm:w-3" />
+                    <span className="h-2.5 w-2.5 rounded-full bg-[#28c840] sm:h-3 sm:w-3" />
+                  </div>
 
-              {/* Placeholder until actual product preview is added */}
-              <div className="relative text-center">
-                <p
-                  className={`
+                  {/* Address / title */}
+                  {/* <div className="absolute left-1/2 -translate-x-1/2">
+                    <div
+                      className={`${poppins.className} flex items-center gap-2 text-[9px] tracking-wide text-white/35 sm:text-[10px]`}
+                    >
+                      <span className="h-1.5 w-1.5 rounded-full bg-[#D9A928]" />
+                      karma.app
+                    </div>
+                  </div> */}
+
+                  {/* Demo badge */}
+                  <div
+                    className={`${poppins.className} ml-auto rounded-md border border-[#D9A928]/20 bg-[#D9A928]/10 px-2 py-1 text-[8px] font-medium tracking-[0.12em] text-[#D9A928] sm:px-2.5 sm:text-[9px]`}
+                  >
+                    DEMO
+                  </div>
+                </div>
+              </div>
+
+              {/* ================= PRODUCT VIEWPORT ================= */}
+              <div className="relative aspect-video w-full overflow-hidden bg-[#08080b] pt-11 sm:pt-12">
+                {/* subtle ambient glow */}
+                <div className="  pointer-events-none  absolute  inset-0  z-10  bg-[radial-gradient(circle_at_50%_45%,rgba(217,169,40,0.045),transparent_60%)] " />
+
+                {/* =================================================
+          YOUR SCREEN RECORDING GOES HERE
+          ================================================= */}
+
+                <div className="absolute inset-0 flex items-center justify-center">
+                  <div className="text-center">
+                    <p
+                      className={`
                     ${poppins.className}
-                    text-lg
+                    text-base
                     font-medium
                     tracking-wide
-                    text-white/70
-                    sm:text-xl
-                    md:text-2xl
-                  `}
-                >
-                  SS of Live Product
-                </p>
+                     text-white/60
+                    sm:text-lg
+                    md:text-xl
+                    `}
+                    >
+                      SS of Live Product
+                    </p>
 
-                <div className="mx-auto mt-4 h-px w-16 bg-[#D9A928]/40" />
+                    <div className="mx-auto mt-3 h-px w-12 bg-[#D9A928]/40 sm:mt-4 sm:w-16" />
 
-                <p
-                  className={`
+                    <p
+                      className={`
                     ${poppins.className}
-                    mt-3
-                    text-[10px]
+                    mt-2
+                    text-[8px]
                     uppercase
-                    tracking-[0.28em]
-                    text-white/25
-                  `}
-                >
-                  See your work in motion
-                </p>
+                    tracking-[0.25em]
+                     text-white/20
+                    sm:text-[9px]
+                    `}
+                    >
+                      See your work in motion
+                    </p>
+                  </div>
+                </div>
+
+                {/* =================================================
+          WHEN YOU ADD YOUR VIDEO:
+
+          <video
+            src="/your-demo.mp4"
+            autoPlay
+            muted
+            loop
+            playsInline
+            className="absolute inset-0 h-full w-full object-cover"
+          />
+
+          ================================================= */}
               </div>
             </div>
           </motion.div>

@@ -8,14 +8,16 @@ import useRefreshStore from "@/store/useRefreshStore";
 import TopoField from "@/components/landing/TopoField";
 import Navbar from "@/components/landing/Navbar";
 import Hero from "@/components/landing/Hero";
+import Hero2 from "@/components/landing/Hero2";
+import Demo from "@/components/landing/Demo";
 
 export default function Home() {
   return (
-    <main className="relative min-h-screen w-full">
+    <main className="relative min-h-screen w-full bg-[#0C0C0B]">
       {/* Background */}
-      <div className="absolute inset-0 z-0">
+      {/*  <div className="absolute inset-0 z-0">
         <TopoField />
-      </div>
+      </div> */}
 
       {/* Content */}
       <div className="relative z-10">
@@ -26,15 +28,13 @@ export default function Home() {
             duration: 1.3,
             ease: [0.22, 1, 0.36, 1],
           }}
-          className="sticky top-0 z-50 mx-auto w-[calc(100%-2rem)]"
+          className="sticky top-0 z-50 mx-auto w-[calc(100%-2rem)] py-3"
         >
           <Navbar />
         </motion.nav>
 
-        {/* Hero */}
-        <section className="md:mt-10 w-full">
-          <Hero />
-        </section>
+        <Hero2 />
+        <Demo />
       </div>
     </main>
   );
