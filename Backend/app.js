@@ -25,7 +25,7 @@ connectDB();
 
 app.use(
   cors({
-    origin: ["http://localhost:3000", "https://hoppscotch.io"],
+    origin: process.env.FRONTEND_URL,
     methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
     credentials: true,
   }),
@@ -34,7 +34,7 @@ app.use(
 //Session Configuration
 app.use(
   session({
-    secret: "your_secret_key",
+    secret: process.env.SESSION_SECRET,
     resave: false,
     saveUninitialized: false,
     cookie: {
