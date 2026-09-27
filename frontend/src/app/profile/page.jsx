@@ -37,28 +37,13 @@ const rowdies = Rowdies({
 });
 
 const ProfilePage = () => {
-  const links = [
+   const links = [
     {
       title: "Home",
       icon: (
         <IconHome className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
-      href: "#",
-    },
-
-    {
-      title: "Products",
-      icon: (
-        <IconTerminal2 className="h-full w-full text-neutral-500 dark:text-neutral-300" />
-      ),
-      href: "#",
-    },
-    {
-      title: "Profile",
-      icon: (
-        <IconUser className="h-full w-full text-neutral-500 dark:text-neutral-300" />
-      ),
-      href: "http://localhost:3000/profile",
+      href: "http://localhost:3000/",
     },
     {
       title: "Session",
@@ -72,21 +57,28 @@ const ProfilePage = () => {
       ),
       href: "http://localhost:3000/dashboard",
     },
-
     {
-      title: "Twitter",
+      title: "Profile",
       icon: (
-        <IconBrandX className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+        <IconUser className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
-      href: "#",
+      href: "http://localhost:3000/profile",
     },
-    {
-      title: "GitHub",
-      icon: (
-        <IconBrandGithub className="h-full w-full text-neutral-500 dark:text-neutral-300" />
-      ),
-      href: "#",
-    },
+    /* 
+        {
+            title: "Twitter",
+            icon: (
+                <IconBrandX className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+            ),
+            href: "#",
+        },
+        {
+            title: "GitHub",
+            icon: (
+                <IconBrandGithub className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+            ),
+            href: "#",
+        }, */
   ];
 
   const MobUserLinks = [
@@ -95,21 +87,21 @@ const ProfilePage = () => {
       title: "GitHub",
       icon: IconBrandGithub,
       color: "text-neutral-300",
-      link: "https://github.com/himatwork",
+      link: "https://github.com/",
     },
     {
       id: 2,
       title: "LinkedIn",
       icon: IconBrandLinkedin,
       color: "text-sky-400/70",
-      link: "https://linkedin.com/in/himanshu-dusane",
+      link: "https://linkedin.com/",
     },
     {
       id: 3,
       title: "Portfolio",
       icon: IconBrandDribbble,
       color: "text-violet-400/70",
-      link: "https://himanshu.dev",
+      link: "https://demo.dev",
     },
   ];
   const userLinks = [
@@ -118,42 +110,42 @@ const ProfilePage = () => {
       title: "GitHub",
       icon: IconBrandGithub,
       color: "text-neutral-300",
-      link: "https://github.com/himatwork",
+      link: "https://github.com/",
     },
     {
       id: 2,
       title: "LinkedIn",
       icon: IconBrandLinkedin,
       color: "text-sky-400/70",
-      link: "https://linkedin.com/in/himanshu-dusane",
+      link: "https://linkedin.com/",
     },
     {
       id: 3,
       title: "Portfolio",
       icon: IconBrandDribbble,
       color: "text-violet-400/70",
-      link: "https://himanshu.dev",
+      link: "https://demo.dev",
     },
     {
       id: 4,
       title: "X",
       icon: IconBrandX,
       color: "text-neutral-300",
-      link: "https://x.com/himatwork",
+      link: "https://x.com/",
     },
     {
       id: 5,
       title: "LeetCode",
       icon: IconBrandLeetcode,
       color: "text-amber-400/70",
-      link: "https://leetcode.com/u/himatwork",
+      link: "https://leetcode.com/",
     },
     {
       id: 6,
       title: "HackerRank",
       icon: IconBrandHackerrank,
       color: "text-emerald-400/70",
-      link: "https://www.hackerrank.com/profile/himatwork",
+      link: "https://www.hackerrank.com/",
     },
   ];
 
@@ -228,7 +220,7 @@ const ProfilePage = () => {
 
   const pfp =
     avatar ||
-    "https://i.pinimg.com/originals/64/06/67/6406670622da320f2ee737b8a719d01e.jpg";
+    "https://i.pinimg.com/736x/83/bc/8b/83bc8b88cf6bc4b4e04d153a418cde62.jpg";
 
   useEffect(() => {
     setCurrentUser();
@@ -284,7 +276,7 @@ const ProfilePage = () => {
                 <div className="w-full min-w-0 flex justify-between md:justify-center items-center gap-3">
                   {/* Profile Icon */}
                   <div className="relative w-24 sm:w-32 md:w-50 aspect-square shrink-0">
-                    <div className="relative h-full w-full overflow-hidden rounded-full border border-neutral-300">
+                    <div className="relative h-full w-full overflow-hidden rounded-full ">
                       <Image
                         src={pfp}
                         alt="Profile"
@@ -409,34 +401,36 @@ const ProfilePage = () => {
                   </div>
 
                   {/* Follower and Following */}
-                  <div className="flex flex-col sm:flex-row border-t border-neutral-800">
-                    <div className="flex-1 flex items-center gap-3 px-5 py-4 sm:border-r border-neutral-800 min-w-0">
-                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/4">
-                        <IconUsersGroup className="h-6 w-6 text-neutral-300" />
+                  <div className="grid grid-cols-2 border-t border-neutral-800">
+                    {/* Followers */}
+                    <div className="flex min-w-0 items-center gap-2 px-3 py-4 sm:px-4">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/[0.04]">
+                        <IconUsersGroup className="h-5 w-5 text-neutral-300" />
                       </div>
 
-                      <div>
-                        <p className="text-xs uppercase tracking-wide text-neutral-500">
+                      <div className="min-w-0">
+                        <p className="truncate text-[10px] uppercase tracking-[0.08em] text-neutral-500">
                           Followers
                         </p>
 
-                        <p className="text-xl font-semibold text-neutral-200">
+                        <p className="text-lg font-semibold leading-tight text-neutral-200">
                           ---
                         </p>
                       </div>
                     </div>
 
-                    <div className="flex-1 flex items-center gap-3 px-5 py-4 min-w-0">
-                      <div className="flex h-11 w-11 shrink-0 items-center justify-center rounded-xl bg-white/[0.04]">
-                        <IconUsersGroup className="h-6 w-6 text-neutral-300" />
+                    {/* Following */}
+                    <div className="flex min-w-0 items-center gap-2 border-l border-neutral-800 px-3 py-4 sm:px-4">
+                      <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-xl bg-white/[0.04]">
+                        <IconUsersGroup className="h-5 w-5 text-neutral-300" />
                       </div>
 
-                      <div>
-                        <p className="text-xs uppercase tracking-wide text-neutral-500">
+                      <div className="min-w-0">
+                        <p className="truncate text-[10px] uppercase tracking-[0.08em] text-neutral-500">
                           Following
                         </p>
 
-                        <p className="text-xl font-semibold text-neutral-200">
+                        <p className="text-lg font-semibold leading-tight text-neutral-200">
                           ---
                         </p>
                       </div>

@@ -34,22 +34,7 @@ const AnalyticsPage = () => {
       icon: (
         <IconHome className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
-      href: "#",
-    },
-
-    {
-      title: "Products",
-      icon: (
-        <IconTerminal2 className="h-full w-full text-neutral-500 dark:text-neutral-300" />
-      ),
-      href: "#",
-    },
-    {
-      title: "Profile",
-      icon: (
-        <IconUser className="h-full w-full text-neutral-500 dark:text-neutral-300" />
-      ),
-      href: "http://localhost:3000/profile",
+      href: "http://localhost:3000/",
     },
     {
       title: "Session",
@@ -63,21 +48,28 @@ const AnalyticsPage = () => {
       ),
       href: "http://localhost:3000/dashboard",
     },
-
     {
-      title: "Twitter",
+      title: "Profile",
       icon: (
-        <IconBrandX className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+        <IconUser className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
-      href: "#",
+      href: "http://localhost:3000/profile",
     },
-    {
-      title: "GitHub",
-      icon: (
-        <IconBrandGithub className="h-full w-full text-neutral-500 dark:text-neutral-300" />
-      ),
-      href: "#",
-    },
+    /* 
+        {
+            title: "Twitter",
+            icon: (
+                <IconBrandX className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+            ),
+            href: "#",
+        },
+        {
+            title: "GitHub",
+            icon: (
+                <IconBrandGithub className="h-full w-full text-neutral-500 dark:text-neutral-300" />
+            ),
+            href: "#",
+        }, */
   ];
 
   const [summary, setSummary] = useState([]);
@@ -152,7 +144,7 @@ const AnalyticsPage = () => {
                 transition={{ duration: 0.8 }}
                 className="font-semibold text-2xl sm:text-3xl text-neutral-100 truncate max-w-full"
               >
-                Good Morning {username}
+                Welcome back, {username}
               </motion.span>{" "}
               {/* Animate using ReactBits */}
               <span className="text-sm sm:text-md text-neutral-400">
@@ -612,7 +604,8 @@ const AnalyticsPage = () => {
                       <span className="text-[9px] text-neutral-400 truncate">
                         Average Session Duration:{" "}
                         {Math.round(
-                          (summary?.summary?.[0]?.averageSessionDuration || 0) / 60,
+                          (summary?.summary?.[0]?.averageSessionDuration || 0) /
+                            60,
                         )}
                         m
                       </span>
@@ -1088,10 +1081,7 @@ const AnalyticsPage = () => {
 
       {/* Floating Dock */}
       <div className="fixed bottom-6 sm:bottom-8 left-1/2 -translate-x-1/2 z-50">
-        <FloatingDock
-          mobileClassName=""
-          items={links}
-        />
+        <FloatingDock mobileClassName="" items={links} />
       </div>
     </>
   );

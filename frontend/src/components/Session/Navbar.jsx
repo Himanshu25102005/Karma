@@ -3,7 +3,15 @@
 import React from "react";
 import Link from "next/link";
 import { motion } from "framer-motion";
+import { Inter, Playwrite_BE_WAL } from "next/font/google";
 
+const inter = Inter({
+  subsets: ["latin"],
+});
+
+const playwrite_BE_WAL = Playwrite_BE_WAL({
+  subsets: ["latin"],
+});
 const Navbar = () => {
   return (
     <motion.nav
@@ -22,8 +30,8 @@ const Navbar = () => {
           className="group flex items-center gap-1.5 focus:outline-none cursor-target"
           aria-label="Go to Dashboard"
         >
-          <span className="text-base sm:text-lg font-semibold tracking-tight text-white transition-opacity duration-200 group-hover:opacity-85">
-            <span className="text-[#D9A928] font-medium mr-0.5">क</span>ARMA
+          <span className={`text-base sm:text-lg font-semibold tracking-tight text-white transition-opacity duration-200 group-hover:opacity-85 ${playwrite_BE_WAL.className}`}>
+            <span className="text-[#D9A928] font-medium mr-0.5">क</span>ARMA:
           </span>
         </Link>
       </div>

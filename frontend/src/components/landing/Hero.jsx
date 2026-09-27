@@ -3,7 +3,7 @@
 import React from "react";
 import { motion } from "framer-motion";
 import { Tiro_Devanagari_Sanskrit, Poppins } from "next/font/google";
-
+import Link from "next/link";
 const tiro = Tiro_Devanagari_Sanskrit({
   weight: "400",
   subsets: ["devanagari", "latin"],
@@ -183,39 +183,36 @@ const Hero = () => {
               }}
               className="mt-8"
             >
-              <motion.button
+              <motion.div
                 whileHover={{ y: -2 }}
                 whileTap={{ scale: 0.98 }}
-                transition={{ type: "spring", stiffness: 400, damping: 25 }}
-                className={`
-                ${poppins.className}
-                group relative isolate overflow-hidden
-                flex h-14 items-center justify-center gap-3
-                rounded-[12px] border border-white/25
-                px-6 md:ml-5 text-sm font-medium
-                sm:w-auto
-                 `}
+                transition={{
+                  type: "spring",
+                  stiffness: 400,
+                  damping: 25,
+                }}
               >
-                {/* diagonal fill layer */}
-                <span
-                  aria-hidden
-                  className="
-                pointer-events-none absolute -bottom-[75%] -left-[75%]
-                h-[250%] w-[250%] rotate-45 scale-0
-            bg-white
-                transition-transform duration-500
-                ease-[cubic-bezier(0.65,0,0.35,1)]
-                group-hover:scale-100
-                "
-                />
+                <Link
+                  href="/login"
+                  className={` ${poppins.className} group relative isolate overflow-hidden flex h-14 items-center justify-center gap-3 rounded-[12px] border border-white/25 px-6 md:ml-5 text-sm font-medium sm:w-auto`}
+                >
+                  {/* Diagonal fill layer */}
+                  <span
+                    aria-hidden
+                    className=" pointer-events-none absolute -bottom-[75%] -left-[75%] h-[250%] w-[250%] rotate-45 scale-0 bg-white transition-transform duration-500 ease-[cubic-bezier(0.65,0,0.35,1)]  group-hover:scale-100 "
+                  />
 
-                <span className="relative z-10 text-white transition-colors duration-300 group-hover:text-black">
-                  Start Tracking
-                </span>
-                <span className="relative z-10 text-lg text-white/60 transition-all duration-300 group-hover:translate-x-1 group-hover:text-black/70">
-                  →
-                </span>
-              </motion.button>
+                  {/* Button text */}
+                  <span className=" relative z-10 text-white transition-colors duration-300 group-hover:text-black ">
+                    Start Tracking
+                  </span>
+
+                  {/* Arrow */}
+                  <span className=" relative z-10 text-lg text-white/60 transition-all duration-300 group-hover:translate-x-1 group-hover:text-black/70 ">
+                    →
+                  </span>
+                </Link>
+              </motion.div>
             </motion.div>
           </div>
 
@@ -231,34 +228,10 @@ const Hero = () => {
               delay: 0.15,
               ease: [0.22, 1, 0.36, 1],
             }}
-            className="
-    flex
-    min-h-[420px]
-    items-center
-    justify-center
-    p-3
-    sm:min-h-[500px]
-    sm:p-5
-    md:p-6
-    lg:min-h-full
-    lg:p-7
-    xl:p-8
-  "
+            className=" flex min-h-[420px] items-center justify-center p-3 sm:min-h-[500px] sm:p-5 md:p-6 lg:min-h-full lg:p-7 xl:p-8"
           >
             {/* MAC / APP WINDOW */}
-            <div
-              className="
-      relative
-      flex
-      w-full
-      overflow-hidden
-      rounded-[14px]
-      border
-      border-white/15
-      bg-[#0c0c0f]
-      shadow-[0_25px_80px_rgba(0,0,0,0.45)]
-    "
-            >
+            <div className=" relative flex w-full overflow-hidden rounded-[14px] border border-white/15 bg-[#0c0c0f]  shadow-[0_25px_80px_rgba(0,0,0,0.45)]">
               {/* ================= WINDOW HEADER ================= */}
               <div className="absolute inset-x-0 top-0 z-20 h-11 border-b border-white/10 bg-[#111114]/95 backdrop-blur-md sm:h-12">
                 <div className="flex h-full items-center px-3 sm:px-4">
@@ -269,7 +242,7 @@ const Hero = () => {
                     <span className="h-2.5 w-2.5 rounded-full bg-[#28c840] sm:h-3 sm:w-3" />
                   </div>
 
-                  {/* Address / title */}
+                  {/* Address / 
                   {/* <div className="absolute left-1/2 -translate-x-1/2">
                     <div
                       className={`${poppins.className} flex items-center gap-2 text-[9px] tracking-wide text-white/35 sm:text-[10px]`}

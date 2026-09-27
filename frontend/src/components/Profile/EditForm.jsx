@@ -114,7 +114,7 @@ const EditForm = ({ onClose }) => {
     "Building in public. Solving problems. Learning every day.",
   );
   const [avatar, setAvatar] = useState(
-    "https://i.pinimg.com/originals/64/06/67/6406670622da320f2ee737b8a719d01e.jpg",
+    "https://i.pinimg.com/736x/83/bc/8b/83bc8b88cf6bc4b4e04d153a418cde62.jpg",
   );
 
   const [email, setEmail] = useState("himanshu@example.com");
