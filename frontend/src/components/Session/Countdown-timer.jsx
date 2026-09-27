@@ -131,6 +131,7 @@ export default function ShiftingCountdown({ part = "full" }) {
           whileTap={{ scale: 0.95 }}
           whileHover={{ scale: 1.04 }}
           onClick={setStart}
+          data-tour="start-session-btn"
           className="px-4 py-2 text-sm lg:px-6 lg:py-3 lg:text-2xl lg:font-semibold cursor-target font-medium rounded-xl lg:rounded-2xl border border-green-400/25 bg-green-400/8 hover:bg-green-400/15 transition-all duration-200"
         >
           Start Session

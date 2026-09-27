@@ -267,6 +267,7 @@ const Sprint = ({ compact = false, fillHeight = false }) => {
                     {/* ADD TASK */}
                     <motion.form
                         onSubmit={addNewTask}
+                        data-tour="add-task"
                         initial={{ opacity: 0, y: 10 }}
                         animate={{ opacity: 1, y: 0 }}
                         transition={{ delay: 0.2 }}
@@ -275,6 +276,7 @@ const Sprint = ({ compact = false, fillHeight = false }) => {
                     >
                         <button
                             type="submit"
+                            data-tour="add-task-btn"
                             className="h-9 w-9 sm:h-10 sm:w-10 cursor-target flex justify-center items-center rounded-xl hover:bg-white/10 transition shrink-0"
                         >
                             <IconPlus size={compact ? 22 : 26} />

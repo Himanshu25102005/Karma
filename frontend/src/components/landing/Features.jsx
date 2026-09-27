@@ -73,7 +73,7 @@ const Card = ({ title, description, Icon, index }) => {
         rotateY,
         transformStyle: "preserve-3d",
       }}
-      className="relative bg-white p-8 md:p-10 rounded-4xl md:rounded-[2.5rem] flex flex-col h-100 md:h-112.5 w-[calc(100vw-48px)] md:w-95 transition-all duration-500 cursor-none group"
+      className="relative bg-white p-8 md:p-10 rounded-4xl md:rounded-[2.5rem] flex flex-col h-100 md:h-112.5 w-[calc(100vw-48px)] md:w-95 transition-all duration-500 cursor-pointer group"
     >
       {/* Inner Content with Z-index for 3D effect */}
       <div
@@ -116,15 +116,6 @@ const Card = ({ title, description, Icon, index }) => {
 export function Component() {
   useLenis();
   const carouselRef = useRef(null);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
-
-  useEffect(() => {
-    const handleGlobalMouseMove = (e) => {
-      setMousePos({ x: e.clientX, y: e.clientY });
-    };
-    window.addEventListener("mousemove", handleGlobalMouseMove);
-    return () => window.removeEventListener("mousemove", handleGlobalMouseMove);
-  }, []);
 
   const cards = [
     {
@@ -178,14 +169,8 @@ export function Component() {
     });
 
   return (
-    <div className="min-h-screen bg-[#0a0a0a] text-white font-sans selection:bg-white selection:text-black flex flex-col items-center justify-center overflow-hidden relative">
-      {/* Dynamic Background Spotlight */}
-      <div
-        className="pointer-events-none fixed inset-0 z-0 transition-opacity duration-300 hidden md:block"
-        style={{
-          background: `radial-gradient(circle 600px at ${mousePos.x}px ${mousePos.y}px, rgba(255,255,255,0.06), transparent 80%)`,
-        }}
-      />
+    <div className="min-h-screen  text-white font-sans selection:bg-white selection:text-black flex flex-col items-center justify-center overflow-hidden relative">
+{/* bg-[#0a0a0a] */}
 
       {/* Noise Texture Overlay */}
       <div className="fixed inset-0 pointer-events-none z-50 opacity-[0.03] mix-blend-overlay bg-[url('https://grainy-gradients.vercel.app/noise.svg')]" />

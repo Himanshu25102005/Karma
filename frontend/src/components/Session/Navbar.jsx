@@ -1,49 +1,55 @@
+"use client";
+
 import React from "react";
-import { IconBell } from "@tabler/icons-react";
+import Link from "next/link";
 import { motion } from "framer-motion";
 
 const Navbar = () => {
   return (
-    <div className="fixed top-0 left-0 w-full h-16 z-50 flex items-center justify-between px-8
-    bg-black/40 backdrop-blur-md border-b border-white/10">
-
-      {/* LOGO */}
+    <motion.nav
+      initial={{ opacity: 0, y: -6 }}
+      animate={{ opacity: 1, y: 0 }}
+      transition={{
+        duration: 0.45,
+        ease: [0.22, 1, 0.36, 1],
+      }}
+      className="fixed top-0 left-0 right-0 h-16 z-50 flex items-center justify-between px-5 sm:px-6 md:px-8 border-b border-white/[0.08] bg-black/60 backdrop-blur-sm select-none"
+    >
+      {/* LEFT: कARMA Logo / Wordmark */}
       <div className="flex items-center">
-        <svg
-          className="h-10 w-10"
-          viewBox="0 0 100 100"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
+        <Link
+          href="/dashboard"
+          className="group flex items-center gap-1.5 focus:outline-none cursor-target"
+          aria-label="Go to Dashboard"
         >
-          <path d="M20 80 L45 55 H55 L80 30" stroke="#3882F6" strokeWidth="10" />
-          <path d="M20 60 L45 35 H55 L80 10" stroke="#3882F6" strokeOpacity="0.3" strokeWidth="10" />
-        </svg>
+          <span className="text-base sm:text-lg font-semibold tracking-tight text-white transition-opacity duration-200 group-hover:opacity-85">
+            <span className="text-[#D9A928] font-medium mr-0.5">क</span>ARMA
+          </span>
+        </Link>
       </div>
 
-      {/* RIGHT SIDE */}
-      <div className="flex items-center gap-6">
-
-        {/* Notification */}
-        <motion.div
-          whileHover={{ scale: 1.1 }}
-          whileTap={{ scale: 0.9 }}
-          className="p-2 rounded-xl hover:bg-white/10 transition cursor-pointer"
-        >
-          <IconBell color="#DFDFDF" size={26} />
-        </motion.div>
-
-        {/* Profile */}
-        <motion.div
-          whileHover={{ scale: 1.05 }}
-          className="h-10 w-10 rounded-full bg-cover bg-center border border-white/20 hover:border-white/40 transition cursor-pointer"
-          style={{
-            backgroundImage:
-              "url('https://i.pinimg.com/736x/ae/a7/a9/aea7a9551cda1f88cc5e6e7ea52709f1.jpg')",
-          }}
-        />
-
+      {/* CENTER: FOCUS SESSION (Desktop & Tablet, hidden on mobile) */}
+      <div className="hidden md:block absolute left-1/2 -translate-x-1/2 pointer-events-none select-none">
+        <span className="text-[10px] sm:text-[11px] font-light tracking-[0.22em] text-white/45 uppercase">
+          FOCUS SESSION
+        </span>
       </div>
-    </div>
+
+      {/* RIGHT: ← Dashboard Navigation */}
+      <div className="flex items-center">
+        <Link
+          href="/dashboard"
+          className="group flex items-center gap-1.5 text-xs sm:text-sm font-normal text-white/50 hover:text-white transition-colors duration-200 cursor-target focus:outline-none"
+        >
+          <span className="inline-block transition-transform duration-200 ease-out group-hover:-translate-x-1">
+            ←
+          </span>
+          <span className="transition-colors duration-200">
+            Dashboard
+          </span>
+        </Link>
+      </div>
+    </motion.nav>
   );
 };
 

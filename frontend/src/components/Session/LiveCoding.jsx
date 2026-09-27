@@ -7,7 +7,7 @@ const LiveCoding = ({ compact = false }) => {
     const [isEmpty, setIsEmpty] = useState(false)
     return (
         <>
-            <div className={`${compact ? 'min-h-[160px] max-h-[180px] mt-2' : 'min-h-[200px] max-h-[200px] mt-4'} w-full border-1 border-solid border-neutral-800 bg-white/[0.02] rounded-xl p-2 flex flex-col`}>
+            <div className={`${compact ? 'min-h-[160px] max-h-[180px] mt-2' : 'min-h-[200px] max-h-[200px] mt-4'} w-full border-1 border-solid border-neutral-800 bg-white/[0.02] rounded-xl p-2 flex flex-col pointer-none`}>
                 {/* Heading */}
                 <div className='h-8 w-full flex justify-between items-center'>
                     <motion.div
@@ -27,9 +27,9 @@ const LiveCoding = ({ compact = false }) => {
                                 repeatType: "reverse", // Smoothly fade in and out
                                 ease: "easeInOut"
                             }}
-                            className='h-6 text-sm text-red-900 rounded-md w-13 bg-red-900/20 font-semibold flex justify-center items-center'>
+                            className='h-6 text-sm text-red-900 rounded-md w-15 bg-red-900/20 font-semibold flex justify-center items-center'>
                             <IconLivePhoto className='h-4 w-4' />
-                            Live
+                            SOON!
                         </motion.div>
                     </motion.div>
                     <motion.button
@@ -66,9 +66,9 @@ const LiveCoding = ({ compact = false }) => {
                                     </div>
 
                                     <div className='flex-1 flex flex-col justify-center items-start leading-tight'>
-                                        <span className='text-white text-sm font-medium'>Harsh</span>
-                                        <span className='text-green-500 text-[10px] '>Karma</span> {/* ADD PROJECT COLOUR TO THIS TEXT */}
-                                        <span className='text-neutral-400 text-[10px]'>SaaS</span>
+                                        <span className='text-white text-sm font-medium'> See who&apos;s in focus</span>
+                                        <span className='text-green-500 text-[10px] '>Discover developers working</span> {/* ADD PROJECT COLOUR TO THIS TEXT */}
+                                        <span className='text-neutral-400 text-[10px]'>alongside you.</span>
                                     </div>
                                 </div>
 

@@ -83,7 +83,7 @@ const ProjectSelector = ({ projects, setProjects }) => {
   return (
     <>
       <div className='relative w-full max-w-sm sm:max-w-md mx-auto lg:max-w-none lg:mx-0 h-auto flex flex-col gap-1 items-center'>
-        <div className="w-full max-w-xs sm:w-80 flex items-center rounded-2xl px-3 py-2 bg-white/[0.04] border border-white/10 backdrop-blur-sm hover:bg-white/[0.08] transition-all duration-200 cursor-pointer">
+        <div data-tour="project-selector" className="w-full max-w-xs sm:w-80 flex items-center rounded-2xl px-3 py-2 bg-white/[0.04] border border-white/10 backdrop-blur-sm hover:bg-white/[0.08] transition-all duration-200 cursor-pointer">
           <div className='border-r border-white/10 w-1/4 flex justify-center items-center'>
             <IconBriefcaseFilled color="#DFDFDF" size={25} />
           </div>
@@ -95,7 +95,7 @@ const ProjectSelector = ({ projects, setProjects }) => {
                 {currentProject ? (
                   <span>{currentProject.name}</span>
                 ) : (
-                  <span className="text-gray-500 italic">Select a current project</span>
+                  <span className="text-gray-500 italic">Create Project</span>
                 )}
               </div>
             );

@@ -13,6 +13,7 @@ import Sprint from "../../components/Session/Sprint";
 import { useUserStore } from "@/store/useUserStore";
 import Timer from "../../components/Session/Timer";
 import useProjectStore from '@/store/useProjectStore';
+import KarmaOnboarding from '@/components/onboarding/KarmaOnboarding';
 import {
   IconBrandGithub,
   IconBrandX,
@@ -80,24 +81,25 @@ const SessionPage = () => {
 
   const setCurrentProjectId = useProjectStore((state) => state.setCurrentProjectId);
   const setCurrentUser = useUserStore((state) => state.setCurrentUser);
+  const userId = useUserStore((state) => state.userId);
   const [projects, setProjects] = useState([]);
   const [activityDrawerOpen, setActivityDrawerOpen] = useState(false);
 
   useEffect(() => {
+    setCurrentUser();
     const fetchProjects = async () => {
       try {
         const res = await api.getAllProjects();
         console.log("Full response data:", res.data);
         setProjects(res.data.projects);
-        setCurrentUser();
       } catch (e) {
-        console.log("error: ")
+        console.log("error: ");
         console.log(e.message);
       }
-    }
+    };
 
     fetchProjects();
-  }, [])
+  }, [setCurrentUser]);
 
   useEffect(() => {
     if (!projects || projects.length === 0) return;
@@ -111,7 +113,7 @@ const SessionPage = () => {
       console.log("NO CURRENT PROJECT FOUND");
       setCurrentProjectId(null);
     }
-  }, [projects]);
+  }, [projects, setCurrentProjectId]);
 
   useEffect(() => {
     const lockScroll = () => {
@@ -136,6 +138,7 @@ const SessionPage = () => {
 
   return (
     <>
+      <KarmaOnboarding userId={userId} />
       <SmoothCursor
         spinDuration={2}
         hideDefaultCursor

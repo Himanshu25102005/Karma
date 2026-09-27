@@ -131,8 +131,8 @@ function CrossRow({ text }) {
 
 export default function WhyKarma() {
     return (
-        <section className="w-full bg-[#0a0a0a] px-6 py-20 text-white sm:py-24 lg:py-32">
-
+        <section className="w-full  px-6 py-20 text-white sm:py-24 lg:py-32">
+{/* bg-[#0a0a0a] */}
             <div className="mx-auto w-full max-w-5xl">
 
                 {/* SECTION HEADING */}
