@@ -22,7 +22,6 @@ const Personal_Stats = ({ compact = false }) => {
       const res = await api.overview();
       const streak = await api.getStreak();
 
-      console.log("Streak Data ", streak.data);
       setSummary(res.data);
       setStreakData(streak.data);
     };
@@ -307,7 +306,7 @@ const Personal_Stats = ({ compact = false }) => {
             initial={{ opacity: 0, y: -10 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.4, ease: "easeOut" }}
-            href="http://localhost:3000/dashboard"
+            href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/dashboard`}
             className="flex gap-2 justify-center cursor-target items-center"
           >
             <span className="text-neutral-500 hover:text-neutral-300 transition-colors">

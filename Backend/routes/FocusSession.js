@@ -73,7 +73,6 @@ router.post("/session/start", isloggedIn, async (req, res) => {
 
     res.status(201).json(newSession);
   } catch (e) {
-    console.log(e);
     res.status(500).json({ error: e.message });
   }
 });
@@ -148,7 +147,6 @@ router.patch("/session/stop/:id", isloggedIn, async (req, res) => {
       },
     });
   } catch (err) {
-    console.log(err);
     res.status(500).json({ error: err.message });
   }
 });
@@ -224,7 +222,6 @@ router.get("/session/history", isloggedIn, async (req, res) => {
       sessions,
     });
   } catch (e) {
-    console.log(e);
     res.status(500).json({ error: e.message });
   }
 });
@@ -269,7 +266,6 @@ router.get("/session/histogram/data/weekly", isloggedIn, async (req, res) => {
 
     res.status(200).json(data);
   } catch (e) {
-    console.log(e);
     res.status(500).json(e.message);
   }
 });
@@ -374,7 +370,6 @@ router.get("/session/heatmapData", isloggedIn, async (req, res) => {
 
     res.status(200).json(data);
   } catch (e) {
-    console.log(e);
     res.status(500).json(e.message);
   }
 });

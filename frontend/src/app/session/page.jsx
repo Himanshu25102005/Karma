@@ -31,26 +31,26 @@ const SessionPage = () => {
       icon: (
         <IconHome className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
-      href: "http://localhost:3000/",
+      href: process.env.NEXT_PUBLIC_FRONTEND_URL,
     },
     {
       title: "Session",
       icon: <IconClockPlay className="h-20 w-20 text-white" />,
-      href: "http://localhost:3000/session",
+      href: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/session`,
     },
     {
       title: "Dashboard",
       icon: (
         <IconHomeStats className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
-      href: "http://localhost:3000/dashboard",
+      href: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/dashboard`,
     },
     {
       title: "Profile",
       icon: (
         <IconUser className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
-      href: "http://localhost:3000/profile",
+      href: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/profile`,
     },
     /* 
         {
@@ -82,11 +82,8 @@ const SessionPage = () => {
     const fetchProjects = async () => {
       try {
         const res = await api.getAllProjects();
-        console.log("Full response data:", res.data);
         setProjects(res.data.projects);
       } catch (e) {
-        console.log("error: ");
-        console.log(e.message);
       }
     };
 
@@ -99,10 +96,8 @@ const SessionPage = () => {
     const currentProject = projects.find((p) => p.isCurrent);
 
     if (currentProject) {
-      console.log("SETTING ID:", currentProject._id);
       setCurrentProjectId(currentProject._id);
     } else {
-      console.log("NO CURRENT PROJECT FOUND");
       setCurrentProjectId(null);
     }
   }, [projects, setCurrentProjectId]);

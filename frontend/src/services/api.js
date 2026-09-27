@@ -1,7 +1,8 @@
 import axios from "axios";
 
+
 const apiClient = axios.create({
-  baseURL: "http://localhost:5000/",
+  baseURL: process.env.BACKEND_URL,
   withCredentials: true,
 });
 
@@ -20,7 +21,6 @@ apiClient.interceptors.response.use(
   },
   function onRejected(error) {
     if (error.response?.status === 401) {
-      console.log("Session Expired");
     }
     return Promise.reject(error);
   },

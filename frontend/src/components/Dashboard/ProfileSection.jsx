@@ -20,7 +20,6 @@ const ProfileSection = () => {
         const fetchOverview = async () => {
             const streak = await api.getStreak();
             const badges = await api.getMyBadges();
-            console.log("Data from the badge route ", badges.data.badges);
             setBadgeData(badges.data.badges);
             setStreakData(streak.data);
 
@@ -31,7 +30,6 @@ const ProfileSection = () => {
     }, [])
 
     useEffect(() => {
-        console.log("badge data: ", badgeData)
     }, [badgeData])
 
     return (

@@ -16,7 +16,6 @@ const SessionHistory = ({ compact = false, fillHeight = false }) => {
   const [sessionHistory, setSessionHistory] = useState([]);
   const fetchSessionHistory = async () => {
     const res = await api.sessionHistory();
-    console.log("API Response from session history", res.data.sessions);
     setSessionHistory(res.data.sessions);
   };
 
@@ -25,14 +24,12 @@ const SessionHistory = ({ compact = false, fillHeight = false }) => {
       try {
         await fetchSessionHistory();
       } catch (err) {
-        console.error("Failed to load history:", err);
       }
     };
 
     loadData();
   }, [refreshToggle]);
   useEffect(() => {
-    console.log("Session History has updated:", sessionHistory);
   }, [sessionHistory, refreshToggle]);
 
   return (

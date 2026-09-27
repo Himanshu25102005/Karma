@@ -21,8 +21,7 @@ const Stats = () => {
       const res = await api.overview();
       const streak = await api.getStreak();
 
-      console.log("Streak Data ", streak.data);
-      console.log("Summary Data ", res.data);
+
       setSummary(res.data);
       setStreakData(streak.data);
     };
@@ -53,7 +52,6 @@ const Stats = () => {
           100,
       );
       setKarmaScore(defkarmaScore);
-      console.log("Karma Score:", defkarmaScore);
     };
 
     KarmaScoreCal();

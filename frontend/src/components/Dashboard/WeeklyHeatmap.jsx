@@ -54,7 +54,6 @@ const WeeklyHeatmap = ({profileRender}) => {
                 setValue(formattedData);
                 // console.log("Current Streak Data: ", currentStreak)
             } catch (e) {
-                console.log("Error fetching heatmap data: ", e)
             }
         }
 

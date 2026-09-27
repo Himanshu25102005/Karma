@@ -20,7 +20,6 @@ const Histogram = () => {
     const setCurrentUser = useUserStore((state) => state.setCurrentUser);
     useEffect(() => {
         setCurrentUser();
-        console.log("Current User's Username:", username);
     }, []);
 
     useEffect(() => {
@@ -37,7 +36,6 @@ const Histogram = () => {
     useEffect(() => {
         let fetchUserData = async () => {
             const res = await api.getPublicProfile(username);
-            console.log("Data from the new Profile route ", res.data)
         }
 
         fetchUserData();

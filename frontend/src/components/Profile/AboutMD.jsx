@@ -58,7 +58,6 @@ const AboutMD = () => {
 
       setEdit(false);
 
-      console.log("Updated about:", res.data.profile.about);
     } catch (err) {
       console.error("Failed to update about:", err);
     }

@@ -22,7 +22,6 @@ export const useUserStore = create((set, get) => ({
     try {
       const res = await api.getCurrentUser();
 
-      console.log("API avatar:", res.data.user.avatar);
       set({
         userId: res.data.user._id,
         name: res.data.user.name,
@@ -39,7 +38,6 @@ export const useUserStore = create((set, get) => ({
         createdAt: res.data.user.createdAt,
       });
     } catch (e) {
-      console.log("Failed to fetch user:", e);
     }
   },
 }));

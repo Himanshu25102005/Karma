@@ -76,7 +76,7 @@ router.get(
   passport.authenticate("google"),
   (req, res) => {
     req.session.save(() => {
-      res.redirect("http://localhost:3000/session");
+      res.redirect(`${process.env.FRONTEND_URL}/session`);
     });
   },
 );

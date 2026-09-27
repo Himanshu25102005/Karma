@@ -152,19 +152,15 @@ const Saarthi = () => {
     const fetchIntell = async () => {
       try {
         const intell = await api.getIntell();
-        console.log(intell.data.data);
         setData(intell.data.data.insights);
       } catch (e) {
-        console.log("intelligence can not be fetched: ", e);
       }
     };
 
     fetchIntell();
   }, [refreshToggle]);
 
-  useEffect(() => {
-    console.log("API DATA: ", data);
-  }, [data]);
+  
 
   const goPrev = () =>
     setActiveIndex(

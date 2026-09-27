@@ -27,7 +27,6 @@ const ProjectSelector = ({ projects, setProjects }) => {
     try {
       await api.updateProject(projectId, { isCurrent: true });
       setCurrentProjectId(projectId);
-      console.log("Project updated in DB");
       const res = await api.getAllProjects();
       setProjects(res.data.projects);
       setDropdown(false);
@@ -75,7 +74,6 @@ const ProjectSelector = ({ projects, setProjects }) => {
       });
     }
     catch (e) {
-      console.log("Error: ", e.message)
     }
   }
 

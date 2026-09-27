@@ -20,7 +20,6 @@ const Sprint = ({ compact = false, fillHeight = false }) => {
             const res = await api.addNewTask(currentProjectId, { description: newTask });
 
             if (!res.data.success) {
-                console.log("Cannot Add Task")
             }
 
             if (res.data.success) {
@@ -31,7 +30,6 @@ const Sprint = ({ compact = false, fillHeight = false }) => {
             triggerRefresh();
 
         } catch (error) {
-            console.log(error)
         }
     }
 
@@ -58,13 +56,11 @@ const Sprint = ({ compact = false, fillHeight = false }) => {
             }
             triggerRefresh();
         } catch (err) {
-            console.log(err);
         }
     };
 
     const delTask = async (taskId) => {
         const res = await api.delTask(taskId, currentProjectId);
-        console.log(res.data);
 
         setTasks((prevTasks) => {
             return prevTasks.filter((task) => task._id !== taskId);

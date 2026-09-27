@@ -12,10 +12,8 @@ const QuickInsight = ({ compact = false }) => {
     const fetchMostActiveProject = async () => {
       try {
         const res = await api.mostActiveProject();
-        console.log("Active Project ", res.data);
         setActiveProject(res.data.ActiveProject);
       } catch (err) {
-        console.error("Error fetching most active project:", err);
       }
     };
 

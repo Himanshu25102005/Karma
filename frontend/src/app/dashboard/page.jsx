@@ -34,26 +34,26 @@ const AnalyticsPage = () => {
       icon: (
         <IconHome className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
-      href: "http://localhost:3000/",
+      href: process.env.NEXT_PUBLIC_FRONTEND_URL,
     },
     {
       title: "Session",
       icon: <IconClockPlay className="h-20 w-20 text-white" />,
-      href: "http://localhost:3000/session",
+      href: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/session`,
     },
     {
       title: "Dashboard",
       icon: (
         <IconHomeStats className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
-      href: "http://localhost:3000/dashboard",
+      href: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/dashboard`,
     },
     {
       title: "Profile",
       icon: (
         <IconUser className="h-full w-full text-neutral-500 dark:text-neutral-300" />
       ),
-      href: "http://localhost:3000/profile",
+      href: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/profile`,
     },
     /* 
         {
@@ -82,8 +82,6 @@ const AnalyticsPage = () => {
       const res = await api.overview();
       const streak = await api.getStreak();
 
-      console.log("Streak Data ", streak.data);
-      console.log("Summary Data ", res.data);
       setSummary(res.data);
       setStreakData(streak.data);
     };
@@ -114,7 +112,6 @@ const AnalyticsPage = () => {
           100,
       );
       setKarmaScore(defkarmaScore);
-      console.log("Karma Score:", defkarmaScore);
     };
 
     KarmaScoreCal();

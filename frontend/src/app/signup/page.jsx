@@ -33,7 +33,7 @@ const Signuppage = () => {
 
         try {
             const res = await api.signup(form)
-            console.log(res);/* 
+          /* 
             setform(initialState); */
 
             if (res.data) {
@@ -51,7 +51,6 @@ const Signuppage = () => {
             }
 
         } catch (e) {
-            console.log(e.message);
         }
     };
 
@@ -185,7 +184,7 @@ const Signuppage = () => {
                         <div className="w-full  justify-center items-center py-2 px-4 flex gap-14 pt-8">
 
                             <motion.a
-                            href="http://localhost:5000/auth/google"
+                            href={`${process.env.NEXT_PUBLIC_API_URL}/auth/google`}
                                 whileHover={{ scale: 1.05 }}
                                 transition={{
                                     delay: 0.1,
@@ -326,7 +325,7 @@ const Signuppage = () => {
                                 <div className="text-[#6E6E70]">
                                     Already have an account? {" "}
                                     <motion.a
-                                    href="http://localhost:3000/login"
+                                    href={`${process.env.NEXT_PUBLIC_FRONTEND_URL}/login`}
                                         className="relative text-[#E4E4E4] cursor-pointer inline-block"
                                         whileHover="hover"
                                     >

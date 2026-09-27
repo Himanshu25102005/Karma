@@ -240,7 +240,6 @@ const EditForm = ({ onClose }) => {
 
     const res = await api.changeAvatar(formData);
     setAvatar(res.data.imageUrl);
-    console.log("data from the avatar API", res.data.imageUrl);
   };
   const handleClose = () => {
     onClose?.();

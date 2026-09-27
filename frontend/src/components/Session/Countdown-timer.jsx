@@ -65,7 +65,6 @@ export default function ShiftingCountdown({ part = "full" }) {
 
   const endSession = async () => {
     const res = await api.endSession(userId);
-    console.log(res.data);
     setReset();
     triggerRefresh();
   };

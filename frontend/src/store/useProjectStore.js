@@ -14,9 +14,7 @@ export const useProjectStore = create((set, get) => ({
     set({ projectId: id });
   },
 
-  print: () => {
-    console.log("Current Project Id is: ", get().currentProjectId);
-  },
+ 
 }));
 
 export default useProjectStore;

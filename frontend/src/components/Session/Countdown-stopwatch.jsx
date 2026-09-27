@@ -32,7 +32,6 @@ export default function ShiftingStopwatch({ part = "full" }) {
 
   const endSession = async () => {
     const res = await api.endSession(userId);
-    console.log("Response from the end session API: ", res.data);
     setReset();
     triggerRefresh();
   };
@@ -48,7 +47,6 @@ export default function ShiftingStopwatch({ part = "full" }) {
     setIsPause(true);
     setIsStart(false);
     setElapsedTime((prev) => prev + currTime);
-    console.log(currTime);
   };
 
   const handleClck = async () => {
