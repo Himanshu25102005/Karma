@@ -1,20 +1,29 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
+  async rewrites() {
+    return [
+      {
+        source: "/api/:path*",
+        destination: "http://15.207.112.173:5000/:path*",
+      },
+    ];
+  },
+
   images: {
     remotePatterns: [
       {
         protocol: "https",
         hostname: "i.pinimg.com",
-        pathname: "/**", // Added path catch-all fallback
+        pathname: "/**",
       },
       {
         protocol: "https",
-        hostname: "**.alphacoders.com", // ⚡ Added wildcard prefix to cover any subdomains
-        pathname: "/**", // ⚡ Added catch-all path match rule
+        hostname: "**.alphacoders.com",
+        pathname: "/**",
       },
       {
         protocol: "https",
-        hostname: "alphacoders.com", // Keep the root domain definition safe too
+        hostname: "alphacoders.com",
         pathname: "/**",
       },
       {
