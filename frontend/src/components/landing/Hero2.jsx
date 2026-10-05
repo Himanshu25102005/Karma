@@ -10,7 +10,7 @@ import {
   Tiro_Devanagari_Sanskrit,
   Poppins,
 } from "next/font/google";
-
+import Link from "next/link";
 const tiro = Tiro_Devanagari_Sanskrit({
   weight: "400",
   subsets: ["devanagari", "latin"],
@@ -278,111 +278,96 @@ const Hero2 = () => {
         ========================================== */}
 
         <motion.div
-          initial={{
-            opacity: 0,
-            y: 16,
-          }}
-          whileInView={{
-            opacity: 1,
-            y: 0,
-          }}
-          viewport={{
-            once: true,
-            amount: 0.2,
-          }}
-          transition={{
-            duration: 0.7,
-            delay: 1.1,
-            ease: [0.22, 1, 0.36, 1],
-          }}
-          className="mt-10 sm:mt-12"
+        initial={{
+          opacity: 0,
+          y: 16,
+        }}
+        whileInView={{
+          opacity: 1,
+          y: 0,
+        }}
+        viewport={{
+          once: true,
+          amount: 0.2,
+        }}
+        transition={{
+          duration: 0.7,
+          delay: 1.1,
+          ease: [0.22, 1, 0.36, 1],
+        }}
+        className="mt-10 sm:mt-12"
         >
-          <motion.button
-            onHoverStart={() => setHovered(true)}
-            onHoverEnd={() => setHovered(false)}
-            whileHover={{ y: -2 }}
-            whileTap={{ scale: 0.97 }}
-            transition={{
-              type: "spring",
-              stiffness: 400,
-              damping: 25,
-            }}
-            className={`
-              ${poppins.className}
-              relative
-              isolate
-              flex
-              h-14
-              items-center
-              justify-center
-              gap-3
-              overflow-hidden
-              rounded-[12px]
-              border
-              border-white/20
-              px-7
-              text-sm
-              font-medium
-            `}
-          >
-            {/* Diagonal gold fill */}
+  <Link href="/login">
+    <motion.button
+      onHoverStart={() => setHovered(true)}
+      onHoverEnd={() => setHovered(false)}
+      whileHover={{ y: -2 }}
+      whileTap={{ scale: 0.97 }}
+      transition={{
+        type: "spring",
+        stiffness: 400,
+        damping: 25,
+      }}
+      className={`
+        ${poppins.className}
+        relative isolate
+        flex h-14 items-center justify-center gap-3
+        overflow-hidden rounded-[12px]
+        border border-white/20
+        px-7 text-sm font-medium
+      `}
+    >
+      <motion.span
+        aria-hidden
+        className="
+          pointer-events-none
+          absolute
+          -bottom-[75%]
+          -left-[75%]
+          h-[250%]
+          w-[250%]
+          rotate-45
+          bg-[#D9A928]
+        "
+        initial={{ scale: 0 }}
+        animate={{
+          scale: hovered ? 1 : 0,
+        }}
+        transition={{
+          duration: 0.5,
+          ease: [0.65, 0, 0.35, 1],
+        }}
+      />
 
-            <motion.span
-              aria-hidden
-              className="
-                pointer-events-none
-                absolute
-                -bottom-[75%]
-                -left-[75%]
-                h-[250%]
-                w-[250%]
-                rotate-45
-                bg-[#D9A928]
-              "
-              initial={{
-                scale: 0,
-              }}
-              animate={{
-                scale: hovered ? 1 : 0,
-              }}
-              transition={{
-                duration: 0.5,
-                ease: [0.65, 0, 0.35, 1],
-              }}
-            />
+      <motion.span
+        className="relative z-10"
+        animate={{
+          color: hovered ? "#050505" : "#ffffff",
+        }}
+        transition={{
+          duration: 0.3,
+        }}
+      >
+        Start Tracking
+      </motion.span>
 
-            {/* Button label */}
-
-            <motion.span
-              className="relative z-10"
-              animate={{
-                color: hovered ? "#050505" : "#ffffff",
-              }}
-              transition={{
-                duration: 0.3,
-              }}
-            >
-              Start Tracking
-            </motion.span>
-
-            {/* Arrow */}
-
-            <motion.span
-              className="relative z-10 text-lg"
-              animate={{
-                x: hovered ? 4 : 0,
-                color: hovered
-                  ? "#050505"
-                  : "rgba(255,255,255,0.5)",
-              }}
-              transition={{
-                duration: 0.3,
-              }}
-            >
-              →
-            </motion.span>
-          </motion.button>
-        </motion.div>
+      <motion.span
+        className="relative z-10 text-lg"
+        animate={{
+          x: hovered ? 4 : 0,
+          color: hovered
+            ? "#050505"
+            : "rgba(255,255,255,0.5)",
+        }}
+        transition={{
+          duration: 0.3,
+        }}
+      >
+        →
+      </motion.span>
+    </motion.button>
+  </Link>
+</motion.div>
       </motion.div>
 
       {/* =========================================

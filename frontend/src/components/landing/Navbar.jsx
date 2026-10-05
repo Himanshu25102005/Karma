@@ -4,7 +4,6 @@ import React, { useEffect, useState } from "react";
 import Hamburger from "hamburger-react";
 import { Inter, Playwrite_BE_WAL } from "next/font/google";
 import { motion, AnimatePresence } from "framer-motion";
-
 const inter = Inter({
   subsets: ["latin"],
 });
