@@ -96,13 +96,13 @@ const Canvas = () => {
       revealDelay: 0.93,
     },
     {
-      file: "7.png",
+      file: "wheel.png",
       name: "7",
       initialScale: 1.98,
       revealDelay: 1.02,
     },
     {
-      file: "8 - Copy.png",
+      file: "logog.png",
       name: "8",
       initialScale: 2.02,
       revealDelay: 1.37,
@@ -138,36 +138,45 @@ const Canvas = () => {
           }}
         >
           {LAYERS.map((layer, i) => (
-            <motion.img
-              key={layer.file}
-              src={`/Logo_Pieces/${layer.file}`}
-              alt=""
-              draggable={false}
-              className="absolute inset-0 w-full h-full select-none will-change-transform origin-center pointer-events-none"
-              style={{
-                zIndex: i,
-              }}
-              initial={{
-                opacity: 0,
-                scale: layer.initialScale,
-              }}
-              animate={{
-                opacity: 1,
-                scale: 1,
-              }}
-              transition={{
-                scale: {
-                  duration: DURATION,
-                  ease: [0.16, 1, 0.3, 1],
-                },
-                opacity: {
-                  duration: 0.7,
-                  delay: layer.revealDelay,
-                  ease: easeInOut,
-                },
-              }}
-            />
-          ))}
+  <motion.img
+    key={layer.file}
+    src={`/images/${layer.file}`}
+    alt=""
+    draggable={false}
+    className="
+      absolute
+      inset-0
+      h-full
+      w-full
+      select-none
+      will-change-transform
+      origin-center
+      pointer-events-none
+    "
+    style={{
+      zIndex: i,
+    }}
+    initial={{
+      opacity: 0,
+      scale: layer.initialScale,
+    }}
+    animate={{
+      opacity: 1,
+      scale: 1,
+    }}
+    transition={{
+      scale: {
+        duration: DURATION,
+        ease: [0.16, 1, 0.3, 1],
+      },
+      opacity: {
+        duration: 0.7,
+        delay: layer.revealDelay,
+        ease: easeInOut,
+      },
+    }}
+  />
+))}
         </motion.div>
       )}
     </div>

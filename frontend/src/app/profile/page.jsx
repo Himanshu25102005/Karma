@@ -153,6 +153,7 @@ const ProfilePage = () => {
   const avatar = useUserStore((state) => state.avatar);
   const name = useUserStore((state) => state.name);
   const email = useUserStore((state) => state.email);
+  const profilePicture = useUserStore((state) => state.profilePicture)
   const bio = useUserStore((state) => state.bio);
   const dbLinks = useUserStore((state) => state.links);
   const setCurrentUser = useUserStore((state) => state.setCurrentUser);
@@ -219,8 +220,9 @@ const ProfilePage = () => {
       : userLinks;
 
   const pfp =
-    avatar ||
-    "https://i.pinimg.com/736x/83/bc/8b/83bc8b88cf6bc4b4e04d153a418cde62.jpg";
+  avatar ||
+  profilePicture ||
+  "https://i.pinimg.com/736x/83/bc/8b/83bc8b88cf6bc4b4e04d153a418cde62.jpg";
 
   useEffect(() => {
     setCurrentUser();
@@ -304,7 +306,7 @@ const ProfilePage = () => {
                     <span
                       className={`${rowdies.className} text-xl sm:text-2xl font-semibold text-neutral-300 wrap-break-word w-full`}
                     >
-                      {name || "Himanshu Dusane"}
+                      {name || "..."}
                     </span>
                     <span className="text-sm sm:text-lg text-neutral-500 truncate max-w-full">
                       {email || "himatwork01@gmail.com"}
@@ -319,7 +321,7 @@ const ProfilePage = () => {
                     <span
                       className={`${rowdies.className} text-xl md:text-2xl text-neutral-300 flex justify-center items-center w-full break-words text-center`}
                     >
-                      {name || "Himanshu Dusane"}
+                      {name || "..."}
                     </span>
                     <span className="text-neutral-500 text-md flex justify-center items-center w-full truncate">
                       {email || "himatwork01@gmail.com"}

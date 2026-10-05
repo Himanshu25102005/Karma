@@ -15,7 +15,7 @@ const ProfileSection = () => {
     const setCurrentUser = useUserStore((state) => state.setCurrentUser)
     const username = useUserStore((state) => state.username)
     const email = useUserStore((state) => state.email)
-    const profilePicture = useUserStore((state) => state.profilePicture)
+    const avatar = useUserStore((state) => state.avatar);
     useEffect(() => {
         const fetchOverview = async () => {
             const streak = await api.getStreak();
@@ -49,7 +49,7 @@ const ProfileSection = () => {
                             {/* PFP */}
                             <div className='w-24 sm:w-[40%] lg:w-16 lg:h-16 xl:w-20 xl:h-20 max-w-[160px] aspect-square rounded-full overflow-hidden relative shrink-0 ring-1 ring-neutral-800'>
                                 <Image
-                                    src={profilePicture || "https://i.pinimg.com/736x/b2/ea/a0/b2eaa0d4918d54021f9c7aa3fc3d3cf3.jpg"}
+                                    src={avatar || "https://i.pinimg.com/736x/b2/ea/a0/b2eaa0d4918d54021f9c7aa3fc3d3cf3.jpg"}
                                     alt="User Profile Avatar Picture"
                                     width={160}
                                     height={160}

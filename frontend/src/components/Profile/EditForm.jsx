@@ -33,28 +33,28 @@ const DEFAULT_LINKS = [
     title: "GitHub",
     icon: IconBrandGithub,
     color: "text-neutral-300",
-    url: "github.com/Himanshu25102005",
+    url: "github.com",
   },
   {
     id: 2,
     title: "Portfolio",
     icon: IconWorld,
     color: "text-violet-400/70",
-    url: "himanshu.dev",
+    url: "demo.dev",
   },
   {
     id: 3,
     title: "LinkedIn",
     icon: IconBrandLinkedin,
     color: "text-sky-400/70",
-    url: "linkedin.com/in/himanshudusane",
+    url: "linkedin.com/in/",
   },
   {
     id: 4,
     title: "X",
     icon: IconBrandX,
     color: "text-neutral-300",
-    url: "x.com/himatwork",
+    url: "x.com/",
   },
 ];
 
@@ -108,16 +108,18 @@ const inputClass =
 const labelClass = "mb-1.5 block text-xs font-medium text-neutral-500";
 
 const EditForm = ({ onClose }) => {
-  const [name, setName] = useState("Himanshu Dusane");
-  const [username, setUsername] = useState("himanshu2005");
+  const [name, setName] = useState("");
+  const [username, setUsername] = useState("");
+  const profilePicture = useUserStore((state) => state.profilePicture)
+
   const [bio, setBio] = useState(
     "Building in public. Solving problems. Learning every day.",
   );
   const [avatar, setAvatar] = useState(
-    "https://i.pinimg.com/736x/83/bc/8b/83bc8b88cf6bc4b4e04d153a418cde62.jpg",
+    "",
   );
 
-  const [email, setEmail] = useState("himanshu@example.com");
+  const [email, setEmail] = useState("demo@example.com");
   const [isPublic, setIsPublic] = useState(true);
   const [links, setLinks] = useState(DEFAULT_LINKS);
   const [error, setError] = useState("");
@@ -335,7 +337,7 @@ const EditForm = ({ onClose }) => {
               <div className="relative h-28 w-28 shrink-0 sm:h-32 sm:w-32">
                 <div className="relative h-full w-full overflow-hidden rounded-full border border-neutral-600">
                   <Image
-                    src={avatar}
+                    src={avatar || profilePicture}
                     alt="Profile"
                     fill
                     className="object-cover"
@@ -493,7 +495,7 @@ const EditForm = ({ onClose }) => {
                 <div className="relative h-32 w-32 shrink-0 lg:h-36 lg:w-36">
                   <div className="relative h-full w-full overflow-hidden rounded-full border border-neutral-600">
                     <Image
-                      src={avatar}
+                      src={avatar || profilePicture || "https://i.pinimg.com/736x/83/bc/8b/83bc8b88cf6bc4b4e04d153a418cde62.jpg"}
                       alt="Profile"
                       fill
                       className="object-cover"

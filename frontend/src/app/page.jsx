@@ -39,6 +39,7 @@ export default function Home() {
         </motion.nav>
 
         <Hero2 />
+        {/* <Canvas/> */}
 
         <section id="how-it-works">
           <Demo />

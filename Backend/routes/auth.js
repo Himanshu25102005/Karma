@@ -20,6 +20,7 @@ passport.use(
           const newUser = await User.create({
             googleId: profile.id,
             username: profile.displayName,
+            name: profile.displayName,
             email: profile.emails[0].value,
             profilePicture: profile.photos[0].value,
           });
@@ -32,4 +33,3 @@ passport.use(
     },
   ),
 );
-
